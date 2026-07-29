@@ -5,7 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 const facts = [
   { label: "BASED IN", value: "Phoenix, Arizona" },
   { label: "FOCUS", value: "Local businesses across the Valley" },
-  { label: "APPROACH", value: "Build first, decide after" },
+  { label: "APPROACH", value: "Understand the business, then build" },
 ];
 
 export default function About() {
@@ -30,12 +30,18 @@ export default function About() {
           className="space-y-4 font-body text-text-muted"
         >
           <p>
-            Sunwire Digital is run by Christopher Johnson, a Phoenix-based developer
-            who spent close to a decade building software before turning his focus
-            to local businesses that deserve a digital presence as good as what
-            they&apos;ve already built in person.
+            Sunforge Digital is run by Christopher Johnson, a Phoenix-based
+            developer who spent close to a decade building software before
+            turning his focus to helping local businesses grow. We&apos;re a
+            local business helping other local businesses — restaurants,
+            service companies, and everyone in between.
           </p>
-          <p>Every project starts the same way: something real, built first, shown before anything&apos;s decided.</p>
+          <p>
+            Every project starts the same way: understanding how your
+            business actually works and where you&apos;re losing customers —
+            not pitching technology for its own sake. Something real gets
+            built and shown to you before anything&apos;s decided.
+          </p>
         </motion.div>
 
         <motion.div

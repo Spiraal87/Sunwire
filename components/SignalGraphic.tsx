@@ -43,8 +43,8 @@ export default function SignalGraphic() {
     >
       <defs>
         <linearGradient id="signalGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#FFC759" />
-          <stop offset="100%" stopColor="#FF6B4A" />
+          <stop offset="0%" stopColor="#F2C870" />
+          <stop offset="100%" stopColor="#D38A34" />
         </linearGradient>
       </defs>
 
@@ -53,14 +53,14 @@ export default function SignalGraphic() {
         y1={horizonY}
         x2={width}
         y2={horizonY}
-        stroke="rgba(246,243,236,0.14)"
+        stroke="rgba(247,246,243,0.14)"
         strokeWidth={1}
       />
 
       <motion.path
         d={jaggedPath(0, centerX - 140, horizonY, 0.9)}
         fill="none"
-        stroke="#99A2C7"
+        stroke="#9CA6B8"
         strokeWidth={1.5}
         style={{ strokeDasharray: reducedMotion ? undefined : "8 5" }}
         initial={false}
@@ -74,7 +74,7 @@ export default function SignalGraphic() {
       <motion.path
         d={jaggedPath(centerX + 140, width, horizonY, 1.1)}
         fill="none"
-        stroke="#99A2C7"
+        stroke="#9CA6B8"
         strokeWidth={1.5}
         style={{ strokeDasharray: reducedMotion ? undefined : "8 5" }}
         initial={false}
@@ -133,7 +133,7 @@ export default function SignalGraphic() {
             key={r}
             d={`M ${centerX - r} ${horizonY} A ${r} ${r} 0 0 1 ${centerX + r} ${horizonY}`}
             fill="none"
-            stroke="rgba(255,199,89,0.3)"
+            stroke="rgba(230,168,75,0.3)"
             strokeWidth={1.5}
             initial={false}
             animate={

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Logo from "./Logo";
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -21,12 +22,9 @@ export default function Nav() {
       }`}
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a href="#" className="flex items-center gap-2 font-display text-lg font-semibold tracking-tight">
-          <span
-            aria-hidden="true"
-            className="inline-block h-2.5 w-2.5 rounded-full bg-gradient-accent"
-          />
-          Sunwire Digital
+        <a href="#" className="flex items-center gap-2.5 font-display text-lg font-semibold tracking-tight">
+          <Logo />
+          Sunforge Digital
         </a>
         <a
           href="#contact"

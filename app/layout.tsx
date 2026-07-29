@@ -22,9 +22,9 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sunwire Digital | Phoenix Websites & AI Phone Systems",
+  title: "Sunforge Digital | Capture More Customers, Miss Fewer Calls",
   description:
-    "Sunwire Digital designs websites and builds AI receptionists that handle missed calls and book clients for local businesses across the Valley.",
+    "We help local businesses capture more customers, convert more leads, and save time through better websites and AI-powered phone systems.",
 };
 
 export default function RootLayout({

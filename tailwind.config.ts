@@ -1,19 +1,23 @@
 import type { Config } from "tailwindcss";
 
+// Design System: Molten
+// Charcoal steel backgrounds, warm bronze highlights, subtle sunrise
+// illumination, precision line work, forged craftsmanship.
 const config: Config = {
   content: ["./app/**/*.{js,ts,jsx,tsx,mdx}", "./components/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     extend: {
       colors: {
-        bg: "#12152A",
-        panel: "#1B2040",
-        "panel-2": "#232A4E",
-        line: "rgba(246,243,236,0.10)",
-        gold: "#FFC759",
-        coral: "#FF6B4A",
-        "text-primary": "#F6F3EC",
-        "text-muted": "#99A2C7",
-        "text-muted-dark": "#6B729A",
+        bg: "#0B0E17",
+        panel: "#171D29",
+        "panel-2": "#111722",
+        line: "rgba(247,246,243,0.07)",
+        gold: "#E6A84B",
+        coral: "#D38A34",
+        highlight: "#F2C870",
+        "text-primary": "#F7F6F3",
+        "text-muted": "#9CA6B8",
+        "text-muted-dark": "#6B7385",
       },
       fontFamily: {
         display: ["var(--font-space-grotesk)", "sans-serif"],
@@ -21,8 +25,12 @@ const config: Config = {
         mono: ["var(--font-ibm-plex-mono)", "monospace"],
       },
       backgroundImage: {
-        "gradient-accent": "linear-gradient(100deg, #FFC759, #FF6B4A)",
-        "gradient-panel": "linear-gradient(160deg, #232A4E, #1B2040)",
+        "gradient-accent": "linear-gradient(135deg, #F2C870 0%, #E6A84B 45%, #D38A34 100%)",
+        "gradient-panel": "linear-gradient(160deg, #171D29, #111722)",
+      },
+      boxShadow: {
+        surface: "0 24px 48px -32px rgba(0,0,0,0.55)",
+        forge: "0 0 0 1px rgba(230,168,75,0.18), 0 12px 28px -16px rgba(211,138,52,0.35)",
       },
       borderRadius: {
         panel: "20px",

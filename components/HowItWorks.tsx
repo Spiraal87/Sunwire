@@ -4,6 +4,27 @@ import { motion, useReducedMotion } from "framer-motion";
 
 const tracks = [
   {
+    label: "AI Receptionists",
+    steps: [
+      {
+        title: "Setup",
+        body: "The system is configured around your hours, services, pricing, and the questions customers actually ask — trained on your business, not a generic script.",
+      },
+      {
+        title: "Answer",
+        body: "When a call comes in and goes unanswered — after hours, during a rush, or if every line is busy — a conversational AI voice system picks up and talks through what the caller needs.",
+      },
+      {
+        title: "Capture & book",
+        body: "It collects the caller's info, checks real-time availability, and books the appointment straight onto your calendar — or takes a detailed message if it can't.",
+      },
+      {
+        title: "Notify & follow up",
+        body: "You get notified right away with a summary of the call, so anything that needs a personal touch gets a callback from you or your team.",
+      },
+    ],
+  },
+  {
     label: "Websites",
     steps: [
       {
@@ -21,27 +42,6 @@ const tracks = [
       {
         title: "Launch & maintain",
         body: "Once you're happy, it goes live. Updates to hours, menus, or services get handled as your business changes.",
-      },
-    ],
-  },
-  {
-    label: "AI Phone Systems",
-    steps: [
-      {
-        title: "Setup",
-        body: "The system is configured around your hours, services, pricing, and the questions customers actually ask — trained on your business, not a generic script.",
-      },
-      {
-        title: "Answer",
-        body: "When a call comes in and goes unanswered — after hours, during a rush, or if every line is busy — a conversational AI voice system picks up and talks through what the caller needs.",
-      },
-      {
-        title: "Capture & book",
-        body: "It collects the caller's info, checks real-time availability, and books the appointment straight onto your calendar — or takes a detailed message if it can't.",
-      },
-      {
-        title: "Notify & follow up",
-        body: "You get notified right away with a summary of the call, so anything that needs a personal touch gets a callback from you or your team.",
       },
     ],
   },
@@ -114,9 +114,9 @@ export default function HowItWorks() {
                       aria-hidden="true"
                       className="absolute left-0 top-0 h-5 w-5 rounded-full border border-gold"
                       initial={{ scale: 1, opacity: 0 }}
-                      whileInView={{ scale: [1, 2.1], opacity: [0.6, 0] }}
+                      whileInView={{ scale: [1, 1.6], opacity: [0.45, 0] }}
                       viewport={{ once: true, margin: "-60px" }}
-                      transition={{ duration: 0.9, ease: "easeOut", delay: 0.05 }}
+                      transition={{ duration: 1, ease: "easeOut", delay: 0.05 }}
                     />
                   )}
 
@@ -138,7 +138,7 @@ export default function HowItWorks() {
         ))}
       </div>
 
-      <p className="mt-12 rounded-card border border-line bg-panel px-6 py-5 font-body text-sm text-text-muted">
+      <p className="mt-12 rounded-card border border-line bg-gradient-panel px-6 py-5 font-body text-sm text-text-muted shadow-surface">
         The phone system runs quietly alongside your existing number and team —
         it&apos;s a voice AI answering as your business, not a replacement for
         either.

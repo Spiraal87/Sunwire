@@ -1,7 +1,7 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import SignalGraphic from "./SignalGraphic";
 
 export default function Hero() {
   const prefersReducedMotion = useReducedMotion();
@@ -28,50 +28,93 @@ export default function Hero() {
   };
 
   return (
-    <section className="mx-auto max-w-6xl px-6 pb-16 pt-16 sm:pt-24">
-      <motion.div variants={container} initial="hidden" animate="show">
-        <motion.div variants={item} className="mb-6 flex items-center gap-3">
-          <span aria-hidden="true" className="h-px w-8 bg-gold" />
-          <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
-            Phoenix, Arizona
-          </span>
-        </motion.div>
+    <section className="relative flex items-center lg:min-h-[82vh]">
+      <div className="absolute inset-0 -z-20 overflow-hidden">
+        <Image
+          src="/images/hero-image3.png"
+          alt="Concentric forged metal rings around a glowing molten core, with circuit-like data lines radiating outward"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover brightness-110"
+          style={{ objectPosition: "68% center" }}
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(11,14,23,0.94)_0%,rgba(11,14,23,0.78)_28%,rgba(11,14,23,0.28)_52%,rgba(11,14,23,0.04)_75%,rgba(11,14,23,0.15)_100%)]" />
+      </div>
+      <div className="absolute inset-x-0 -top-px bottom-[-2px] -z-10 bg-[linear-gradient(to_bottom,rgba(11,14,23,0.7)_0%,rgba(11,14,23,0.12)_30%,rgba(11,14,23,0.14)_50%,rgba(11,14,23,0.4)_68%,rgba(11,14,23,0.82)_84%,rgba(11,14,23,1)_96%)]" />
 
-        <motion.h1
-          variants={item}
-          className="max-w-3xl font-display text-4xl font-semibold leading-tight tracking-tight sm:text-5xl sm:leading-tight md:text-6xl md:leading-tight"
-        >
-          We build the sites and AI receptionists{" "}
-          <span className="gradient-text">your business runs on.</span>
-        </motion.h1>
+      <div className="mx-auto w-full max-w-6xl px-6 py-12 sm:py-16 lg:py-32">
+        <motion.div variants={container} initial="hidden" animate="show">
+          <motion.div variants={item} className="mb-6 flex items-center gap-3">
+            <span aria-hidden="true" className="h-px w-8 bg-gold" />
+            <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
+              Digital Systems
+            </span>
+          </motion.div>
 
-        <motion.p
-          variants={item}
-          className="mt-6 max-w-xl font-body text-base text-text-muted sm:text-lg"
-        >
-          Sunwire Digital designs websites and builds AI receptionists that
-          handle missed calls and book clients for local businesses across the
-          Valley.
-        </motion.p>
-
-        <motion.div variants={item} className="mt-8 flex flex-wrap items-center gap-4">
-          <a
-            href="mailto:cdjohnsonzero@gmail.com"
-            className="rounded-btn bg-gradient-accent px-6 py-3 font-display text-sm font-semibold text-bg transition-transform hover:scale-[1.02]"
+          <motion.h1
+            variants={item}
+            className="max-w-3xl font-display text-4xl font-semibold leading-tight tracking-tight sm:text-5xl sm:leading-tight md:text-6xl md:leading-tight"
           >
-            Start a conversation
-          </a>
-          <a
-            href="tel:+17194245680"
-            className="rounded-btn border border-line px-6 py-3 font-mono text-sm text-text-primary transition-colors hover:border-gold hover:text-gold"
-          >
-            719-424-5680
-          </a>
-        </motion.div>
+            Capture more customers.{" "}
+            <span className="gradient-text">Miss fewer calls.</span>
+          </motion.h1>
 
-        <motion.div variants={item} className="mt-16 sm:mt-20">
-          <SignalGraphic />
+          <motion.p
+            variants={item}
+            className="mt-6 max-w-xl font-body text-base text-text-muted sm:text-lg"
+          >
+            Digital systems — websites and AI receptionists — that help local
+            businesses capture every opportunity, book more jobs, and save
+            valuable time.
+          </motion.p>
+
+          <motion.div variants={item} className="mt-8 flex flex-wrap items-center gap-4">
+            <a
+              href="mailto:cdjohnsonzero@gmail.com"
+              className="rounded-btn bg-gradient-accent px-6 py-3 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
+            >
+              Let&apos;s Talk
+            </a>
+            <a
+              href="#demo"
+              className="rounded-btn border border-line px-6 py-3 font-mono text-sm text-text-primary backdrop-blur-sm transition-colors hover:border-gold hover:text-gold"
+            >
+              Try the AI Demo
+            </a>
+          </motion.div>
         </motion.div>
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.9 }}
+        className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1.5 lg:flex"
+      >
+        <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-text-muted-dark">
+          Scroll
+        </span>
+        <motion.svg
+          width="16"
+          height="9"
+          viewBox="0 0 16 9"
+          fill="none"
+          animate={prefersReducedMotion ? undefined : { y: [0, 5, 0] }}
+          transition={
+            prefersReducedMotion
+              ? undefined
+              : { duration: 1.6, repeat: Infinity, ease: "easeInOut" }
+          }
+        >
+          <path
+            d="M1 1L8 8L15 1"
+            stroke="#E6A84B"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </motion.svg>
       </motion.div>
     </section>
   );
