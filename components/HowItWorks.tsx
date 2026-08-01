@@ -52,7 +52,7 @@ export default function HowItWorks() {
   const distance = prefersReducedMotion ? 0 : 20;
 
   return (
-    <section className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
+    <section id="how-it-works" className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <h2 className="font-display text-2xl font-semibold sm:text-3xl">How it works</h2>
         <span className="font-mono text-xs uppercase tracking-[0.15em] text-text-muted">

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 
 export default function Hero() {
@@ -41,7 +42,14 @@ export default function Hero() {
         />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(11,14,23,0.94)_0%,rgba(11,14,23,0.78)_28%,rgba(11,14,23,0.28)_52%,rgba(11,14,23,0.04)_75%,rgba(11,14,23,0.15)_100%)]" />
       </div>
-      <div className="absolute inset-x-0 -top-px bottom-[-2px] -z-10 bg-[linear-gradient(to_bottom,rgba(11,14,23,0.7)_0%,rgba(11,14,23,0.12)_30%,rgba(11,14,23,0.14)_50%,rgba(11,14,23,0.4)_68%,rgba(11,14,23,0.82)_84%,rgba(11,14,23,1)_96%)]" />
+      <div
+        className="absolute inset-x-0 -top-px bottom-[-2px] -z-10"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\"), linear-gradient(to bottom, rgba(11,14,23,0.7) 0%, rgba(11,14,23,0.12) 30%, rgba(11,14,23,0.14) 42%, rgba(11,14,23,0.22) 52%, rgba(11,14,23,0.35) 61%, rgba(11,14,23,0.52) 69%, rgba(11,14,23,0.68) 76%, rgba(11,14,23,0.82) 82%, rgba(11,14,23,0.92) 87%, rgba(11,14,23,0.98) 92%, rgba(11,14,23,1) 97%)",
+        }}
+      />
+      <div className="absolute inset-0 -z-10 bg-bg/55 lg:hidden" />
 
       <div className="mx-auto w-full max-w-6xl px-6 py-12 sm:py-16 lg:py-32">
         <motion.div variants={container} initial="hidden" animate="show">
@@ -64,18 +72,18 @@ export default function Hero() {
             variants={item}
             className="mt-6 max-w-xl font-body text-base text-text-muted sm:text-lg"
           >
-            Digital systems — websites and AI receptionists — that help local
+            Digital systems — AI receptionists and websites — that help local
             businesses capture every opportunity, book more jobs, and save
             valuable time.
           </motion.p>
 
           <motion.div variants={item} className="mt-8 flex flex-wrap items-center gap-4">
-            <a
-              href="mailto:cdjohnsonzero@gmail.com"
+            <Link
+              href="/calculator"
               className="rounded-btn bg-gradient-accent px-6 py-3 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
             >
-              Let&apos;s Talk
-            </a>
+              See What Missed Calls Cost You
+            </Link>
             <a
               href="#demo"
               className="rounded-btn border border-line px-6 py-3 font-mono text-sm text-text-primary backdrop-blur-sm transition-colors hover:border-gold hover:text-gold"

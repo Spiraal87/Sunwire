@@ -1,0 +1,17 @@
+<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="iconGrad3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFC759"/>
+      <stop offset="100%" stop-color="#FF6B4A"/>
+    </linearGradient>
+  </defs>
+  <circle cx="40" cy="40" r="38" fill="none" stroke="url(#iconGrad3)" stroke-width="1" opacity="0.25"/>
+  <circle cx="40" cy="42" r="20" fill="none" stroke="url(#iconGrad3)" stroke-width="2"/>
+  <line x1="40" y1="42" x2="40" y2="28" stroke="url(#iconGrad3)" stroke-width="2" stroke-linecap="round"/>
+  <line x1="40" y1="42" x2="50" y2="47" stroke="url(#iconGrad3)" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="40" cy="42" r="2" fill="#FF6B4A"/>
+  <!-- little "saved" tick marks around top, suggesting reclaimed time -->
+  <line x1="40" y1="18" x2="40" y2="22" stroke="url(#iconGrad3)" stroke-width="1.5" opacity="0.5"/>
+  <line x1="26" y1="22" x2="28.8" y2="24.8" stroke="url(#iconGrad3)" stroke-width="1.5" opacity="0.5"/>
+  <line x1="54" y1="22" x2="51.2" y2="24.8" stroke="url(#iconGrad3)" stroke-width="1.5" opacity="0.5"/>
+</svg>

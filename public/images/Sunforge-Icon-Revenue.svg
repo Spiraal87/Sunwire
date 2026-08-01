@@ -1,0 +1,16 @@
+<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="iconGrad4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFC759"/>
+      <stop offset="100%" stop-color="#FF6B4A"/>
+    </linearGradient>
+  </defs>
+  <circle cx="40" cy="40" r="38" fill="none" stroke="url(#iconGrad4)" stroke-width="1" opacity="0.25"/>
+  <!-- ascending bars -->
+  <rect x="22" y="46" width="8" height="12" fill="none" stroke="url(#iconGrad4)" stroke-width="2"/>
+  <rect x="36" y="38" width="8" height="20" fill="none" stroke="url(#iconGrad4)" stroke-width="2"/>
+  <rect x="50" y="28" width="8" height="30" fill="none" stroke="url(#iconGrad4)" stroke-width="2"/>
+  <!-- trend line + arrow -->
+  <path d="M 22 44 L 36 34 L 50 24 L 58 20" stroke="url(#iconGrad4)" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M 51 20 L 58 20 L 58 27" stroke="url(#iconGrad4)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

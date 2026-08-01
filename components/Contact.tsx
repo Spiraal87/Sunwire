@@ -45,11 +45,6 @@ export default function Contact() {
           </div>
         </div>
       </motion.div>
-
-      <div className="mt-8 flex flex-wrap items-center justify-between gap-2 font-mono text-xs text-text-muted-dark">
-        <span>© 2026 Sunforge Digital</span>
-        <span>Phoenix, AZ</span>
-      </div>
     </section>
   );
 }

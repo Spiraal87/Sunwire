@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Logo from "./Logo";
+import Link from "next/link";
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -21,17 +21,16 @@ export default function Nav() {
           : "border-transparent bg-transparent"
       }`}
     >
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a href="#" className="flex items-center gap-2.5 font-display text-lg font-semibold tracking-tight">
-          <Logo />
-          Sunforge Digital
-        </a>
-        <a
-          href="#contact"
-          className="rounded-btn border border-line px-4 py-2 font-mono text-xs uppercase tracking-wider text-text-primary transition-colors hover:border-gold hover:text-gold"
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5 sm:py-6">
+        <Link href="/" className="flex items-center">
+          <img src="/images/sunforge_logo_full.svg" alt="Sunforge Digital" className="h-10 w-auto sm:h-12" />
+        </Link>
+        <Link
+          href="/#contact"
+          className="rounded-btn border border-line px-5 py-2.5 font-mono text-xs uppercase tracking-wider text-text-primary transition-colors hover:border-gold hover:text-gold"
         >
           Get in touch
-        </a>
+        </Link>
       </nav>
     </header>
   );

@@ -5,8 +5,8 @@ import HowItWorks from "@/components/HowItWorks";
 import Funnel from "@/components/Funnel";
 import ROI from "@/components/ROI";
 import Demo from "@/components/Demo";
-import About from "@/components/About";
 import Contact from "@/components/Contact";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -19,9 +19,9 @@ export default function Home() {
         <Funnel />
         <ROI />
         <Demo />
-        <About />
         <Contact />
       </main>
+      <Footer />
     </>
   );
 }

@@ -1,31 +1,23 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState } from "react";
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 
 const DEMO_PHONE_DISPLAY = "623-303-9061";
 const DEMO_PHONE_TEL = "tel:+16233039061";
 const DEMO_LINE_READY = true;
 
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// TODO: drop in a real recorded call snippet once one exists, e.g.:
+// <AudioDemo src="/audio/demo-call.mp3" />
+// Do not use placeholder/stock audio — leave commented out until a real
+// recording is available.
 
 export default function Demo() {
   const prefersReducedMotion = useReducedMotion();
   const distance = prefersReducedMotion ? 0 : 20;
 
-  const [email, setEmail] = useState("");
   const [revealed, setRevealed] = useState(false);
-  const [error, setError] = useState(false);
-
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    if (!EMAIL_PATTERN.test(email)) {
-      setError(true);
-      return;
-    }
-    setError(false);
-    setRevealed(true);
-  }
 
   return (
     <section id="demo" className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
@@ -54,50 +46,65 @@ export default function Demo() {
                 aria-disabled="true"
                 className="cursor-not-allowed rounded-btn bg-gradient-accent px-8 py-4 font-display text-base font-semibold text-bg opacity-90"
               >
-                Try the AI Demo
+                Call the Demo
               </span>
               <span className="font-mono text-xs text-text-muted-dark">
                 Demo line coming soon
               </span>
             </>
-          ) : !revealed ? (
-            <form
-              onSubmit={handleSubmit}
-              className="flex w-full max-w-sm flex-col items-center gap-3 sm:flex-row"
-            >
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  setError(false);
-                }}
-                placeholder="you@business.com"
-                aria-label="Email address"
-                className="w-full rounded-btn border border-line bg-panel-2 px-4 py-3 font-body text-sm text-text-primary placeholder:text-text-muted-dark focus:border-gold focus:outline-none"
-              />
-              <button
-                type="submit"
-                className="w-full shrink-0 rounded-btn bg-gradient-accent px-6 py-3 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110 sm:w-auto"
-              >
-                Get the number
-              </button>
-            </form>
           ) : (
-            <a
-              href={DEMO_PHONE_TEL}
-              className="rounded-btn bg-gradient-accent px-8 py-4 font-display text-base font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
-            >
-              Call {DEMO_PHONE_DISPLAY}
-            </a>
+            <>
+              <a
+                href={DEMO_PHONE_TEL}
+                onClick={() => setRevealed(true)}
+                className="rounded-btn bg-gradient-accent px-8 py-4 font-display text-base font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
+              >
+                Call the Demo
+              </a>
+              {revealed && (
+                <motion.a
+                  href={DEMO_PHONE_TEL}
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="font-mono text-lg text-text-primary transition-colors hover:text-gold"
+                >
+                  {DEMO_PHONE_DISPLAY}
+                </motion.a>
+              )}
+            </>
           )}
 
-          {error && (
-            <p className="font-mono text-xs text-coral">Enter a valid email to continue.</p>
+          <p className="mt-1 max-w-sm font-body text-sm text-text-muted-dark">
+            Tell it what kind of business you run — it&apos;ll show you how
+            it&apos;d sound for yours.
+          </p>
+
+          {DEMO_LINE_READY && (
+            <div className="mt-8 hidden w-full max-w-xs flex-col items-center gap-3 border-t border-line pt-8 lg:flex">
+              <div className="rounded-card bg-white p-3">
+                <Image
+                  src="/images/demo-qr.png"
+                  alt="QR code that calls the AI demo line when scanned"
+                  width={160}
+                  height={160}
+                  className="h-40 w-40"
+                />
+              </div>
+              <p className="max-w-[220px] text-center font-body text-sm text-text-muted-dark">
+                On a computer? Scan to call from your phone.
+              </p>
+            </div>
           )}
         </div>
       </motion.div>
+
+      {/*
+        TODO: embedded audio player for a real recorded demo call, once one
+        exists. Do not fabricate or use placeholder/stock audio.
+
+        <AudioDemo src="/audio/demo-call.mp3" />
+      */}
     </section>
   );
 }
