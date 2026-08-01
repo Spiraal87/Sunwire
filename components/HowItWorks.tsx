@@ -51,6 +51,62 @@ export default function HowItWorks() {
   const prefersReducedMotion = useReducedMotion();
   const distance = prefersReducedMotion ? 0 : 20;
 
+  // Everything below is animated by variant propagation from the single
+  // whileInView trigger on each track's outer motion.div — nested elements
+  // don't run their own IntersectionObserver. Real mobile browsers (dynamic
+  // address-bar resizing especially) have historically been unreliable at
+  // firing many independent, tightly-margined observers on one page; a
+  // single parent trigger orchestrating children via variants sidesteps
+  // that entirely.
+  const olVariants = {
+    hidden: {},
+    show: {
+      transition: { staggerChildren: 0.12, delayChildren: 0.1 },
+    },
+  };
+
+  const liVariants = {
+    hidden: {},
+    show: {
+      transition: { staggerChildren: 0.06 },
+    },
+  };
+
+  const lineVariants = {
+    hidden: { scaleY: prefersReducedMotion ? 1 : 0 },
+    show: {
+      scaleY: 1,
+      transition: { duration: prefersReducedMotion ? 0 : 0.7, ease: "easeInOut" },
+    },
+  };
+
+  const badgeVariants = {
+    hidden: { scale: prefersReducedMotion ? 1 : 0.3, opacity: prefersReducedMotion ? 1 : 0 },
+    show: {
+      scale: 1,
+      opacity: 1,
+      transition: { duration: prefersReducedMotion ? 0.2 : 0.5, ease: "backOut" },
+    },
+  };
+
+  const rippleVariants = {
+    hidden: { scale: 1, opacity: 0 },
+    show: {
+      scale: [1, 1.6],
+      opacity: [0.45, 0],
+      transition: { duration: 1, ease: "easeOut" },
+    },
+  };
+
+  const textVariants = {
+    hidden: { opacity: prefersReducedMotion ? 1 : 0, y: prefersReducedMotion ? 0 : 8 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: prefersReducedMotion ? 0.2 : 0.4 },
+    },
+  };
+
   return (
     <section id="how-it-works" className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
@@ -64,47 +120,45 @@ export default function HowItWorks() {
         {tracks.map((track, trackIndex) => (
           <motion.div
             key={track.label}
-            initial={{ opacity: 0, y: distance }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial="hidden"
+            whileInView="show"
             viewport={{ once: true, margin: "-80px" }}
-            transition={{
-              duration: prefersReducedMotion ? 0.2 : 0.6,
-              ease: "easeOut",
-              delay: trackIndex * 0.1,
+            variants={{
+              hidden: { opacity: 0, y: distance },
+              show: {
+                opacity: 1,
+                y: 0,
+                transition: {
+                  duration: prefersReducedMotion ? 0.2 : 0.6,
+                  ease: "easeOut",
+                  delay: trackIndex * 0.1,
+                },
+              },
             }}
           >
             <p className="font-mono text-xs uppercase tracking-[0.15em] text-gold">
               {track.label}
             </p>
 
-            <ol className="mt-6">
+            <motion.ol className="mt-6" variants={olVariants}>
               {track.steps.map((step, i) => (
-                <li key={step.title} className="relative pb-9 pl-9 last:pb-0">
+                <motion.li
+                  key={step.title}
+                  variants={liVariants}
+                  className="relative pb-9 pl-9 last:pb-0"
+                >
                   {i < track.steps.length - 1 && (
                     <motion.span
                       aria-hidden="true"
+                      variants={lineVariants}
                       className="absolute left-[9.5px] top-5 bottom-0 w-px origin-top bg-gradient-to-b from-gold to-coral"
-                      initial={{ scaleY: prefersReducedMotion ? 1 : 0 }}
-                      whileInView={{ scaleY: 1 }}
-                      viewport={{ once: true, margin: "-60px" }}
-                      transition={{
-                        duration: prefersReducedMotion ? 0 : 0.7,
-                        delay: prefersReducedMotion ? 0 : 0.25,
-                        ease: "easeInOut",
-                      }}
                     />
                   )}
 
                   <motion.span
                     aria-hidden="true"
+                    variants={badgeVariants}
                     className="absolute left-0 top-0 flex h-5 w-5 items-center justify-center rounded-full border border-gold bg-gradient-accent font-mono text-[10px] font-semibold text-bg"
-                    initial={{ scale: prefersReducedMotion ? 1 : 0.3, opacity: prefersReducedMotion ? 1 : 0 }}
-                    whileInView={{ scale: 1, opacity: 1 }}
-                    viewport={{ once: true, margin: "-60px" }}
-                    transition={{
-                      duration: prefersReducedMotion ? 0.2 : 0.5,
-                      ease: "backOut",
-                    }}
                   >
                     {i + 1}
                   </motion.span>
@@ -112,28 +166,20 @@ export default function HowItWorks() {
                   {!prefersReducedMotion && (
                     <motion.span
                       aria-hidden="true"
+                      variants={rippleVariants}
                       className="absolute left-0 top-0 h-5 w-5 rounded-full border border-gold"
-                      initial={{ scale: 1, opacity: 0 }}
-                      whileInView={{ scale: [1, 1.6], opacity: [0.45, 0] }}
-                      viewport={{ once: true, margin: "-60px" }}
-                      transition={{ duration: 1, ease: "easeOut", delay: 0.05 }}
                     />
                   )}
 
-                  <motion.div
-                    initial={{ opacity: prefersReducedMotion ? 1 : 0, y: prefersReducedMotion ? 0 : 8 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-60px" }}
-                    transition={{ duration: prefersReducedMotion ? 0.2 : 0.4, delay: prefersReducedMotion ? 0 : 0.1 }}
-                  >
+                  <motion.div variants={textVariants}>
                     <h3 className="font-display text-base font-semibold text-text-primary sm:text-lg">
                       {step.title}
                     </h3>
                     <p className="mt-1.5 font-body text-sm text-text-muted">{step.body}</p>
                   </motion.div>
-                </li>
+                </motion.li>
               ))}
-            </ol>
+            </motion.ol>
           </motion.div>
         ))}
       </div>
