@@ -65,7 +65,7 @@ function Orb({ state }: { state: OrbState }) {
 
 function Connector({ dim }: { dim: boolean }) {
   return (
-    <div className="relative mt-6 flex w-6 shrink-0 items-center sm:mt-8 sm:w-10">
+    <div className="relative mt-8 flex w-6 shrink-0 items-center sm:mt-10 sm:w-10">
       <span
         aria-hidden="true"
         className={`h-px w-full ${dim ? "bg-line" : "bg-gradient-to-r from-gold to-coral"}`}
@@ -122,7 +122,9 @@ function OrbRow({
           return (
             <Fragment key={item.title}>
               <div className="flex w-24 shrink-0 flex-col items-center text-center sm:w-28 md:w-auto md:flex-1">
-                <Orb state={state} />
+                <div className="flex h-16 items-center justify-center sm:h-20">
+                  <Orb state={state} />
+                </div>
                 <p
                   className={`mt-4 font-display text-xs font-semibold sm:text-sm ${
                     dim ? "text-text-muted" : "text-text-primary"

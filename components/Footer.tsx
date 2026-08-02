@@ -10,6 +10,7 @@ const exploreLinks = [
   { label: "How we help", href: "/#services" },
   { label: "How it works", href: "/#how-it-works" },
   { label: "Hear the demo", href: "/#demo" },
+  { label: "FAQ", href: "/#faq" },
   { label: "Get in touch", href: "/#contact" },
 ];
 

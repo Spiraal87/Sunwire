@@ -1,0 +1,21 @@
+# Sunforge Digital
+
+> Websites and AI phone receptionists for local businesses in Phoenix, Arizona. Built by Christopher Johnson to help businesses capture every opportunity, book more jobs, and stop losing customers to missed calls.
+
+Sunforge Digital builds two things: AI phone receptionists that answer calls a business would otherwise miss (after hours, during a rush, or when every line is busy), and websites designed around the trust a business has already earned in person. The AI receptionist runs alongside a business's existing phone number and staff — it does not replace either.
+
+## Pages
+
+- [Homepage](https://sunforgedigital.com/): Overview of both services, how the AI receptionist and website process work step by step, a before/after comparison of missed-call outcomes, and frequently asked questions.
+- [Missed Call Revenue Calculator](https://sunforgedigital.com/calculator): Interactive tool estimating monthly and annual revenue lost to missed calls, based on the user's own call volume, miss rate, job value, and capacity — explicitly framed as a starting-point estimate, not a guarantee.
+- [Privacy Policy](https://sunforgedigital.com/privacy)
+- [Terms of Service](https://sunforgedigital.com/terms)
+
+## Key facts
+
+- Based in Phoenix, Arizona; focuses on local businesses across the Valley.
+- Two core services: AI phone receptionists and website design/development.
+- The AI receptionist is configured around a business's hours, services, and pricing; it answers unanswered calls, captures caller info, checks real-time availability, and can book appointments directly onto the calendar, or takes a message if it can't.
+- No guaranteed results are claimed anywhere on the site; all example figures (including the calculator's output) are illustrative estimates, not guarantees.
+- Contact: cdjohnsonzero@gmail.com, 719-424-5680.
+- Live interactive AI demo line: 623-303-9061 — callers can hear it handle a real conversation before deciding anything.

@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import SignalGraphic from "./SignalGraphic";
 
 type Card = {
   id: string;
@@ -55,16 +54,6 @@ export default function Services() {
 
   return (
     <section id="services" className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
-      <motion.div
-        initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut" }}
-        className="mx-auto mb-14 max-w-md opacity-80"
-      >
-        <SignalGraphic />
-      </motion.div>
-
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <h2 className="font-display text-2xl font-semibold sm:text-3xl">How we help</h2>
         <span className="font-mono text-xs uppercase tracking-[0.15em] text-text-muted">

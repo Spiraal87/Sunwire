@@ -82,6 +82,8 @@ export default function CalculatorClient() {
   const [value, setValue] = useState(defaults.restaurant.value);
   const [locationsInput, setLocationsInput] = useState("1");
   const [capacity, setCapacity] = useState(defaults.restaurant.cap);
+  const [routineCallHours, setRoutineCallHours] = useState(6);
+  const [demoNumberRevealed, setDemoNumberRevealed] = useState(false);
 
   const d = defaults[activeVertical];
 
@@ -96,6 +98,7 @@ export default function CalculatorClient() {
 
   function handleReset() {
     setLocationsInput("1");
+    setRoutineCallHours(6);
     applyVertical(activeVertical);
   }
 
@@ -106,6 +109,7 @@ export default function CalculatorClient() {
   const recoverable = missedCalls * capPct;
   const monthly = recoverable * value;
   const annual = monthly * 12;
+  const monthlyRoutineCallHours = Math.round((routineCallHours * 52) / 12);
 
   return (
     <div className="calcRoot min-h-screen bg-bg">
@@ -116,7 +120,7 @@ export default function CalculatorClient() {
       <main className="mx-auto max-w-3xl px-6 py-16 sm:py-24">
         <Link
           href="/"
-          className="mb-8 inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-text-muted transition-colors hover:text-gold print:hidden"
+          className="mb-8 inline-flex items-center gap-1.5 font-mono text-sm font-semibold uppercase tracking-wider text-gold transition-colors hover:text-highlight print:hidden"
         >
           <span aria-hidden="true">←</span> Back to Sunforge Digital
         </Link>
@@ -124,12 +128,23 @@ export default function CalculatorClient() {
         <h1 className="font-display text-3xl font-semibold text-text-primary sm:text-4xl">
           What are missed calls actually costing you?
         </h1>
-        <p className="lede mt-3 max-w-xl font-body text-text-muted">
-          Pick the type of business closest to yours to load typical starting numbers, then adjust
-          every slider to match your own business. This isn&apos;t a guess about you specifically —
-          it&apos;s a starting point built from published industry data, and you&apos;re in control
-          of every input.
+        <p className="lede mt-3 max-w-xl font-body text-text-primary print:hidden">
+          Every missed call is a customer who might just call the next business instead.
         </p>
+        <ul className="mt-4 max-w-xl space-y-2 font-body text-text-muted print:hidden">
+          <li className="flex items-start gap-2.5">
+            <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
+            Start from realistic numbers for your type of business
+          </li>
+          <li className="flex items-start gap-2.5">
+            <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
+            Adjust anything that doesn&apos;t match your reality
+          </li>
+          <li className="flex items-start gap-2.5">
+            <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
+            Watch your estimated loss update instantly
+          </li>
+        </ul>
 
         <div className="tabs mt-8 flex flex-wrap gap-2">
           {tabs.map((tab) => (
@@ -230,9 +245,30 @@ export default function CalculatorClient() {
               normal, adjust honestly.
             </div>
           </div>
+
+          <div className="field mt-6 border-t border-line pt-6">
+            <label className="flex items-baseline justify-between font-body text-sm font-semibold text-text-primary">
+              Hours a week you or your staff spend answering routine calls{" "}
+              <span className="font-mono text-coral">{routineCallHours} hrs</span>
+            </label>
+            <input
+              type="range"
+              min={0}
+              max={40}
+              step={1}
+              value={routineCallHours}
+              onChange={(e) => setRoutineCallHours(Number(e.target.value))}
+              className="calc-slider mt-2"
+            />
+            <div className="hint mt-1.5 font-mono text-xs text-text-muted-dark">
+              Hours, menu, pricing, &quot;are you open Sunday&quot; - the same handful of
+              questions, over and over. This one&apos;s entirely your own estimate, no industry
+              number behind it.
+            </div>
+          </div>
         </div>
 
-        <div className="leak-visual mt-6 flex items-center gap-6 rounded-panel bg-panel-2 p-8 shadow-surface">
+        <div className="leak-visual mt-6 flex items-center gap-6 rounded-panel border border-line bg-panel-2 p-8 shadow-surface">
           <div className="phone-icon relative h-14 w-14 shrink-0">
             <svg viewBox="0 0 54 54" width="54" height="54">
               <rect
@@ -265,53 +301,133 @@ export default function CalculatorClient() {
           </div>
         </div>
 
-        <div className="card writein mt-6 hidden rounded-panel border border-line bg-white p-8">
-          <div className="row mb-2 flex gap-5">
-            <div className="flex-1">
-              <label>Business name</label>
-              <div className="line"></div>
+        <div className="mt-6 flex items-center gap-6 rounded-panel border border-line bg-gradient-panel p-8 shadow-surface">
+          <div className="shrink-0 text-text-primary" aria-hidden="true">
+            <svg viewBox="0 0 54 54" width="54" height="54">
+              <circle
+                cx="27"
+                cy="27"
+                r="22"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+                opacity="0.92"
+              />
+              <path
+                d="M27 15v13l9 4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                opacity="0.92"
+              />
+            </svg>
+          </div>
+          <div className="flex-1">
+            <div className="font-mono text-xs font-semibold uppercase tracking-[0.1em] text-text-muted">
+              Phone time you&apos;d get back
             </div>
-            <div className="flex-1">
-              <label>Date</label>
-              <div className="line"></div>
+            <div className="mt-1 font-display text-4xl font-bold tabular-nums text-text-primary">
+              {routineCallHours} hrs/wk
+            </div>
+            <div className="mt-1 font-mono text-sm font-semibold tabular-nums text-gold">
+              {monthlyRoutineCallHours} hrs / month
             </div>
           </div>
-          <div className="row mb-2 flex gap-5">
-            <div className="flex-1">
-              <label>Calls per month (your number)</label>
-              <div className="line"></div>
+        </div>
+
+        <div className="demo-cta mt-6 rounded-panel border border-gold/60 bg-gradient-panel p-8 shadow-glow print:hidden">
+          <div className="font-mono text-xs font-semibold uppercase tracking-[0.15em] text-gold">
+            This is exactly what an AI receptionist closes
+          </div>
+          <p className="mt-3 font-body text-text-primary">
+            An AI receptionist answers every call, 24/7, captures the caller&apos;s info, and can
+            schedule the appointment right then — so the missed-call side of this number stops
+            growing. Hear it work on a real line before you decide anything.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <a
+              href="tel:6233039061"
+              onClick={() => setDemoNumberRevealed(true)}
+              className="rounded-btn bg-gradient-accent px-6 py-3 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
+            >
+              Call the AI demo
+            </a>
+            <a
+              href="mailto:cdjohnsonzero@gmail.com?subject=My%20missed-call%20numbers"
+              className="rounded-btn border border-line px-6 py-3 font-mono text-sm text-text-primary transition-colors hover:border-gold hover:text-gold"
+            >
+              Contact us
+            </a>
+          </div>
+          {demoNumberRevealed && (
+            <a
+              href="tel:6233039061"
+              className="mt-3 inline-block font-mono text-sm text-text-muted transition-colors hover:text-gold"
+            >
+              623-303-9061
+            </a>
+          )}
+        </div>
+
+        <div className="print-summary hidden rounded-panel border border-line bg-white p-8 print:block">
+          <div className="mb-4 border-b border-line pb-3">
+            <div className="font-mono text-xs font-semibold uppercase tracking-[0.1em] text-text-muted">
+              Business type
             </div>
-            <div className="flex-1">
-              <label>% missed (your estimate)</label>
-              <div className="line"></div>
+            <div className="font-display text-lg font-semibold text-text-primary">
+              {tabs.find((t) => t.key === activeVertical)?.label}
             </div>
           </div>
-          <div className="row mb-2 flex gap-5">
-            <div className="flex-1">
-              <label>Value per customer/job</label>
-              <div className="line"></div>
+
+          <div className="mb-4 grid grid-cols-2 gap-y-2 font-body text-sm text-text-primary">
+            <div>Calls per month</div>
+            <div className="font-mono font-semibold">{calls}</div>
+
+            <div>% of calls missed</div>
+            <div className="font-mono font-semibold">{miss}%</div>
+
+            <div>Value per customer/job</div>
+            <div className="font-mono font-semibold">{fmt(value)}</div>
+
+            <div>Locations</div>
+            <div className="font-mono font-semibold">{Math.round(locations)}</div>
+
+            <div>% of that business you could take on</div>
+            <div className="font-mono font-semibold">{capacity}%</div>
+
+            <div>Routine call time per week</div>
+            <div className="font-mono font-semibold">{routineCallHours} hrs</div>
+
+            <div>Routine call time per month</div>
+            <div className="font-mono font-semibold">{monthlyRoutineCallHours} hrs</div>
+          </div>
+
+          <div className="mb-4 border-t border-line pt-4">
+            <div className="font-mono text-xs font-semibold uppercase tracking-[0.1em] text-text-muted">
+              Estimated monthly revenue leak
             </div>
-            <div className="flex-1">
-              <label>Locations</label>
-              <div className="line"></div>
+            <div className="mt-1 font-display text-3xl font-bold tabular-nums text-text-primary">
+              {fmt(monthly)}
+            </div>
+            <div className="mt-1 font-mono text-sm font-semibold tabular-nums text-text-primary">
+              {fmt(annual)} / year
             </div>
           </div>
-          <div className="row mb-2 flex gap-5">
-            <div className="flex-1">
-              <label>% you could actually take on</label>
-              <div className="line"></div>
-            </div>
-            <div className="flex-1">
-              <label>= Monthly leak</label>
-              <div className="line"></div>
-            </div>
-          </div>
-          <div className="row mb-2 flex gap-5">
-            <div className="flex-1">
-              <label>= Annual leak</label>
-              <div className="line"></div>
-            </div>
-            <div className="flex-1"></div>
+
+          <div className="border-t border-line pt-4 font-body text-sm text-text-muted">
+            <p>
+              This estimate multiplies your calls per month by your missed-call rate to get missed
+              calls, then applies the share of that business you said you could actually take on
+              right now to get recoverable calls. Recoverable calls are multiplied by your typical
+              job value and by your number of locations to get the monthly figure above; the
+              annual figure is simply that number times twelve.
+            </p>
+            <p className="mt-2">
+              These numbers are only as accurate as the inputs above — they&apos;re a
+              starting-point estimate based on your own figures, not a guarantee of results.
+            </p>
           </div>
         </div>
 
@@ -342,12 +458,19 @@ export default function CalculatorClient() {
                 average ticket — which is exactly what the sliders above are for.
               </p>
               <p>
-                One slider has no benchmark behind it at all, on purpose: &quot;how much of that
-                extra business could you actually take on.&quot; Not every missed call is free money
-                — if you&apos;re already at capacity, answering more calls doesn&apos;t create more
-                tables, techs, or hours in the day. That&apos;s entirely your judgment call, not an
-                industry number, which is why it starts around 35-70% depending on the business type
-                instead of 100%.
+                Two sliders have no benchmark behind them at all, on purpose. The first is
+                &quot;how much of that extra business could you actually take on.&quot; Not every
+                missed call is free money - if you&apos;re already at capacity, answering more
+                calls doesn&apos;t create more tables, techs, or hours in the day. That&apos;s
+                entirely your judgment call, not an industry number, which is why it starts around
+                35-70% depending on the business type instead of 100%.
+              </p>
+              <p>
+                The second is the weekly routine-call estimate. There isn&apos;t a trustworthy
+                universal benchmark for how many hours your team burns on repetitive phone questions,
+                and pretending there is would make the tool look more precise than it really is. That
+                one should come straight from your own gut check of how often the phone pulls someone
+                away from real work.
               </p>
               <p>
                 A few more things worth knowing. For order-driven businesses, some of this
@@ -379,8 +502,7 @@ export default function CalculatorClient() {
         </div>
 
         <p className="mt-10 font-mono text-xs text-text-muted-dark">
-          Prepared by Sunforge Digital &middot; Christopher Johnson &middot; 719-424-5680 &middot;{" "}
-          cdjohnsonzero@gmail.com
+          Prepared by Sunforge Digital &middot; cdjohnsonzero@gmail.com
         </p>
       </main>
 
@@ -485,17 +607,6 @@ export default function CalculatorClient() {
           }
         }
 
-        .writein .line {
-          border-bottom: 1.5px solid #454c74;
-          height: 24px;
-          margin-bottom: 12px;
-        }
-        .writein label {
-          font-size: 12px;
-          font-weight: 700;
-          color: #1b2040;
-        }
-
         @media print {
           .calcRoot :global(*) {
             color: #1b2040 !important;
@@ -505,11 +616,9 @@ export default function CalculatorClient() {
           .calcRoot {
             background: #fff !important;
           }
-          .calcRoot :global(input[type="number"]) {
-            background: #fff !important;
-          }
           .tabs,
-          .phone-icon {
+          .card,
+          .leak-visual {
             display: none !important;
           }
           .method :global(summary) {
@@ -518,17 +627,14 @@ export default function CalculatorClient() {
           .method :global(summary) ~ :global(*) {
             display: none !important;
           }
-          .card,
-          .leak-visual,
           .method {
             background: #fff !important;
             border: 2px solid #1b2040 !important;
           }
-          .writein {
+          .print-summary {
             display: block !important;
-          }
-          .writein :global(.line) {
-            border-bottom: 1.5px solid #1b2040 !important;
+            background: #fff !important;
+            border: 2px solid #1b2040 !important;
           }
         }
       `}</style>

@@ -31,6 +31,7 @@ const config: Config = {
       boxShadow: {
         surface: "0 24px 48px -32px rgba(0,0,0,0.55)",
         forge: "0 0 0 1px rgba(230,168,75,0.18), 0 12px 28px -16px rgba(211,138,52,0.35)",
+        glow: "0 0 0 1px rgba(230,168,75,0.45), 0 0 40px 4px rgba(230,168,75,0.25), 0 0 90px 12px rgba(211,138,52,0.12)",
       },
       borderRadius: {
         panel: "20px",
