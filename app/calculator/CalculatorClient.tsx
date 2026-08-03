@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
@@ -71,8 +72,28 @@ const tabs: { key: VerticalKey; label: string }[] = [
   { key: "other", label: "Other / Retail" },
 ];
 
+type CustomerSourceKey = "referral" | "mix" | "online";
+
+const customerSourceOptions: { key: CustomerSourceKey; label: string }[] = [
+  { key: "referral", label: "Referrals" },
+  { key: "mix", label: "A mix" },
+  { key: "online", label: "Online" },
+];
+
 function fmt(n: number) {
   return "$" + Math.round(n).toLocaleString("en-US");
+}
+
+function getSourceNote(source: CustomerSourceKey, verticalLabel: string): string {
+  switch (source) {
+    case "online":
+      return `This is on the lower end for a ${verticalLabel} business. If people mostly find you by searching, it may be worth checking your visibility — some customers never find you to call in the first place.`;
+    case "referral":
+      return "Since most of your business comes through referrals, a lower call count isn't necessarily a problem — though it's worth a quick check that your online presence isn't quietly costing you a second channel.";
+    case "mix":
+    default:
+      return `This is on the lower end for a ${verticalLabel} business. Worth a quick check on whether people can easily find you online, especially for the customers who aren't coming through referrals.`;
+  }
 }
 
 export default function CalculatorClient() {
@@ -83,7 +104,11 @@ export default function CalculatorClient() {
   const [locationsInput, setLocationsInput] = useState("1");
   const [capacity, setCapacity] = useState(defaults.restaurant.cap);
   const [routineCallHours, setRoutineCallHours] = useState(6);
+  const [customerSource, setCustomerSource] = useState<CustomerSourceKey>("mix");
+  const [dismissedSourceModal, setDismissedSourceModal] = useState(false);
   const [demoNumberRevealed, setDemoNumberRevealed] = useState(false);
+  const [showStickyBar, setShowStickyBar] = useState(false);
+  const leakCardRef = useRef<HTMLDivElement>(null);
 
   const d = defaults[activeVertical];
 
@@ -99,6 +124,7 @@ export default function CalculatorClient() {
   function handleReset() {
     setLocationsInput("1");
     setRoutineCallHours(6);
+    setCustomerSource("mix");
     applyVertical(activeVertical);
   }
 
@@ -110,6 +136,37 @@ export default function CalculatorClient() {
   const monthly = recoverable * value;
   const annual = monthly * 12;
   const monthlyRoutineCallHours = Math.round((routineCallHours * 52) / 12);
+  const isBelowCallThreshold = calls < d.calls * 0.6;
+  const showSourceModal = isBelowCallThreshold && !dismissedSourceModal;
+
+  useEffect(() => {
+    if (!isBelowCallThreshold) {
+      setDismissedSourceModal(false);
+    }
+  }, [isBelowCallThreshold]);
+
+  useEffect(() => {
+    const el = leakCardRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShowStickyBar(false);
+        } else {
+          setShowStickyBar(entry.boundingClientRect.top > 0);
+        }
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  function scrollToLeakCard() {
+    leakCardRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
 
   return (
     <div className="calcRoot min-h-screen bg-bg">
@@ -164,7 +221,29 @@ export default function CalculatorClient() {
 
         <div className="card mt-6 rounded-panel border border-line bg-gradient-panel p-8 shadow-surface">
           <div className="field mb-6">
-            <label className="flex items-baseline justify-between font-body text-sm font-semibold text-text-primary">
+            <div>
+              <p className="font-body text-xs font-semibold text-text-muted">
+                Where do most of your customers come from?
+              </p>
+              <div className="mt-2 flex gap-2">
+                {customerSourceOptions.map((option) => (
+                  <button
+                    key={option.key}
+                    type="button"
+                    onClick={() => setCustomerSource(option.key)}
+                    className={`flex-1 rounded-full border px-4 py-2 text-center font-body text-sm font-semibold transition-colors ${
+                      customerSource === option.key
+                        ? "border-gold/60 bg-panel-2 text-text-primary"
+                        : "border-line bg-transparent text-text-muted hover:border-gold/40"
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <label className="mt-4 flex items-baseline justify-between font-body text-sm font-semibold text-text-primary">
               Calls you get in a typical month <span className="font-mono text-coral">{calls}</span>
             </label>
             <input
@@ -196,8 +275,8 @@ export default function CalculatorClient() {
           </div>
 
           <div className="field mb-6">
-            <label className="flex items-baseline justify-between font-body text-sm font-semibold text-text-primary">
-              What&apos;s a new customer/job typically worth to you{" "}
+            <label className="flex items-baseline justify-between gap-3 font-body text-sm font-semibold text-text-primary">
+              What&apos;s a new customer/job typically worth to you
               <span className="font-mono text-coral">{fmt(value)}</span>
             </label>
             <input
@@ -268,7 +347,10 @@ export default function CalculatorClient() {
           </div>
         </div>
 
-        <div className="leak-visual mt-6 flex items-center gap-6 rounded-panel border border-line bg-panel-2 p-8 shadow-surface">
+        <div
+          ref={leakCardRef}
+          className="leak-visual mt-6 flex items-center gap-6 rounded-panel border border-line bg-panel-2 p-8 shadow-surface"
+        >
           <div className="phone-icon relative h-14 w-14 shrink-0">
             <svg viewBox="0 0 54 54" width="54" height="54">
               <rect
@@ -473,6 +555,11 @@ export default function CalculatorClient() {
                 away from real work.
               </p>
               <p>
+                The automatic &quot;lower end&quot; pop-up compares your number only to this tool&apos;s own
+                starting assumption for your business type, not an external industry standard —
+                treat it as a prompt to double-check, not a diagnosis.
+              </p>
+              <p>
                 A few more things worth knowing. For order-driven businesses, some of this
                 &quot;loss&quot; isn&apos;t fully gone — a customer who can&apos;t get through
                 sometimes orders through a delivery app instead, so part of the number above is
@@ -508,6 +595,78 @@ export default function CalculatorClient() {
 
       <div className="print:hidden">
         <Footer />
+      </div>
+
+      <div className="print:hidden">
+        <AnimatePresence>
+          {showStickyBar && (
+            <motion.button
+              type="button"
+              onClick={scrollToLeakCard}
+              initial={{ y: 24, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 24, opacity: 0 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              style={{ paddingBottom: "calc(1.5rem + env(safe-area-inset-bottom))" }}
+              className="fixed inset-x-0 bottom-0 z-50 flex w-full items-center justify-between gap-3 border-t border-line bg-bg px-5 pt-6 text-left shadow-surface md:hidden"
+            >
+              <span className="font-mono text-xs uppercase leading-none tracking-wider text-text-muted">
+                Estimated leak
+              </span>
+              <span className="font-display text-base font-bold leading-none tabular-nums text-text-primary">
+                {fmt(monthly)}
+                <span className="ml-1 font-mono text-xs font-semibold leading-none text-gold">/mo</span>
+              </span>
+            </motion.button>
+          )}
+        </AnimatePresence>
+      </div>
+
+      <div className="print:hidden">
+        <AnimatePresence>
+          {showSourceModal && (
+            <motion.div
+              className="fixed inset-0 z-[60] flex items-center justify-center p-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div aria-hidden="true" className="absolute inset-0 bg-bg/80 backdrop-blur-sm" />
+              <motion.div
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="source-modal-heading"
+                initial={{ opacity: 0, y: 12, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 12, scale: 0.98 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className="relative w-full max-w-sm rounded-panel border border-gold/60 bg-gradient-panel p-6 shadow-glow"
+              >
+                <button
+                  type="button"
+                  onClick={() => setDismissedSourceModal(true)}
+                  aria-label="Close dialog"
+                  className="absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-full border border-line/80 font-mono text-base leading-none text-text-muted transition-colors hover:border-gold hover:text-gold"
+                >
+                  ✕
+                </button>
+                <h3
+                  id="source-modal-heading"
+                  className="font-display text-lg font-semibold text-text-primary"
+                >
+                  Worth a quick check
+                </h3>
+                <p className="mt-3 font-body text-sm text-text-muted">
+                  {getSourceNote(
+                    customerSource,
+                    tabs.find((t) => t.key === activeVertical)?.label ?? ""
+                  )}
+                </p>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       <style jsx>{`

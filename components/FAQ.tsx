@@ -12,7 +12,7 @@ const faqs = [
   {
     question: "Will it sound robotic?",
     answer:
-      "You don't have to take our word for it — call the interactive demo line yourself and hear how it handles a real conversation before deciding anything.",
+      "You don't have to take our word for it — call the interactive demo line yourself and hear how it handles a real conversation before deciding anything. The voice itself is customizable too: you can choose from hundreds of different receptionist voices, in multiple languages, to match how you want your business to sound.",
   },
   {
     question: "Do I need to switch phone providers or get a new number?",

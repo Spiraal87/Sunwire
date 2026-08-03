@@ -29,6 +29,7 @@ const cards: Card[] = [
       "Works alongside your existing phone number",
       "Built specifically for your business",
       "Available 24/7",
+      "Hundreds of voices to choose from, in multiple languages",
       "Hear it working before making any decision",
     ],
   },

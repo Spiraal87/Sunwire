@@ -71,7 +71,7 @@ export default function SignalGraphic({
         </filter>
       </defs>
 
-      <ellipse cx={centerX} cy={horizonY} rx={220} ry={130} fill="url(#coreGlow)" />
+      <ellipse cx={centerX} cy={horizonY} rx={220} ry={90} fill="url(#coreGlow)" />
 
       <line
         x1={0}

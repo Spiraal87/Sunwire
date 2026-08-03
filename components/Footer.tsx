@@ -1,11 +1,5 @@
 import Link from "next/link";
 
-const facts = [
-  { label: "BASED IN", value: "Phoenix, Arizona" },
-  { label: "FOCUS", value: "Local businesses across the Valley" },
-  { label: "APPROACH", value: "Understand the business, then build" },
-];
-
 const exploreLinks = [
   { label: "How we help", href: "/#services" },
   { label: "How it works", href: "/#how-it-works" },
@@ -27,21 +21,9 @@ export default function Footer() {
           <Link href="/" className="flex items-center">
             <img src="/images/sunforge_logo_full.svg" alt="Sunforge Digital" className="h-6 w-auto" />
           </Link>
-          <p className="mt-4 max-w-sm font-body text-sm text-text-muted">
-            Run by Christopher Johnson — a Phoenix-based developer helping
-            local businesses grow with better websites and AI receptionists.
+          <p className="mt-4 font-mono text-xs uppercase tracking-[0.15em] text-text-muted">
+            Christopher Johnson &middot; Phoenix, AZ
           </p>
-
-          <dl className="mt-6 flex flex-wrap gap-x-8 gap-y-3">
-            {facts.map((fact) => (
-              <div key={fact.label}>
-                <dt className="font-mono text-[10px] uppercase tracking-[0.15em] text-gold">
-                  {fact.label}
-                </dt>
-                <dd className="mt-1 font-body text-sm text-text-primary">{fact.value}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
 
         <div>
@@ -82,7 +64,7 @@ export default function Footer() {
       </div>
 
       <div className="mt-12 flex flex-wrap items-center justify-between gap-2 border-t border-line pt-6 font-mono text-xs text-text-muted-dark">
-        <span>© 2026 Sunforge Digital</span>
+        <span>&copy; 2026 Sunforge Digital</span>
         <span>Phoenix, AZ</span>
       </div>
     </footer>
