@@ -20,7 +20,6 @@ export default function Home() {
         <Hero />
         <SectionDivider litCount={1} />
         <Services />
-        <AboutOperator />
         <SectionDivider litCount={2} />
         <HowItWorks />
         <SectionDivider litCount={3} />
@@ -32,6 +31,7 @@ export default function Home() {
         <FAQ />
         <Contact />
         <About />
+        <AboutOperator />
       </main>
       <Footer />
     </>

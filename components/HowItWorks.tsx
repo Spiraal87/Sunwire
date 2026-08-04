@@ -116,79 +116,81 @@ export default function HowItWorks() {
         </span>
       </div>
 
-      <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-12">
-        {tracks.map((track, trackIndex) => (
-          <motion.div
-            key={track.label}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-80px" }}
-            variants={{
-              hidden: { opacity: 0, y: distance },
-              show: {
-                opacity: 1,
-                y: 0,
-                transition: {
-                  duration: prefersReducedMotion ? 0.2 : 0.6,
-                  ease: "easeOut",
-                  delay: trackIndex * 0.1,
+      <div className="rounded-panel border border-line bg-gradient-panel p-8 shadow-surface sm:p-10">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-12">
+          {tracks.map((track, trackIndex) => (
+            <motion.div
+              key={track.label}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: "-80px" }}
+              variants={{
+                hidden: { opacity: 0, y: distance },
+                show: {
+                  opacity: 1,
+                  y: 0,
+                  transition: {
+                    duration: prefersReducedMotion ? 0.2 : 0.6,
+                    ease: "easeOut",
+                    delay: trackIndex * 0.1,
+                  },
                 },
-              },
-            }}
-          >
-            <p className="font-mono text-xs uppercase tracking-[0.15em] text-gold">
-              {track.label}
-            </p>
+              }}
+            >
+              <p className="font-mono text-xs uppercase tracking-[0.15em] text-gold">
+                {track.label}
+              </p>
 
-            <motion.ol className="mt-6" variants={olVariants}>
-              {track.steps.map((step, i) => (
-                <motion.li
-                  key={step.title}
-                  variants={liVariants}
-                  className="relative pb-9 pl-9 last:pb-0"
-                >
-                  {i < track.steps.length - 1 && (
-                    <motion.span
-                      aria-hidden="true"
-                      variants={lineVariants}
-                      className="absolute left-[9.5px] top-5 bottom-0 w-px origin-top bg-gradient-to-b from-gold to-coral"
-                    />
-                  )}
-
-                  <motion.span
-                    aria-hidden="true"
-                    variants={badgeVariants}
-                    className="absolute left-0 top-0 flex h-5 w-5 items-center justify-center rounded-full border border-gold bg-gradient-accent font-mono text-[10px] font-semibold text-bg"
+              <motion.ol className="mt-6" variants={olVariants}>
+                {track.steps.map((step, i) => (
+                  <motion.li
+                    key={step.title}
+                    variants={liVariants}
+                    className="relative pb-9 pl-9 last:pb-0"
                   >
-                    {i + 1}
-                  </motion.span>
+                    {i < track.steps.length - 1 && (
+                      <motion.span
+                        aria-hidden="true"
+                        variants={lineVariants}
+                        className="absolute left-[9.5px] top-5 bottom-0 w-px origin-top bg-gradient-to-b from-gold to-coral"
+                      />
+                    )}
 
-                  {!prefersReducedMotion && (
                     <motion.span
                       aria-hidden="true"
-                      variants={rippleVariants}
-                      className="absolute left-0 top-0 h-5 w-5 rounded-full border border-gold"
-                    />
-                  )}
+                      variants={badgeVariants}
+                      className="absolute left-0 top-0 flex h-5 w-5 items-center justify-center rounded-full border border-gold bg-gradient-accent font-mono text-[10px] font-semibold text-bg"
+                    >
+                      {i + 1}
+                    </motion.span>
 
-                  <motion.div variants={textVariants}>
-                    <h3 className="font-display text-base font-semibold text-text-primary sm:text-lg">
-                      {step.title}
-                    </h3>
-                    <p className="mt-1.5 font-body text-sm text-text-muted">{step.body}</p>
-                  </motion.div>
-                </motion.li>
-              ))}
-            </motion.ol>
-          </motion.div>
-        ))}
+                    {!prefersReducedMotion && (
+                      <motion.span
+                        aria-hidden="true"
+                        variants={rippleVariants}
+                        className="absolute left-0 top-0 h-5 w-5 rounded-full border border-gold"
+                      />
+                    )}
+
+                    <motion.div variants={textVariants}>
+                      <h3 className="font-display text-base font-semibold text-text-primary sm:text-lg">
+                        {step.title}
+                      </h3>
+                      <p className="mt-1.5 font-body text-sm text-text-muted">{step.body}</p>
+                    </motion.div>
+                  </motion.li>
+                ))}
+              </motion.ol>
+            </motion.div>
+          ))}
+        </div>
+
+        <p className="mt-12 font-body text-sm text-text-muted">
+          The phone system runs quietly alongside your existing number and team —
+          it&apos;s a voice AI answering as your business, not a replacement for
+          either.
+        </p>
       </div>
-
-      <p className="mt-12 rounded-card border border-line bg-gradient-panel px-6 py-5 font-body text-sm text-text-muted shadow-surface">
-        The phone system runs quietly alongside your existing number and team —
-        it&apos;s a voice AI answering as your business, not a replacement for
-        either.
-      </p>
     </section>
   );
 }
