@@ -46,7 +46,7 @@ export default function ROI() {
           >
             <div className="flex items-center gap-3">
               <img src={example.icon} alt={example.iconAlt} width={80} height={80} className="h-8 w-8 sm:h-9 sm:w-9" />
-              <p className="font-mono text-xs uppercase tracking-[0.15em] text-gold">
+              <p className="font-mono text-xs uppercase tracking-[0.15em] text-text-secondary">
                 Example {String(i + 1).padStart(2, "0")}
               </p>
             </div>

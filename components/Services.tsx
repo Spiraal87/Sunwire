@@ -77,7 +77,7 @@ export default function Services() {
             }`}
           >
             <img src={card.icon} alt={card.iconAlt} width={80} height={80} className="h-12 w-12 sm:h-14 sm:w-14" />
-            <p className="mt-4 font-mono text-xs uppercase tracking-[0.15em] text-gold">
+            <p className="mt-4 font-mono text-xs uppercase tracking-[0.15em] text-text-secondary">
               {card.label}
             </p>
             <h3 className="mt-4 font-display text-xl font-semibold sm:text-2xl">

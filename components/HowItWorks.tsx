@@ -136,7 +136,7 @@ export default function HowItWorks() {
               },
             }}
           >
-            <p className="font-mono text-xs uppercase tracking-[0.15em] text-gold">
+            <p className="font-mono text-xs uppercase tracking-[0.15em] text-text-secondary">
               {track.label}
             </p>
 
@@ -151,14 +151,14 @@ export default function HowItWorks() {
                     <motion.span
                       aria-hidden="true"
                       variants={lineVariants}
-                      className="absolute left-[9.5px] top-5 bottom-0 w-px origin-top bg-gradient-to-b from-gold to-coral"
+                      className="absolute left-[9.5px] top-5 bottom-0 w-px origin-top bg-gradient-to-b from-text-muted/60 to-line"
                     />
                   )}
 
                   <motion.span
                     aria-hidden="true"
                     variants={badgeVariants}
-                    className="absolute left-0 top-0 flex h-5 w-5 items-center justify-center rounded-full border border-gold bg-gradient-accent font-mono text-[10px] font-semibold text-bg"
+                    className="absolute left-0 top-0 flex h-5 w-5 items-center justify-center rounded-full border border-text-muted/40 bg-panel-2 font-mono text-[10px] font-semibold text-text-secondary"
                   >
                     {i + 1}
                   </motion.span>
@@ -167,7 +167,7 @@ export default function HowItWorks() {
                     <motion.span
                       aria-hidden="true"
                       variants={rippleVariants}
-                      className="absolute left-0 top-0 h-5 w-5 rounded-full border border-gold"
+                      className="absolute left-0 top-0 h-5 w-5 rounded-full border border-text-muted/40"
                     />
                   )}
 

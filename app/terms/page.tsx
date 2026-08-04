@@ -12,7 +12,7 @@ export default function TermsPage() {
     <>
       <Nav />
       <main className="mx-auto max-w-3xl px-6 py-16 sm:py-24">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-gold">Legal</p>
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-text-secondary">Legal</p>
         <h1 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">Terms of Service</h1>
         <p className="mt-2 font-mono text-xs text-text-muted-dark">Effective July 2026</p>
 

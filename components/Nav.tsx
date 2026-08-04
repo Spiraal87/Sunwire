@@ -21,16 +21,36 @@ export default function Nav() {
           : "border-transparent bg-transparent"
       }`}
     >
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5 sm:py-6">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-4 sm:px-6 sm:py-5">
         <Link href="/" className="flex items-center">
-          <img src="/images/sunforge_logo_full.svg" alt="Sunforge Digital" className="h-10 w-auto sm:h-12" />
+          <img
+            src="/images/sunforge_logo_full.svg"
+            alt="Sunforge Digital"
+            className="h-8 w-auto sm:h-10 lg:h-12"
+          />
         </Link>
-        <Link
-          href="/#contact"
-          className="rounded-btn border border-line px-5 py-2.5 font-mono text-xs uppercase tracking-wider text-text-primary transition-colors hover:border-gold hover:text-gold"
-        >
-          Get in touch
-        </Link>
+        <div className="flex items-center gap-2 sm:gap-3">
+          <Link
+            href="/#contact"
+            className="hidden font-mono text-xs uppercase tracking-wider text-text-muted transition-colors hover:text-gold xl:inline-flex"
+          >
+            Get in touch
+          </Link>
+          <Link
+            href="/calculator"
+            className="whitespace-nowrap rounded-btn border border-text-secondary/50 bg-bg/70 px-3 py-2 font-display text-[11px] font-semibold text-text-primary shadow-surface backdrop-blur-md transition-all duration-200 hover:scale-[1.02] hover:border-text-primary hover:bg-panel/80 sm:px-4 sm:py-2.5 sm:text-xs"
+          >
+            <span className="sm:hidden">Calculator</span>
+            <span className="hidden sm:inline">Missed-Call Calculator</span>
+          </Link>
+          <Link
+            href="/#demo"
+            className="whitespace-nowrap rounded-btn bg-gradient-accent px-3 py-2 font-display text-[11px] font-semibold text-bg shadow-forge transition-all duration-200 hover:scale-[1.02] hover:brightness-110 sm:px-4 sm:py-2.5 sm:text-xs"
+          >
+            <span className="md:hidden">Talk to AI</span>
+            <span className="hidden md:inline">Talk to the AI Receptionist</span>
+          </Link>
+        </div>
       </nav>
     </header>
   );

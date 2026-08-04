@@ -83,7 +83,7 @@ export default function Demo() {
         className="relative rounded-panel border border-transparent bg-gradient-panel p-8 text-center sm:p-14"
       >
         <GlowBorder inView={inView} delay={BORDER_DELAY} />
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-text-secondary">
           Hear It Yourself
         </p>
         <h2 className="mx-auto mt-4 max-w-xl font-display text-2xl font-semibold sm:text-3xl">
@@ -101,7 +101,7 @@ export default function Demo() {
                 aria-disabled="true"
                 className="cursor-not-allowed rounded-btn bg-gradient-accent px-8 py-4 font-display text-base font-semibold text-bg opacity-90"
               >
-                Call the Demo
+                Talk to the AI Receptionist
               </span>
               <span className="font-mono text-xs text-text-muted-dark">
                 Demo line coming soon
@@ -114,7 +114,7 @@ export default function Demo() {
                 onClick={() => setRevealed(true)}
                 className="rounded-btn bg-gradient-accent px-8 py-4 font-display text-base font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
               >
-                Call the Demo
+                Talk to the AI Receptionist
               </a>
               {revealed && (
                 <motion.a
