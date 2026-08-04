@@ -116,8 +116,9 @@ export default function HowItWorks() {
         </span>
       </div>
 
-      <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-12">
-        {tracks.map((track, trackIndex) => (
+      <div className="rounded-panel border border-line bg-gradient-panel p-8 shadow-surface sm:p-10">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-12">
+          {tracks.map((track, trackIndex) => (
           <motion.div
             key={track.label}
             initial="hidden"
@@ -181,14 +182,15 @@ export default function HowItWorks() {
               ))}
             </motion.ol>
           </motion.div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      <p className="mt-12 rounded-card border border-line bg-gradient-panel px-6 py-5 font-body text-sm text-text-muted shadow-surface">
-        The phone system runs quietly alongside your existing number and team —
-        it&apos;s a voice AI answering as your business, not a replacement for
-        either.
-      </p>
+        <p className="mt-12 font-body text-sm text-text-muted">
+          The phone system runs quietly alongside your existing number and team —
+          it&apos;s a voice AI answering as your business, not a replacement for
+          either.
+        </p>
+      </div>
     </section>
   );
 }
