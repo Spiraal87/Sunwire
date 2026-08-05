@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import { captureEvent } from "@/lib/analytics";
 
 type VerticalKey = "restaurant" | "home" | "club" | "other";
 
@@ -213,7 +214,12 @@ export default function CalculatorClient() {
                   ? "border-transparent bg-gradient-accent text-bg"
                   : "border-line bg-panel text-text-muted hover:border-gold"
               }`}
-              onClick={() => applyVertical(tab.key)}
+              onClick={() => {
+                applyVertical(tab.key);
+                captureEvent("calculator_business_type_selected", {
+                  business_type: tab.key,
+                });
+              }}
             >
               {tab.label}
             </button>
@@ -574,13 +580,22 @@ export default function CalculatorClient() {
           <div className="mt-6 flex flex-wrap gap-3">
             <a
               href="tel:6233039061"
-              onClick={() => setDemoNumberRevealed(true)}
+              onClick={() => {
+                setDemoNumberRevealed(true);
+                captureEvent("demo_call_started", { placement: "calculator_results" });
+              }}
               className="rounded-btn bg-gradient-accent px-6 py-3 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
             >
               Call the AI demo
             </a>
             <a
               href="mailto:cdjohnsonzero@gmail.com?subject=My%20missed-call%20numbers"
+              onClick={() =>
+                captureEvent("contact_clicked", {
+                  method: "email",
+                  placement: "calculator_results",
+                })
+              }
               className="rounded-btn border border-line px-6 py-3 font-mono text-sm text-text-primary transition-colors hover:border-gold hover:text-gold"
             >
               Contact us
@@ -718,7 +733,13 @@ export default function CalculatorClient() {
 
         <div className="actions mt-8 flex flex-wrap gap-3 print:hidden">
           <button
-            onClick={() => window.print()}
+            onClick={() => {
+              captureEvent("calculator_printed", {
+                business_type: activeVertical,
+                estimated_monthly_revenue_leak: Math.round(monthly),
+              });
+              window.print();
+            }}
             className="rounded-btn border border-text-secondary/50 bg-panel-2 px-6 py-3 font-display text-sm font-semibold text-text-primary shadow-surface transition-all duration-200 hover:scale-[1.02] hover:border-text-primary hover:bg-panel"
           >
             Print this page

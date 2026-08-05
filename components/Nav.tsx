@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { captureEvent } from "@/lib/analytics";
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -38,6 +39,12 @@ export default function Nav() {
           </Link>
           <Link
             href="/calculator"
+            onClick={() =>
+              captureEvent("cta_clicked", {
+                cta: "missed_call_calculator",
+                placement: "navigation",
+              })
+            }
             className="whitespace-nowrap rounded-btn border border-text-secondary/50 bg-bg/70 px-3 py-2 font-display text-[11px] font-semibold text-text-primary shadow-surface backdrop-blur-md transition-all duration-200 hover:scale-[1.02] hover:border-text-primary hover:bg-panel/80 sm:px-4 sm:py-2.5 sm:text-xs"
           >
             <span className="sm:hidden">Calculator</span>
@@ -45,6 +52,12 @@ export default function Nav() {
           </Link>
           <Link
             href="/#demo"
+            onClick={() =>
+              captureEvent("cta_clicked", {
+                cta: "ai_receptionist_demo",
+                placement: "navigation",
+              })
+            }
             className="whitespace-nowrap rounded-btn bg-gradient-accent px-3 py-2 font-display text-[11px] font-semibold text-bg shadow-forge transition-all duration-200 hover:scale-[1.02] hover:brightness-110 sm:px-4 sm:py-2.5 sm:text-xs"
           >
             <span className="md:hidden">Talk to AI</span>

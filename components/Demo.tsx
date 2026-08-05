@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import GlowBorder from "./GlowBorder";
+import { captureEvent } from "@/lib/analytics";
 
 const DEMO_PHONE_DISPLAY = "623-303-9061";
 const DEMO_PHONE_TEL = "tel:+16233039061";
@@ -111,7 +112,10 @@ export default function Demo() {
             <>
               <a
                 href={DEMO_PHONE_TEL}
-                onClick={() => setRevealed(true)}
+                onClick={() => {
+                  setRevealed(true);
+                  captureEvent("demo_call_started", { placement: "homepage_demo" });
+                }}
                 className="rounded-btn bg-gradient-accent px-8 py-4 font-display text-base font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
               >
                 Talk to the AI Receptionist

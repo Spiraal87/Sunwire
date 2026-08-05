@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
+import { captureEvent } from "@/lib/analytics";
 
 export default function Hero() {
   const prefersReducedMotion = useReducedMotion();
@@ -80,12 +81,24 @@ export default function Hero() {
           <motion.div variants={item} className="mt-8 flex flex-wrap items-center gap-4">
             <Link
               href="/calculator"
+              onClick={() =>
+                captureEvent("cta_clicked", {
+                  cta: "missed_call_calculator",
+                  placement: "hero",
+                })
+              }
               className="rounded-btn bg-gradient-accent px-6 py-3 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
             >
               See What Missed Calls Cost You
             </Link>
             <a
               href="#demo"
+              onClick={() =>
+                captureEvent("cta_clicked", {
+                  cta: "ai_receptionist_demo",
+                  placement: "hero",
+                })
+              }
               className="rounded-btn border border-text-secondary/50 bg-bg/70 px-6 py-3 font-display text-sm font-semibold text-text-primary shadow-surface backdrop-blur-md transition-all duration-200 hover:scale-[1.02] hover:border-text-primary hover:bg-panel/80"
             >
               Talk to the AI Receptionist
