@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Phone, Zap } from "lucide-react";
-import { getPostHog } from "@/lib/posthog";
+import { captureEvent } from "@/lib/analytics";
 
 const DEMO_PHONE_TEL = "tel:+16233039061";
 
@@ -43,7 +43,7 @@ export default function EmberCallWidget() {
   const [replayCount, setReplayCount] = useState(0);
 
   const handleCallAction = () => {
-    getPostHog()?.capture("ember_widget_answered");
+    captureEvent("ember_widget_answered", { placement: "homepage_ember_widget" });
     setAnswered(true);
   };
 
@@ -53,7 +53,7 @@ export default function EmberCallWidget() {
   };
 
   const handleRealCtaClick = () => {
-    getPostHog()?.capture("ember_widget_real_cta_clicked");
+    captureEvent("demo_call_started", { placement: "homepage_ember_widget" });
   };
 
   return (

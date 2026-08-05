@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
+import { captureEvent } from "@/lib/analytics";
 
 export default function Hero() {
   const prefersReducedMotion = useReducedMotion();
@@ -54,8 +55,8 @@ export default function Hero() {
       <div className="mx-auto w-full max-w-6xl px-6 py-12 sm:py-16 lg:py-32">
         <motion.div variants={container} initial="hidden" animate="show">
           <motion.div variants={item} className="mb-6 flex items-center gap-3">
-            <span aria-hidden="true" className="h-px w-8 bg-gold" />
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
+            <span aria-hidden="true" className="h-px w-8 bg-text-muted/60" />
+            <span className="font-mono text-xs uppercase tracking-[0.2em] text-text-secondary">
               Digital Systems
             </span>
           </motion.div>
@@ -78,18 +79,30 @@ export default function Hero() {
           </motion.p>
 
           <motion.div variants={item} className="mt-8 flex flex-wrap items-center gap-4">
+            <a
+              href="#demo"
+              onClick={() =>
+                captureEvent("cta_clicked", {
+                  cta: "ai_receptionist_demo",
+                  placement: "hero",
+                })
+              }
+              className="rounded-btn bg-gradient-accent px-6 py-3 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
+            >
+              Talk to the AI Receptionist
+            </a>
             <Link
               href="/calculator"
-              className="rounded-btn bg-gradient-accent px-6 py-3 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
+              onClick={() =>
+                captureEvent("cta_clicked", {
+                  cta: "missed_call_calculator",
+                  placement: "hero",
+                })
+              }
+              className="rounded-btn border border-text-secondary/50 bg-bg/70 px-6 py-3 font-display text-sm font-semibold text-text-primary shadow-surface backdrop-blur-md transition-all duration-200 hover:scale-[1.02] hover:border-text-primary hover:bg-panel/80"
             >
               See What Missed Calls Cost You
             </Link>
-            <a
-              href="#demo"
-              className="rounded-btn border border-line px-6 py-3 font-mono text-sm text-text-primary backdrop-blur-sm transition-colors hover:border-gold hover:text-gold"
-            >
-              Try the AI Demo
-            </a>
           </motion.div>
         </motion.div>
       </div>

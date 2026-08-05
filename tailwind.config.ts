@@ -16,6 +16,7 @@ const config: Config = {
         coral: "#D38A34",
         highlight: "#F2C870",
         "text-primary": "#F7F6F3",
+        "text-secondary": "#CAC7C1",
         "text-muted": "#A8A8AC",
         "text-muted-dark": "#6B6B6F",
       },

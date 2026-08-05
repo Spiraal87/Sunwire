@@ -12,9 +12,9 @@ export default function PrivacyPage() {
     <>
       <Nav />
       <main className="mx-auto max-w-3xl px-6 py-16 sm:py-24">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-gold">Legal</p>
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-text-secondary">Legal</p>
         <h1 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">Privacy Policy</h1>
-        <p className="mt-2 font-mono text-xs text-text-muted-dark">Effective July 2026</p>
+        <p className="mt-2 font-mono text-xs text-text-muted-dark">Effective August 2026</p>
 
         <div className="mt-10 space-y-8 font-body text-text-muted">
           <p>
@@ -35,9 +35,17 @@ export default function PrivacyPage() {
               website or by any third-party service connected to it.
             </p>
             <p className="mt-3">
-              We don&apos;t currently use analytics, tracking pixels, or
-              advertising cookies on this site. If that changes in the
-              future, this policy will be updated to reflect it.
+              We use PostHog to understand how visitors use the site. It may
+              collect anonymous usage and technical information such as pages
+              viewed, links or buttons clicked, referring pages, browser and
+              device details, and approximate location. We don&apos;t use this
+              information for advertising or sell it to third parties.
+            </p>
+            <p className="mt-3">
+              PostHog uses browser local storage to keep anonymous visits
+              consistent. If session replay is enabled, it may record how a
+              visitor moves through and interacts with the site. Form input
+              values are masked before recording.
             </p>
           </section>
 
@@ -78,6 +86,12 @@ export default function PrivacyPage() {
               and request timing — for security and performance purposes. We
               don&apos;t have access to this data beyond standard hosting
               logs.
+            </p>
+            <p className="mt-3">
+              PostHog processes the website analytics described above on our
+              behalf. We use that information to understand site performance,
+              improve the calculator and navigation, and evaluate which
+              content is useful to visitors.
             </p>
           </section>
 

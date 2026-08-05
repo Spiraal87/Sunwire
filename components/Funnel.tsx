@@ -81,20 +81,30 @@ function Connector({ dim }: { dim: boolean }) {
 }
 
 function ScrollArrow({ direction, onClick }: { direction: "left" | "right"; onClick: () => void }) {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <button
       type="button"
       onClick={onClick}
       aria-label={direction === "left" ? "Scroll left" : "Scroll right"}
-      className={`absolute top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-panel-2/90 text-text-primary shadow-surface backdrop-blur-sm transition-colors hover:border-gold hover:text-gold sm:h-9 sm:w-9 ${
-        direction === "left" ? "left-1" : "right-1"
+      className={`absolute top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-highlight/80 bg-gold text-bg shadow-forge transition-all duration-200 hover:scale-105 hover:bg-highlight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-highlight focus-visible:ring-offset-2 focus-visible:ring-offset-panel active:scale-95 ${
+        direction === "left" ? "left-2" : "right-2"
       }`}
     >
-      <svg width="7" height="12" viewBox="0 0 7 12" fill="none" aria-hidden="true">
+      {!prefersReducedMotion && (
+        <motion.span
+          aria-hidden="true"
+          className="absolute inset-0 rounded-full border border-highlight/70"
+          animate={{ scale: [1, 1.22], opacity: [0.45, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, repeatDelay: 0.5, ease: "easeOut" }}
+        />
+      )}
+      <svg width="10" height="16" viewBox="0 0 7 12" fill="none" aria-hidden="true">
         <path
           d={direction === "left" ? "M6 1L1 6L6 11" : "M1 1L6 6L1 11"}
           stroke="currentColor"
-          strokeWidth="1.5"
+          strokeWidth="2.25"
           strokeLinecap="round"
           strokeLinejoin="round"
         />

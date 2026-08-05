@@ -19,7 +19,7 @@ export default function Footer() {
       <div className="grid grid-cols-1 gap-10 border-t border-line pt-12 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
           <Link href="/" className="flex items-center">
-            <img src="/images/sunforge_logo_full.svg" alt="Sunforge Digital" className="h-9 w-auto" />
+            <img src="/images/sunforge_logo_full.svg" alt="Sunforge Digital" className="h-12 w-auto sm:h-14" />
           </Link>
         </div>
 

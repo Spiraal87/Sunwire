@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
+import { captureEvent } from "@/lib/analytics";
 
 type Card = {
   id: string;
@@ -78,7 +79,7 @@ export default function Services() {
             }`}
           >
             <img src={card.icon} alt={card.iconAlt} width={80} height={80} className="h-12 w-12 sm:h-14 sm:w-14" />
-            <p className="mt-4 font-mono text-xs uppercase tracking-[0.15em] text-gold">
+            <p className="mt-4 font-mono text-xs uppercase tracking-[0.15em] text-text-secondary">
               {card.label}
             </p>
             <h3 className="mt-4 font-display text-xl font-semibold sm:text-2xl">
@@ -99,6 +100,12 @@ export default function Services() {
             {card.ctaHref && (
               <Link
                 href={card.ctaHref}
+                onClick={() =>
+                  captureEvent("cta_clicked", {
+                    cta: "missed_call_calculator",
+                    placement: "services",
+                  })
+                }
                 className="mt-6 inline-flex items-center gap-1.5 font-mono text-sm text-gold transition-colors hover:text-highlight"
               >
                 {card.ctaLabel} <span aria-hidden="true">→</span>

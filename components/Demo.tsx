@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import GlowBorder from "./GlowBorder";
+import { captureEvent } from "@/lib/analytics";
 
 const DEMO_PHONE_DISPLAY = "623-303-9061";
 const DEMO_PHONE_TEL = "tel:+16233039061";
@@ -16,13 +17,13 @@ const PULSE_SHADOW =
   "0 0 0 1px rgba(230,168,75,0.7), 0 0 55px 8px rgba(230,168,75,0.4), 0 0 110px 16px rgba(211,138,52,0.22)";
 
 // Sequence: beam extends down (0 - 0.7s) -> border draws in clockwise
-// (0.6 - 3.2s, overlapping the tail of the beam) -> outer glow powers on
-// (3.2 - 3.8s) -> once fully lit, the glow settles into a slow, subtle
+// (0.6 - 2.2s, overlapping the tail of the beam) -> outer glow powers on
+// (2.2 - 2.8s) -> once fully lit, the glow settles into a slow, subtle
 // infinite pulse. Keeps the "activation" feel of light traveling down from
 // the SignalGraphic divider above and switching this section on.
 const BEAM_DURATION = 0.7;
 const BORDER_DELAY = 0.6;
-const BORDER_DURATION = 2.6;
+const BORDER_DURATION = 1.6;
 const GLOW_DELAY = BORDER_DELAY + BORDER_DURATION;
 
 // TODO: drop in a real recorded call snippet once one exists, e.g.:
@@ -82,8 +83,8 @@ export default function Demo() {
         }}
         className="relative rounded-panel border border-transparent bg-gradient-panel p-8 text-center sm:p-14"
       >
-        <GlowBorder inView={inView} delay={BORDER_DELAY} />
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-gold">
+        <GlowBorder inView={inView} delay={BORDER_DELAY} duration={BORDER_DURATION} />
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-text-secondary">
           Hear It Yourself
         </p>
         <h2 className="mx-auto mt-4 max-w-xl font-display text-2xl font-semibold sm:text-3xl">
@@ -101,7 +102,7 @@ export default function Demo() {
                 aria-disabled="true"
                 className="cursor-not-allowed rounded-btn bg-gradient-accent px-8 py-4 font-display text-base font-semibold text-bg opacity-90"
               >
-                Call the Demo
+                Talk to the AI Receptionist
               </span>
               <span className="font-mono text-xs text-text-muted-dark">
                 Demo line coming soon
@@ -111,10 +112,13 @@ export default function Demo() {
             <>
               <a
                 href={DEMO_PHONE_TEL}
-                onClick={() => setRevealed(true)}
+                onClick={() => {
+                  setRevealed(true);
+                  captureEvent("demo_call_started", { placement: "homepage_demo" });
+                }}
                 className="rounded-btn bg-gradient-accent px-8 py-4 font-display text-base font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
               >
-                Call the Demo
+                Talk to the AI Receptionist
               </a>
               {revealed && (
                 <motion.a
