@@ -21,7 +21,7 @@ export default function ROI() {
 
   return (
     <section className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
-      <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+      <div className="mb-14 flex flex-wrap items-end justify-between gap-4">
         <h2 className="font-display text-2xl font-semibold sm:text-3xl">
           Small Improvements. Big Results.
         </h2>
@@ -42,7 +42,7 @@ export default function ROI() {
               ease: "easeOut",
               delay: i * 0.1,
             }}
-            className="rounded-panel border border-line bg-gradient-panel p-8 shadow-surface"
+            className="rounded-panel border border-line bg-gradient-panel p-8 shadow-surface sm:p-10"
           >
             <div className="flex items-center gap-3">
               <img src={example.icon} alt={example.iconAlt} width={80} height={80} className="h-8 w-8 sm:h-9 sm:w-9" />
@@ -55,7 +55,7 @@ export default function ROI() {
         ))}
       </div>
 
-      <p className="mt-6 font-mono text-xs text-text-muted-dark">
+      <p className="mt-10 font-mono text-xs text-text-muted-dark">
         Illustrative examples only — not a guarantee of results.
       </p>
     </section>

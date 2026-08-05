@@ -7,7 +7,8 @@ export default function Contact() {
   const distance = prefersReducedMotion ? 0 : 20;
 
   return (
-    <section id="contact" className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
+    <section id="contact" className="bg-panel-2-textured px-6 py-16 sm:py-24">
+      <div className="mx-auto max-w-6xl">
       <motion.div
         initial={{ opacity: 0, y: distance }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -45,6 +46,7 @@ export default function Contact() {
           </div>
         </div>
       </motion.div>
+      </div>
     </section>
   );
 }

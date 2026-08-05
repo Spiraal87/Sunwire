@@ -178,7 +178,8 @@ export default function Funnel() {
   }
 
   return (
-    <section className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
+    <section className="bg-panel-2-textured px-6 py-16 sm:py-24">
+      <div className="mx-auto max-w-6xl">
       <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
         <h2 className="font-display text-2xl font-semibold sm:text-3xl">
           Where Businesses Lose Customers
@@ -217,6 +218,7 @@ export default function Funnel() {
           receptionist that never lets a call go unanswered.
         </p>
       </motion.div>
+      </div>
     </section>
   );
 }

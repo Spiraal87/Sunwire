@@ -8,16 +8,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "#0B0E17",
-        panel: "#171D29",
-        "panel-2": "#111722",
+        bg: "#08080a",
+        panel: "#141210",
+        "panel-2": "#0d0b09",
         line: "rgba(247,246,243,0.07)",
         gold: "#E6A84B",
         coral: "#D38A34",
         highlight: "#F2C870",
         "text-primary": "#F7F6F3",
-        "text-muted": "#9CA6B8",
-        "text-muted-dark": "#6B7385",
+        "text-muted": "#A8A8AC",
+        "text-muted-dark": "#6B6B6F",
       },
       fontFamily: {
         display: ["var(--font-space-grotesk)", "sans-serif"],
@@ -26,7 +26,7 @@ const config: Config = {
       },
       backgroundImage: {
         "gradient-accent": "linear-gradient(135deg, #F2C870 0%, #E6A84B 45%, #D38A34 100%)",
-        "gradient-panel": "linear-gradient(160deg, #171D29, #111722)",
+        "gradient-panel": "linear-gradient(160deg, #141210, #0d0b09)",
       },
       boxShadow: {
         surface: "0 24px 48px -32px rgba(0,0,0,0.55)",

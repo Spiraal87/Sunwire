@@ -54,16 +54,17 @@ export default function Services() {
   const distance = prefersReducedMotion ? 0 : 20;
 
   return (
-    <section id="services" className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
-      <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
-        <h2 className="font-display text-2xl font-semibold sm:text-3xl">How we help</h2>
-        <span className="font-mono text-xs uppercase tracking-[0.15em] text-text-muted">
-          Two ways we drive growth
-        </span>
-      </div>
+    <section id="services" className="bg-panel-2-textured px-6 py-16 sm:py-24">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+          <h2 className="font-display text-2xl font-semibold sm:text-3xl">How we help</h2>
+          <span className="font-mono text-xs uppercase tracking-[0.15em] text-text-muted">
+            Two ways we drive growth
+          </span>
+        </div>
 
-      <div className="grid grid-cols-1 overflow-hidden rounded-panel border border-line shadow-surface md:grid-cols-2">
-        {cards.map((card, i) => (
+        <div className="grid grid-cols-1 overflow-hidden rounded-panel border border-line shadow-surface md:grid-cols-2">
+          {cards.map((card, i) => (
           <motion.div
             key={card.label}
             id={card.id}
@@ -105,6 +106,7 @@ export default function Services() {
             )}
           </motion.div>
         ))}
+        </div>
       </div>
     </section>
   );

@@ -40,13 +40,13 @@ export default function Hero() {
           className="object-cover brightness-110"
           style={{ objectPosition: "68% center" }}
         />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(11,14,23,0.94)_0%,rgba(11,14,23,0.78)_28%,rgba(11,14,23,0.28)_52%,rgba(11,14,23,0.04)_75%,rgba(11,14,23,0.15)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(8,8,10,0.94)_0%,rgba(8,8,10,0.78)_28%,rgba(8,8,10,0.28)_52%,rgba(8,8,10,0.04)_75%,rgba(8,8,10,0.15)_100%)]" />
       </div>
       <div
         className="absolute inset-x-0 -top-px bottom-[-2px] -z-10"
         style={{
           backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\"), linear-gradient(to bottom, rgba(11,14,23,0.7) 0%, rgba(11,14,23,0.12) 30%, rgba(11,14,23,0.14) 42%, rgba(11,14,23,0.22) 52%, rgba(11,14,23,0.35) 61%, rgba(11,14,23,0.52) 69%, rgba(11,14,23,0.68) 76%, rgba(11,14,23,0.82) 82%, rgba(11,14,23,0.92) 87%, rgba(11,14,23,0.98) 92%, rgba(11,14,23,1) 97%)",
+            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\"), linear-gradient(to bottom, rgba(8,8,10,0.7) 0%, rgba(8,8,10,0.12) 30%, rgba(8,8,10,0.14) 42%, rgba(8,8,10,0.22) 52%, rgba(8,8,10,0.35) 61%, rgba(8,8,10,0.52) 69%, rgba(8,8,10,0.68) 76%, rgba(8,8,10,0.82) 82%, rgba(8,8,10,0.92) 87%, rgba(8,8,10,0.98) 92%, rgba(8,8,10,1) 97%)",
         }}
       />
       <div className="absolute inset-0 -z-10 bg-bg/55 lg:hidden" />

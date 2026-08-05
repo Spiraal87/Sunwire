@@ -1,3 +1,9 @@
+const facts = [
+  { label: "BASED IN", value: "Phoenix, Arizona" },
+  { label: "FOCUS", value: "Local businesses across the Valley" },
+  { label: "APPROACH", value: "Understand the business, then build" },
+];
+
 export default function About() {
   return (
     <section id="about" className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
@@ -28,6 +34,24 @@ export default function About() {
             systems that actually help: a site that earns trust, and an AI receptionist that keeps
             the phone from becoming a leak.
           </p>
+        </div>
+
+        <div className="mt-8 border-t border-line pt-8">
+          <p className="max-w-2xl font-body text-base text-text-primary sm:text-lg">
+            Run by Christopher Johnson &mdash; a Phoenix-based developer helping local businesses
+            grow with better websites and AI receptionists.
+          </p>
+
+          <dl className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-3 sm:gap-6">
+            {facts.map((fact) => (
+              <div key={fact.label}>
+                <dt className="font-mono text-[10px] uppercase tracking-[0.15em] text-gold">
+                  {fact.label}
+                </dt>
+                <dd className="mt-1 font-body text-sm text-text-primary">{fact.value}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </div>
     </section>

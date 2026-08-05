@@ -42,19 +42,31 @@ export default function SignalGraphic({
   }, []);
 
   const width = 1200;
-  const height = 260;
+  const height = 340;
   const centerX = width / 2;
   const horizonY = 170;
 
   const rings = RADII.slice(0, Math.min(Math.max(litCount, 1), RADII.length));
 
   return (
-    <svg
-      viewBox={`0 0 ${width} ${height}`}
-      className="h-auto w-full"
-      role="img"
-      aria-label="Decorative graphic of a forged molten horizon with glowing arcs, flanked by circuit-like signal lines"
-    >
+    <div className="relative aspect-[1200/340] w-full overflow-hidden">
+      <img
+        src="/images/sunforge-scroller.png"
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute left-1/2 w-[54.5%] max-w-none -translate-x-1/2 select-none"
+        style={{
+          top: "-10.6%",
+          WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 42%, transparent 55%)",
+          maskImage: "linear-gradient(to bottom, black 0%, black 42%, transparent 55%)",
+        }}
+      />
+      <svg
+        viewBox={`0 0 ${width} ${height}`}
+        className="absolute inset-0 h-full w-full"
+        role="img"
+        aria-label="Decorative graphic of a forged molten horizon with glowing arcs, flanked by circuit-like signal lines"
+      >
       <defs>
         <linearGradient id="signalGradient" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#F2C870" />
@@ -85,7 +97,7 @@ export default function SignalGraphic({
       <motion.path
         d={jaggedPath(0, centerX - 140, horizonY, 0.9)}
         fill="none"
-        stroke="#9CA6B8"
+        stroke="#A8A8AC"
         strokeWidth={1.5}
         style={{ strokeDasharray: reducedMotion ? undefined : "8 5" }}
         initial={false}
@@ -103,7 +115,7 @@ export default function SignalGraphic({
       <motion.path
         d={jaggedPath(centerX + 140, width, horizonY, 1.1)}
         fill="none"
-        stroke="#9CA6B8"
+        stroke="#A8A8AC"
         strokeWidth={1.5}
         style={{ strokeDasharray: reducedMotion ? undefined : "8 5" }}
         initial={false}
@@ -217,6 +229,7 @@ export default function SignalGraphic({
             }
           />
         ))}
-    </svg>
+      </svg>
+    </div>
   );
 }

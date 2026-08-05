@@ -684,7 +684,7 @@ export default function CalculatorClient() {
           height: 22px;
           border-radius: 50%;
           background: radial-gradient(circle at 35% 30%, var(--highlight), var(--gold) 55%, var(--coral) 100%);
-          border: 2px solid rgba(11, 14, 23, 0.55);
+          border: 2px solid rgba(8, 8, 10, 0.55);
           cursor: pointer;
           box-shadow:
             0 0 0 3px rgba(230, 168, 75, 0.18),
@@ -707,7 +707,7 @@ export default function CalculatorClient() {
           height: 22px;
           border-radius: 50%;
           background: radial-gradient(circle at 35% 30%, var(--highlight), var(--gold) 55%, var(--coral) 100%);
-          border: 2px solid rgba(11, 14, 23, 0.55);
+          border: 2px solid rgba(8, 8, 10, 0.55);
           cursor: pointer;
           box-shadow:
             0 0 0 3px rgba(230, 168, 75, 0.18),

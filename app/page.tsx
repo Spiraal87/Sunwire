@@ -1,11 +1,10 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
-import AboutOperator from "@/components/AboutOperator";
 import HowItWorks from "@/components/HowItWorks";
 import Funnel from "@/components/Funnel";
 import ROI from "@/components/ROI";
-import Demo from "@/components/Demo";
+import EmberCallWidget from "@/components/EmberCallWidget";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import About from "@/components/About";
@@ -18,20 +17,19 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
-        <SectionDivider litCount={1} />
+        <SectionDivider litCount={1} tintSide="bottom" />
         <Services />
-        <SectionDivider litCount={2} />
+        <SectionDivider litCount={2} tintSide="top" />
         <HowItWorks />
-        <SectionDivider litCount={3} />
+        <SectionDivider litCount={3} tintSide="bottom" />
         <Funnel />
-        <SectionDivider litCount={4} />
+        <SectionDivider litCount={4} tintSide="top" />
         <ROI />
-        <SectionDivider litCount={5} />
-        <Demo />
+        <SectionDivider litCount={5} tintSide="bottom" />
+        <EmberCallWidget />
         <FAQ />
         <Contact />
         <About />
-        <AboutOperator />
       </main>
       <Footer />
     </>

@@ -10,16 +10,16 @@
 */
 
 :root {
-  --bg: #0b0e17;
-  --panel: #171d29;
-  --panel-2: #111722;
+  --bg: #08080a;
+  --panel: #141210;
+  --panel-2: #0d0b09;
   --line: rgba(247, 246, 243, 0.07);
   --gold: #e6a84b;
   --coral: #d38a34;
   --highlight: #f2c870;
   --text-primary: #f7f6f3;
-  --text-muted: #9ca6b8;
-  --text-muted-dark: #6b7385;
+  --text-muted: #a8a8ac;
+  --text-muted-dark: #6b6b6f;
 }
 
 * {
@@ -63,4 +63,25 @@ button:focus-visible {
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+.bg-panel-2-textured {
+  background-color: var(--panel-2);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@keyframes ember-ring-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+.ember-ring-pulse {
+  animation: ember-ring-pulse 2s ease-out infinite;
+  will-change: transform, opacity;
 }
