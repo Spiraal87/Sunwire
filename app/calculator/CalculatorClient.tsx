@@ -241,7 +241,7 @@ export default function CalculatorClient() {
               className="flex w-full items-center justify-between gap-4 p-5 text-left md:p-8"
             >
               <span className="flex min-w-0 items-start gap-3">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-text-muted/40 bg-panel-2 font-mono text-xs font-bold text-text-secondary">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-gold/60 bg-gold/10 font-mono text-xs font-bold text-gold">
                   1
                 </span>
                 <span className="min-w-0">
@@ -251,7 +251,7 @@ export default function CalculatorClient() {
                   <span className="mt-1 block font-body text-xs font-medium text-text-secondary">
                     2 sliders + customer source · {openSection === "calls" ? "Open" : "Tap to adjust"}
                   </span>
-                  <span className="mt-1 block font-mono text-[11px] text-text-secondary">
+                  <span className="mt-1 block font-mono text-[11px] text-gold">
                     {calls} calls/mo · {miss}% unanswered · {Math.round(locations)} {locations === 1 ? "location" : "locations"}
                   </span>
                 </span>
@@ -356,7 +356,7 @@ export default function CalculatorClient() {
               className="flex w-full items-center justify-between gap-4 p-5 text-left md:p-8"
             >
               <span className="flex min-w-0 items-start gap-3">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-text-muted/40 bg-panel-2 font-mono text-xs font-bold text-text-secondary">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-gold/60 bg-gold/10 font-mono text-xs font-bold text-gold">
                   2
                 </span>
                 <span className="min-w-0">
@@ -366,7 +366,7 @@ export default function CalculatorClient() {
                   <span className="mt-1 block font-body text-xs font-medium text-text-secondary">
                     2 sliders · {openSection === "value" ? "Open" : "Tap to adjust"}
                   </span>
-                  <span className="mt-1 block font-mono text-[11px] text-text-secondary">
+                  <span className="mt-1 block font-mono text-[11px] text-gold">
                     {fmt(value)} per job · {capacity}% available capacity
                   </span>
                 </span>
@@ -434,7 +434,7 @@ export default function CalculatorClient() {
               className="flex w-full items-center justify-between gap-4 p-5 text-left md:p-8"
             >
               <span className="flex min-w-0 items-start gap-3">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-text-muted/40 bg-panel-2 font-mono text-xs font-bold text-text-secondary">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-gold/60 bg-gold/10 font-mono text-xs font-bold text-gold">
                   3
                 </span>
                 <span className="min-w-0">
@@ -444,7 +444,7 @@ export default function CalculatorClient() {
                   <span className="mt-1 block font-body text-xs font-medium text-text-secondary">
                     1 slider · {openSection === "time" ? "Open" : "Tap to adjust"}
                   </span>
-                  <span className="mt-1 block font-mono text-[11px] text-text-secondary">
+                  <span className="mt-1 block font-mono text-[11px] text-gold">
                     {routineCallHours} hrs/week · {monthlyRoutineCallHours} hrs/month
                   </span>
                 </span>
@@ -486,6 +486,27 @@ export default function CalculatorClient() {
               </div>
             </div>
           </section>
+        </div>
+
+        <div className="actions mt-4 flex flex-wrap gap-3 print:hidden">
+          <button
+            onClick={() => {
+              captureEvent("calculator_printed", {
+                business_type: activeVertical,
+                estimated_monthly_revenue_leak: Math.round(monthly),
+              });
+              window.print();
+            }}
+            className="rounded-btn border border-text-secondary/50 bg-panel-2 px-6 py-3 font-display text-sm font-semibold text-text-primary shadow-surface transition-all duration-200 hover:scale-[1.02] hover:border-text-primary hover:bg-panel"
+          >
+            Print this page
+          </button>
+          <button
+            onClick={handleReset}
+            className="rounded-btn border border-line px-6 py-3 font-mono text-sm text-text-primary transition-colors hover:border-gold hover:text-gold"
+          >
+            Reset to defaults
+          </button>
         </div>
 
         <div
@@ -586,7 +607,7 @@ export default function CalculatorClient() {
               }}
               className="rounded-btn bg-gradient-accent px-6 py-3 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
             >
-              Call the AI demo
+              Talk to the AI Receptionist
             </a>
             <a
               href="mailto:cdjohnsonzero@gmail.com?subject=My%20missed-call%20numbers"
@@ -598,7 +619,7 @@ export default function CalculatorClient() {
               }
               className="rounded-btn border border-line px-6 py-3 font-mono text-sm text-text-primary transition-colors hover:border-gold hover:text-gold"
             >
-              Contact us
+              Get in touch
             </a>
           </div>
           {demoNumberRevealed && (
@@ -729,27 +750,6 @@ export default function CalculatorClient() {
               </p>
             </div>
           </details>
-        </div>
-
-        <div className="actions mt-8 flex flex-wrap gap-3 print:hidden">
-          <button
-            onClick={() => {
-              captureEvent("calculator_printed", {
-                business_type: activeVertical,
-                estimated_monthly_revenue_leak: Math.round(monthly),
-              });
-              window.print();
-            }}
-            className="rounded-btn border border-text-secondary/50 bg-panel-2 px-6 py-3 font-display text-sm font-semibold text-text-primary shadow-surface transition-all duration-200 hover:scale-[1.02] hover:border-text-primary hover:bg-panel"
-          >
-            Print this page
-          </button>
-          <button
-            onClick={handleReset}
-            className="rounded-btn border border-line px-6 py-3 font-mono text-sm text-text-primary transition-colors hover:border-gold hover:text-gold"
-          >
-            Reset to defaults
-          </button>
         </div>
 
         <p className="mt-10 font-mono text-xs text-text-muted-dark">

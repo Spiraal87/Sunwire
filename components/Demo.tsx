@@ -17,13 +17,13 @@ const PULSE_SHADOW =
   "0 0 0 1px rgba(230,168,75,0.7), 0 0 55px 8px rgba(230,168,75,0.4), 0 0 110px 16px rgba(211,138,52,0.22)";
 
 // Sequence: beam extends down (0 - 0.7s) -> border draws in clockwise
-// (0.6 - 3.2s, overlapping the tail of the beam) -> outer glow powers on
-// (3.2 - 3.8s) -> once fully lit, the glow settles into a slow, subtle
+// (0.6 - 2.2s, overlapping the tail of the beam) -> outer glow powers on
+// (2.2 - 2.8s) -> once fully lit, the glow settles into a slow, subtle
 // infinite pulse. Keeps the "activation" feel of light traveling down from
 // the SignalGraphic divider above and switching this section on.
 const BEAM_DURATION = 0.7;
 const BORDER_DELAY = 0.6;
-const BORDER_DURATION = 2.6;
+const BORDER_DURATION = 1.6;
 const GLOW_DELAY = BORDER_DELAY + BORDER_DURATION;
 
 // TODO: drop in a real recorded call snippet once one exists, e.g.:
@@ -83,7 +83,7 @@ export default function Demo() {
         }}
         className="relative rounded-panel border border-transparent bg-gradient-panel p-8 text-center sm:p-14"
       >
-        <GlowBorder inView={inView} delay={BORDER_DELAY} />
+        <GlowBorder inView={inView} delay={BORDER_DELAY} duration={BORDER_DURATION} />
         <p className="font-mono text-xs uppercase tracking-[0.2em] text-text-secondary">
           Hear It Yourself
         </p>

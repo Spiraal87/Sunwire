@@ -18,7 +18,15 @@ function roundedRectPath(w: number, h: number, r: number) {
     L ${w / 2} 0`;
 }
 
-export default function GlowBorder({ inView, delay = 0 }: { inView: boolean; delay?: number }) {
+export default function GlowBorder({
+  inView,
+  delay = 0,
+  duration = 2.6,
+}: {
+  inView: boolean;
+  delay?: number;
+  duration?: number;
+}) {
   const prefersReducedMotion = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ w: 0, h: 0 });
@@ -50,7 +58,7 @@ export default function GlowBorder({ inView, delay = 0 }: { inView: boolean; del
     transition:
       prefersReducedMotion || !inView
         ? { duration: 0 }
-        : { duration: 2.6, delay, ease: "easeInOut" },
+        : { duration, delay, ease: "easeInOut" },
     style: { strokeDasharray: perimeter },
   };
 

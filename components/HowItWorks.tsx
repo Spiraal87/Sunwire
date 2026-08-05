@@ -159,7 +159,7 @@ export default function HowItWorks() {
                   <motion.span
                     aria-hidden="true"
                     variants={badgeVariants}
-                    className="absolute left-0 top-0 flex h-5 w-5 items-center justify-center rounded-full border border-text-muted/40 bg-panel-2 font-mono text-[10px] font-semibold text-text-secondary"
+                    className="absolute left-0 top-0 flex h-5 w-5 items-center justify-center rounded-full border border-gold/60 bg-gold/10 font-mono text-[10px] font-semibold text-gold"
                   >
                     {i + 1}
                   </motion.span>
@@ -168,7 +168,7 @@ export default function HowItWorks() {
                     <motion.span
                       aria-hidden="true"
                       variants={rippleVariants}
-                      className="absolute left-0 top-0 h-5 w-5 rounded-full border border-text-muted/40"
+                      className="absolute left-0 top-0 h-5 w-5 rounded-full border border-gold/40"
                     />
                   )}
 

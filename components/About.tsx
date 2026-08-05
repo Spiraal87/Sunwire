@@ -15,18 +15,17 @@ export default function About() {
           className="h-14 w-14 sm:h-16 sm:w-16"
         />
         <h3 className="mt-5 max-w-2xl font-display text-2xl font-semibold text-text-primary sm:text-3xl">
-          Forged in the heat of the sun.
+          Forged into something useful.
         </h3>
         <div className="mt-4 max-w-3xl space-y-4 font-body text-text-muted">
           <p>
-            Sunforge is two ideas locked together as one mechanism: the sun as the source of
-            heat, and the forge as the place where raw material gets shaped into something useful.
+            The name Sunforge combines two ideas: the energy of the sun and the craft of shaping
+            raw material into something useful, durable, and built to work.
           </p>
           <p>
-            That&apos;s the whole point of the work here. Take the pressure, noise, and missed
-            opportunities a local business deals with every day, then turn that energy into
-            systems that actually help: a site that earns trust, and an AI receptionist that keeps
-            the phone from becoming a leak.
+            That same thinking guides what we build for local businesses—practical digital systems
+            that turn missed calls, repetitive work, and an underperforming website into more
+            booked jobs, more time, and a business that runs more smoothly.
           </p>
         </div>
       </div>
