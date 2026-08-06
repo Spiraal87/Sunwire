@@ -17,6 +17,16 @@ function jaggedPath(startX: number, endX: number, baseY: number, seed: number) {
 }
 
 const RADII = [42, 60, 78, 96, 114, 132];
+const RING_DRAW_DURATION = 1.2;
+const RING_BASE_DELAY = 0.3;
+const RING_STAGGER = 0.15;
+const GLOW_STAGES = [
+  { rx: 185, ry: 60, opacity: 0.5 },
+  { rx: 230, ry: 72, opacity: 0.62 },
+  { rx: 280, ry: 88, opacity: 0.74 },
+  { rx: 340, ry: 108, opacity: 0.87 },
+  { rx: 420, ry: 135, opacity: 1 },
+];
 const EMBERS = [
   { x: -14, delay: 0 },
   { x: 10, delay: 1.1 },
@@ -46,7 +56,10 @@ export default function SignalGraphic({
   const centerX = width / 2;
   const horizonY = 170;
 
-  const rings = RADII.slice(0, Math.min(Math.max(litCount, 1), RADII.length));
+  const normalizedLitCount = Math.min(Math.max(litCount, 1), RADII.length);
+  const rings = RADII.slice(0, normalizedLitCount);
+  const glow = GLOW_STAGES[Math.min(normalizedLitCount, GLOW_STAGES.length) - 1];
+  const glareRevealDuration = RING_DRAW_DURATION + (rings.length - 1) * RING_STAGGER;
 
   return (
     <div className="relative aspect-[1200/340] w-full overflow-hidden">
@@ -73,24 +86,94 @@ export default function SignalGraphic({
           <stop offset="50%" stopColor="#E6A84B" />
           <stop offset="100%" stopColor="#D38A34" />
         </linearGradient>
-        <radialGradient id="coreGlow" cx="50%" cy="100%" r="65%">
-          <stop offset="0%" stopColor="#F2C870" stopOpacity="0.5" />
-          <stop offset="55%" stopColor="#D38A34" stopOpacity="0.14" />
+        <radialGradient id="coreGlow" cx="50%" cy="50%" r="75%">
+          <stop offset="0%" stopColor="#F2C870" stopOpacity="0.48" />
+          <stop offset="38%" stopColor="#E6A84B" stopOpacity="0.22" />
+          <stop offset="72%" stopColor="#D38A34" stopOpacity="0.07" />
           <stop offset="100%" stopColor="#D38A34" stopOpacity="0" />
         </radialGradient>
+        <linearGradient id="horizonFade" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#F7F6F3" stopOpacity="0.14" />
+          <stop offset="36%" stopColor="#F7F6F3" stopOpacity="0.14" />
+          <stop offset="47%" stopColor="#F7F6F3" stopOpacity="0.03" />
+          <stop offset="50%" stopColor="#F7F6F3" stopOpacity="0" />
+          <stop offset="53%" stopColor="#F7F6F3" stopOpacity="0.03" />
+          <stop offset="64%" stopColor="#F7F6F3" stopOpacity="0.14" />
+          <stop offset="100%" stopColor="#F7F6F3" stopOpacity="0.14" />
+        </linearGradient>
+        <linearGradient
+          id="lowerGlareFade"
+          x1={0}
+          y1={horizonY}
+          x2={0}
+          y2={horizonY + 36}
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0%" stopColor="#fff" stopOpacity="0" />
+          <stop offset="35%" stopColor="#fff" stopOpacity="0.55" />
+          <stop offset="100%" stopColor="#fff" stopOpacity="1" />
+        </linearGradient>
+        <mask
+          id="lowerGlareMask"
+          maskUnits="userSpaceOnUse"
+          x={0}
+          y={horizonY}
+          width={width}
+          height={height - horizonY}
+        >
+          <rect
+            x={0}
+            y={horizonY}
+            width={width}
+            height={height - horizonY}
+            fill="url(#lowerGlareFade)"
+          />
+        </mask>
+        <filter id="glareBlur" x="-25%" y="-45%" width="150%" height="190%">
+          <feGaussianBlur stdDeviation="10" />
+        </filter>
         <filter id="moltenGlow" x="-60%" y="-60%" width="220%" height="220%">
           <feGaussianBlur stdDeviation="5" />
         </filter>
       </defs>
 
-      <ellipse cx={centerX} cy={horizonY} rx={220} ry={90} fill="url(#coreGlow)" />
+      <motion.ellipse
+        cx={centerX}
+        cy={horizonY}
+        rx={glow.rx}
+        ry={glow.ry}
+        fill="url(#coreGlow)"
+        filter="url(#glareBlur)"
+        mask="url(#lowerGlareMask)"
+        initial={
+          reducedMotion
+            ? false
+            : { rx: glow.rx * 0.3, ry: glow.ry * 0.3, opacity: 0 }
+        }
+        animate={
+          reducedMotion
+            ? { rx: glow.rx, ry: glow.ry, opacity: glow.opacity }
+            : inView
+              ? { rx: glow.rx, ry: glow.ry, opacity: glow.opacity }
+              : { rx: glow.rx * 0.3, ry: glow.ry * 0.3, opacity: 0 }
+        }
+        transition={
+          reducedMotion || !inView
+            ? { duration: 0 }
+            : {
+                duration: glareRevealDuration,
+                delay: RING_BASE_DELAY,
+                ease: "easeInOut",
+              }
+        }
+      />
 
       <line
         x1={0}
         y1={horizonY}
         x2={width}
         y2={horizonY}
-        stroke="rgba(247,246,243,0.14)"
+        stroke="url(#horizonFade)"
         strokeWidth={1}
       />
 
@@ -156,7 +239,11 @@ export default function SignalGraphic({
               transition={
                 reducedMotion || !inView
                   ? { duration: 0 }
-                  : { duration: 1.2, delay: 0.3 + i * 0.15, ease: "easeInOut" }
+                  : {
+                      duration: RING_DRAW_DURATION,
+                      delay: RING_BASE_DELAY + i * RING_STAGGER,
+                      ease: "easeInOut",
+                    }
               }
               style={{ strokeDasharray: circumference }}
             />
@@ -189,13 +276,17 @@ export default function SignalGraphic({
               reducedMotion || !inView
                 ? { duration: 0 }
                 : {
-                    strokeDashoffset: { duration: 1.2, delay: 0.3 + i * 0.15, ease: "easeInOut" },
+                    strokeDashoffset: {
+                      duration: RING_DRAW_DURATION,
+                      delay: RING_BASE_DELAY + i * RING_STAGGER,
+                      ease: "easeInOut",
+                    },
                     opacity: {
                       duration: 2.4,
                       repeat: Infinity,
                       repeatType: "mirror",
                       ease: "easeInOut",
-                      delay: 1.5 + i * 0.15,
+                      delay: RING_BASE_DELAY + RING_DRAW_DURATION + i * RING_STAGGER,
                     },
                   }
             }
