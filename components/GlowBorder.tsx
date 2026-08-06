@@ -22,10 +22,12 @@ export default function GlowBorder({
   inView,
   delay = 0,
   duration = 2.6,
+  radius = RADIUS,
 }: {
   inView: boolean;
   delay?: number;
   duration?: number;
+  radius?: number;
 }) {
   const prefersReducedMotion = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
@@ -43,7 +45,7 @@ export default function GlowBorder({
   }, []);
 
   const { w, h } = size;
-  const r = Math.min(RADIUS, w / 2, h / 2);
+  const r = Math.min(radius, w / 2, h / 2);
   const perimeter = w && h ? 2 * (w - 2 * r) + 2 * (h - 2 * r) + 2 * Math.PI * r : 0;
   const path = roundedRectPath(w, h, r);
 

@@ -1,12 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, useInView, useReducedMotion } from "framer-motion";
 import { Phone, Zap } from "lucide-react";
 import { captureEvent } from "@/lib/analytics";
+import GlowBorder from "./GlowBorder";
 
 const DEMO_PHONE_TEL = "tel:+16233039061";
+const CARD_BORDER_DELAY = 0.35;
+const CARD_BORDER_DURATION = 1.4;
+const CARD_SURFACE_SHADOW = "0 24px 48px -32px rgba(0,0,0,0.55)";
+const CARD_GLOW_SHADOW =
+  "0 0 0 1px rgba(230,168,75,0.24), 0 0 38px 3px rgba(230,168,75,0.2), 0 22px 52px -28px rgba(0,0,0,0.7)";
 
 function CallTimerBadge({ reducedMotion }: { reducedMotion: boolean | null }) {
   const [seconds, setSeconds] = useState(3);
@@ -38,6 +44,8 @@ function CallTimerBadge({ reducedMotion }: { reducedMotion: boolean | null }) {
 
 export default function EmberCallWidget() {
   const prefersReducedMotion = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  const inView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   const [answered, setAnswered] = useState(false);
   const [replayCount, setReplayCount] = useState(0);
@@ -57,8 +65,12 @@ export default function EmberCallWidget() {
   };
 
   return (
-    <section id="demo" className="relative bg-panel-2-textured px-6 py-16 sm:py-24">
-      <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
+    <section
+      ref={sectionRef}
+      id="demo"
+      className="relative overflow-hidden bg-panel-2-textured px-6 py-16 sm:py-24"
+    >
+      <div className="relative mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
         {/* LEFT: Copy */}
         <div>
           <h1 className="mb-6 font-display text-4xl font-bold leading-[1.12] tracking-tight text-text-primary sm:text-5xl">
@@ -106,7 +118,22 @@ export default function EmberCallWidget() {
               )}
             </AnimatePresence>
 
-            <div className="rounded-3xl border border-line bg-gradient-panel p-8 shadow-surface">
+            <motion.div
+              initial={{ boxShadow: CARD_SURFACE_SHADOW }}
+              animate={{ boxShadow: inView ? CARD_GLOW_SHADOW : CARD_SURFACE_SHADOW }}
+              transition={{
+                duration: prefersReducedMotion ? 0 : 0.6,
+                delay: prefersReducedMotion ? 0 : CARD_BORDER_DELAY + CARD_BORDER_DURATION,
+                ease: "easeOut",
+              }}
+              className="relative rounded-3xl border border-transparent bg-gradient-panel p-8"
+            >
+              <GlowBorder
+                inView={inView}
+                delay={CARD_BORDER_DELAY}
+                duration={CARD_BORDER_DURATION}
+                radius={24}
+              />
               <div className="mb-6 flex justify-center">
                 <div className="relative flex h-24 w-24 items-center justify-center">
                   {!answered && !prefersReducedMotion && (
@@ -199,7 +226,7 @@ export default function EmberCallWidget() {
                   </motion.div>
                 </motion.div>
               )}
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
