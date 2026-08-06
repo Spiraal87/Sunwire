@@ -244,7 +244,7 @@ export default function CalculatorClient() {
           them to match your actual numbers.
         </p>
 
-        <div className="card mt-3 overflow-hidden rounded-panel border border-line bg-gradient-panel shadow-surface">
+        <div className="card mt-3 overflow-hidden rounded-panel border border-line bg-[linear-gradient(160deg,#1d1713,#17120f)] shadow-surface">
           <section>
             <button
               type="button"
@@ -296,7 +296,7 @@ export default function CalculatorClient() {
                       onClick={() => setCustomerSource(option.key)}
                       className={`flex-1 rounded-full border px-3 py-2 text-center font-body text-xs font-semibold transition-colors sm:px-4 sm:text-sm ${
                         customerSource === option.key
-                          ? "border-gold/60 bg-panel-2 text-text-primary"
+                          ? "border-gold/60 bg-[#191410] text-text-primary"
                           : "border-line bg-transparent text-text-muted hover:border-gold/40"
                       }`}
                     >
@@ -336,6 +336,9 @@ export default function CalculatorClient() {
                   className="calc-slider mt-2"
                 />
                 <div className="hint mt-1.5 font-mono text-xs leading-relaxed text-text-secondary/85">{d.hintMiss}</div>
+                <p className="mt-1.5 font-body text-xs leading-relaxed text-text-muted-dark">
+                  Includes after-hours calls when the business is closed, not just calls missed during open hours.
+                </p>
               </div>
 
               <div className="field mt-6">
@@ -349,7 +352,7 @@ export default function CalculatorClient() {
                     max={50}
                     value={locationsInput}
                     onChange={(e) => setLocationsInput(e.target.value)}
-                    className="w-20 rounded-btn border border-line bg-panel-2 px-3 py-2 font-mono text-sm text-text-primary focus:border-gold focus:outline-none"
+                    className="w-20 rounded-btn border border-line bg-[#191410] px-3 py-2 font-mono text-sm text-text-primary focus:border-gold focus:outline-none"
                   />
                 </div>
                 <p className="mt-1.5 font-mono text-xs leading-relaxed text-text-secondary/85">
@@ -524,7 +527,7 @@ export default function CalculatorClient() {
 
         <div
           ref={leakCardRef}
-          className="leak-visual relative z-10 mt-6 rounded-panel border border-line bg-gradient-panel p-6 shadow-surface sm:p-8"
+          className="leak-visual relative z-10 mt-6 rounded-panel border border-line bg-[linear-gradient(160deg,#1f1814,#18120f)] p-6 shadow-surface sm:p-8"
         >
           <div className="mb-5 flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-highlight">
             <span aria-hidden="true" className="h-2 w-2 rounded-full bg-highlight" />
@@ -605,7 +608,7 @@ export default function CalculatorClient() {
           </div>
         </div>
 
-        <div className="demo-cta relative z-0 mt-6 rounded-panel border border-gold/60 bg-gradient-panel p-8 shadow-glow print:hidden">
+        <div className="demo-cta relative z-0 mt-6 rounded-panel border border-gold/60 bg-[linear-gradient(160deg,#211914,#19130f)] p-8 shadow-glow print:hidden">
           <div className="font-mono text-xs font-semibold uppercase tracking-[0.15em] text-gold">
             This is exactly what an AI receptionist closes
           </div>
@@ -832,7 +835,7 @@ export default function CalculatorClient() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 12, scale: 0.98 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
-                className="relative w-full max-w-sm rounded-panel border border-line bg-gradient-panel p-6 shadow-surface"
+                className="relative w-full max-w-sm rounded-panel border border-line bg-[linear-gradient(160deg,#1f1814,#18120f)] p-6 shadow-surface"
               >
                 <button
                   type="button"

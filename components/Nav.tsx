@@ -5,6 +5,34 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { captureEvent } from "@/lib/analytics";
 
+const mobileSectionLinks = [
+  {
+    href: "/#services",
+    label: "How we help",
+    cta: "how_we_help",
+  },
+  {
+    href: "/#how-it-works",
+    label: "How it works",
+    cta: "how_it_works",
+  },
+  {
+    href: "/#demo",
+    label: "Hear the demo",
+    cta: "hear_demo",
+  },
+  {
+    href: "/#faq",
+    label: "FAQ",
+    cta: "faq",
+  },
+  {
+    href: "/#contact",
+    label: "Get in touch",
+    cta: "get_in_touch",
+  },
+];
+
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -31,7 +59,7 @@ export default function Nav() {
           <img
             src="/images/sunforge_logo_full.svg"
             alt="Sunforge Digital"
-            className="h-8 w-auto sm:h-10 lg:h-12"
+            className="h-10 w-auto sm:h-11 lg:h-12"
           />
         </Link>
 
@@ -140,19 +168,31 @@ export default function Nav() {
             >
               Missed-Call Calculator
             </Link>
-            <Link
-              href="/#contact"
-              onClick={() => {
-                captureEvent("cta_clicked", {
-                  cta: "get_in_touch",
-                  placement: "navigation_mobile",
-                });
-                closeMenu();
-              }}
-              className="rounded-2xl px-4 py-3 font-display text-sm font-semibold text-text-primary transition-colors hover:text-gold"
-            >
-              Get in touch
-            </Link>
+
+            <div className="mt-2 border-t border-line pt-4">
+              <p className="px-4 font-mono text-[10px] uppercase tracking-[0.15em] text-text-muted">
+                On this page
+              </p>
+              <div className="mt-2 flex flex-col gap-1">
+                {mobileSectionLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => {
+                      captureEvent("cta_clicked", {
+                        cta: link.cta,
+                        placement: "navigation_mobile_section",
+                      });
+                      closeMenu();
+                    }}
+                    className="rounded-2xl px-4 py-3 font-body text-sm text-text-muted transition-colors hover:text-gold"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
             <Link
               href="/#demo"
               onClick={() => {
@@ -162,7 +202,7 @@ export default function Nav() {
                 });
                 closeMenu();
               }}
-              className="mt-1 inline-flex items-center justify-center rounded-btn bg-gradient-accent px-4 py-3 font-display text-sm font-semibold text-bg shadow-forge transition-all duration-200 hover:brightness-110"
+              className="mt-3 inline-flex items-center justify-center rounded-btn bg-gradient-accent px-4 py-3 font-display text-sm font-semibold text-bg shadow-forge transition-all duration-200 hover:brightness-110"
             >
               Talk to the AI Receptionist
             </Link>
