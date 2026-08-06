@@ -71,46 +71,23 @@ export default function EmberCallWidget() {
       className="relative overflow-hidden bg-panel-2-textured px-6 py-16 sm:py-24"
     >
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
-        {/* LEFT: Copy */}
-        <div>
+        {/* LEFT, top: Intro copy */}
+        <div className="md:col-start-1 md:row-start-1">
           <h1 className="mb-6 font-display text-4xl font-bold leading-[1.12] tracking-tight text-text-primary sm:text-5xl">
             Your customer called after you closed.{" "}
             <span className="gradient-text">Ember answered.</span>
           </h1>
 
-          <p className="mb-8 max-w-lg font-body text-lg leading-relaxed text-text-muted">
+          <p className="max-w-lg font-body text-lg leading-relaxed text-text-muted">
             Ember is our AI receptionist demo. She answers every call, books
             the job, and texts you the details — 24/7, even when you&apos;re
             closed, slammed, or at lunch.
           </p>
-
-          <div className="mb-8 max-w-lg rounded-xl border border-line bg-panel px-5 py-4">
-            <p className="text-sm text-text-muted">
-              <span className="font-semibold text-text-primary">
-                One flat monthly rate.
-              </span>{" "}
-              No contracts. No setup games. Runs alongside your existing
-              number — never replaces it.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap gap-3">
-            <Link
-              href="/calculator"
-              className="rounded-btn bg-gradient-accent px-6 py-3.5 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
-            >
-              See what missed calls cost you
-            </Link>
-          </div>
-
-          <p className="mt-4 text-xs text-text-muted-dark">
-            Answer the call on the right to see how it works — then hear the
-            real thing, live.
-          </p>
         </div>
 
-        {/* RIGHT: Live call card */}
-        <div className="flex justify-center">
+        {/* RIGHT: Live call card (spans both rows on desktop; sits between the
+            two left-column blocks on mobile, per the stacked order below) */}
+        <div className="flex justify-center md:col-start-2 md:row-start-1 md:row-span-2">
           <div className="relative w-full max-w-sm">
             <AnimatePresence>
               {!answered && (
@@ -136,13 +113,6 @@ export default function EmberCallWidget() {
               />
               <div className="mb-6 flex justify-center">
                 <div className="relative flex h-24 w-24 items-center justify-center">
-                  {!answered && !prefersReducedMotion && (
-                    <>
-                      <div className="ember-ring-pulse absolute inset-0 rounded-full border-2 border-gold [animation-delay:0s]" />
-                      <div className="ember-ring-pulse absolute inset-0 rounded-full border-2 border-gold [animation-delay:0.5s]" />
-                      <div className="ember-ring-pulse absolute inset-0 rounded-full border-2 border-gold [animation-delay:1s]" />
-                    </>
-                  )}
                   {/* forged ring avatar */}
                   <div className="relative flex h-16 w-16 items-center justify-center rounded-full border-2 border-gold bg-panel">
                     <div className="flex h-11 w-11 items-center justify-center rounded-full border border-coral">
@@ -178,13 +148,22 @@ export default function EmberCallWidget() {
 
               {!answered ? (
                 <div className="mt-6 flex items-center justify-center">
-                  <button
-                    onClick={handleCallAction}
-                    className="flex h-16 w-16 items-center justify-center rounded-full bg-[#3fb86a] transition-colors hover:bg-[#4bcf7a]"
-                    aria-label="Answer"
-                  >
-                    <Phone size={24} className="text-white" />
-                  </button>
+                  <div className="relative flex h-24 w-24 items-center justify-center">
+                    {!prefersReducedMotion && (
+                      <>
+                        <div className="ember-ring-pulse absolute inset-0 rounded-full border-2 border-[#3fb86a] [animation-delay:0s]" />
+                        <div className="ember-ring-pulse absolute inset-0 rounded-full border-2 border-[#3fb86a] [animation-delay:0.5s]" />
+                        <div className="ember-ring-pulse absolute inset-0 rounded-full border-2 border-[#3fb86a] [animation-delay:1s]" />
+                      </>
+                    )}
+                    <button
+                      onClick={handleCallAction}
+                      className="relative flex h-16 w-16 items-center justify-center rounded-full bg-[#3fb86a] transition-colors hover:bg-[#4bcf7a]"
+                      aria-label="Answer"
+                    >
+                      <Phone size={24} className="text-white" />
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <motion.div
@@ -228,6 +207,33 @@ export default function EmberCallWidget() {
               )}
             </motion.div>
           </div>
+        </div>
+
+        {/* LEFT, bottom: rate callout + CTA */}
+        <div className="md:col-start-1 md:row-start-2">
+          <div className="mb-8 max-w-lg rounded-xl border border-line bg-panel px-5 py-4">
+            <p className="text-sm text-text-muted">
+              <span className="font-semibold text-text-primary">
+                One flat monthly rate.
+              </span>{" "}
+              No contracts. No setup games. Runs alongside your existing
+              number — never replaces it.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/calculator"
+              className="rounded-btn bg-gradient-accent px-6 py-3.5 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
+            >
+              See what missed calls cost you
+            </Link>
+          </div>
+
+          <p className="mt-4 text-xs text-text-muted-dark">
+            Answer the call on the right to see how it works — then hear the
+            real thing, live.
+          </p>
         </div>
       </div>
     </section>
