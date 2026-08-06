@@ -8,7 +8,6 @@ import ROI from "@/components/ROI";
 import EmberCallWidget from "@/components/EmberCallWidget";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
-import About from "@/components/About";
 import Footer from "@/components/Footer";
 import SectionDivider from "@/components/SectionDivider";
 
@@ -31,7 +30,6 @@ export default function Home() {
         <EmberCallWidget />
         <FAQ />
         <Contact />
-        <About />
       </main>
       <Footer />
     </>

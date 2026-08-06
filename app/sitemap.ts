@@ -3,7 +3,7 @@ import type { MetadataRoute } from "next";
 const SITE_URL = "https://sunforgedigital.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ["", "/calculator", "/privacy", "/terms"];
+  const routes = ["", "/about", "/calculator", "/privacy", "/terms"];
 
   return routes.map((route) => ({
     url: `${SITE_URL}${route}`,
