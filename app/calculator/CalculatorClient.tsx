@@ -86,6 +86,17 @@ function fmt(n: number) {
   return "$" + Math.round(n).toLocaleString("en-US");
 }
 
+function fmtRange(low: number, high: number) {
+  return `${fmt(low)}–${fmt(high)}`;
+}
+
+// Not every recoverable call converts into a paying customer even once the
+// business has the capacity to take it — some are comparison shopping, some
+// don't follow through regardless. The capacity input already discounts for
+// supply (can they serve it); this floor discounts for demand (would the
+// caller actually convert). Flat across all business types for now.
+const CONVERSION_RATE_FLOOR = 0.3;
+
 function getSourceNote(source: CustomerSourceKey, verticalLabel: string): string {
   switch (source) {
     case "online":
@@ -138,6 +149,8 @@ export default function CalculatorClient() {
   const recoverable = missedCalls * capPct;
   const monthly = recoverable * value;
   const annual = monthly * 12;
+  const monthlyLow = monthly * CONVERSION_RATE_FLOOR;
+  const annualLow = annual * CONVERSION_RATE_FLOOR;
   const monthlyRoutineCallHours = Math.round((routineCallHours * 52) / 12);
   const isBelowCallThreshold = calls < d.calls * 0.6;
   const showSourceModal = isBelowCallThreshold && !dismissedSourceModal;
@@ -541,11 +554,14 @@ export default function CalculatorClient() {
               <div className="font-mono text-xs font-semibold uppercase tracking-[0.1em] text-text-muted">
                 Estimated monthly revenue leak
               </div>
-              <div className="mt-1 font-display text-4xl font-bold tabular-nums text-highlight">
-                {fmt(monthly)}
+              <div className="mt-1 font-display text-3xl font-bold tabular-nums text-highlight sm:text-4xl">
+                {fmtRange(monthlyLow, monthly)}
               </div>
               <div className="mt-1 font-mono text-sm font-semibold tabular-nums text-text-primary">
-                {fmt(annual)} / year
+                {fmtRange(annualLow, annual)} / year
+              </div>
+              <div className="hint mt-1.5 font-mono text-xs leading-relaxed text-text-secondary/85">
+                Conservative estimate — actual conversion varies by call urgency and business type.
               </div>
             </div>
           </div>
@@ -670,10 +686,13 @@ export default function CalculatorClient() {
               Estimated monthly revenue leak
             </div>
             <div className="mt-1 font-display text-3xl font-bold tabular-nums text-text-primary">
-              {fmt(monthly)}
+              {fmtRange(monthlyLow, monthly)}
             </div>
             <div className="mt-1 font-mono text-sm font-semibold tabular-nums text-text-primary">
-              {fmt(annual)} / year
+              {fmtRange(annualLow, annual)} / year
+            </div>
+            <div className="mt-1.5 font-mono text-xs leading-relaxed text-text-secondary/85">
+              Conservative estimate — actual conversion varies by call urgency and business type.
             </div>
           </div>
 
@@ -682,8 +701,10 @@ export default function CalculatorClient() {
               This estimate multiplies your calls per month by your missed-call rate to get missed
               calls, then applies the share of that business you said you could actually take on
               right now to get recoverable calls. Recoverable calls are multiplied by your typical
-              job value and by your number of locations to get the monthly figure above; the
-              annual figure is simply that number times twelve.
+              job value and by your number of locations to get the top of the monthly range above;
+              the annual figure is simply that number times twelve. The low end of each range
+              applies a conservative 30% conversion rate, since not every recoverable call turns
+              into a paying customer even when a business has the capacity to take it.
             </p>
             <p className="mt-2">
               These numbers are only as accurate as the inputs above — they&apos;re a
@@ -783,8 +804,8 @@ export default function CalculatorClient() {
                   Estimated revenue leak
                 </span>
               </span>
-              <span aria-live="polite" className="whitespace-nowrap font-display text-xl font-bold leading-none tabular-nums text-bg">
-                {fmt(monthly)}
+              <span aria-live="polite" className="whitespace-nowrap font-display text-lg font-bold leading-none tabular-nums text-bg">
+                {fmtRange(monthlyLow, monthly)}
                 <span className="ml-1 font-mono text-xs font-semibold leading-none text-bg/70">/mo</span>
               </span>
             </motion.button>

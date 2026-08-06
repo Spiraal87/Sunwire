@@ -1,5 +1,6 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
+import BusinessCategories from "@/components/BusinessCategories";
 import Services from "@/components/Services";
 import HowItWorks from "@/components/HowItWorks";
 import Funnel from "@/components/Funnel";
@@ -17,6 +18,7 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
+        <BusinessCategories />
         <SectionDivider litCount={1} tintSide="bottom" />
         <Services />
         <SectionDivider litCount={2} tintSide="top" />

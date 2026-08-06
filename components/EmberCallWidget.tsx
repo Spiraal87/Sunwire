@@ -153,10 +153,10 @@ export default function EmberCallWidget() {
                 <div className="mt-6 flex items-center justify-center">
                   <button
                     onClick={handleCallAction}
-                    className="flex h-14 w-14 items-center justify-center rounded-full bg-[#3fb86a] transition-colors hover:bg-[#4bcf7a]"
+                    className="flex h-16 w-16 items-center justify-center rounded-full bg-[#3fb86a] transition-colors hover:bg-[#4bcf7a]"
                     aria-label="Answer"
                   >
-                    <Phone size={20} className="text-white" />
+                    <Phone size={24} className="text-white" />
                   </button>
                 </div>
               ) : (
