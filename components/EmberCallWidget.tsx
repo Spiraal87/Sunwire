@@ -10,6 +10,15 @@ import GlowBorder from "./GlowBorder";
 
 const DEMO_PHONE_DISPLAY = "623-303-9061";
 const DEMO_PHONE_TEL = "tel:+16233039061";
+
+// Same offsets/timing as the ember particles in SignalGraphic, for a
+// consistent "sparks rising" motif across the site.
+const AVATAR_SPARKS = [
+  { x: -14, delay: 0 },
+  { x: 10, delay: 1.1 },
+  { x: -30, delay: 2.2 },
+  { x: 26, delay: 0.6 },
+];
 const CARD_BORDER_DELAY = 0.35;
 const CARD_BORDER_DURATION = 1.4;
 const CARD_SURFACE_SHADOW = "0 24px 48px -32px rgba(0,0,0,0.55)";
@@ -147,18 +156,32 @@ export default function EmberCallWidget() {
                 radius={24}
               />
               <div className="mb-6 flex justify-center">
-                <div className="relative flex h-24 w-24 items-center justify-center">
-                  <div className="relative flex h-16 w-16 items-center justify-center rounded-full border-2 border-gold bg-panel">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-full border border-coral">
-                      <div
-                        className="h-4 w-4 rounded-full"
-                        style={{
-                          background:
-                            "radial-gradient(circle, #fff5e0 0%, #f2c870 45%, #e6a84b 100%)",
+                <div className="relative h-32 w-32">
+                  <div className="absolute inset-0 overflow-hidden rounded-full border-2 border-gold bg-panel">
+                    <Image
+                      src="/images/ember-persona.png"
+                      alt="Ember, Sunforge Digital's AI receptionist persona"
+                      fill
+                      sizes="128px"
+                      className="scale-[1.2] object-cover object-[center_22%]"
+                    />
+                  </div>
+                  {!prefersReducedMotion &&
+                    AVATAR_SPARKS.map((spark, i) => (
+                      <motion.div
+                        key={i}
+                        className="absolute h-1 w-1 rounded-full bg-[#F2C870]"
+                        style={{ left: `calc(50% + ${spark.x}px)`, top: "10%" }}
+                        initial={{ opacity: 0, y: 0 }}
+                        animate={{ opacity: [0, 0.9, 0], y: -28 }}
+                        transition={{
+                          duration: 3.2,
+                          repeat: Infinity,
+                          ease: "easeOut",
+                          delay: spark.delay,
                         }}
                       />
-                    </div>
-                  </div>
+                    ))}
                 </div>
               </div>
 
