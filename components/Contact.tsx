@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import LeadForm from "./LeadForm";
 
 export default function Contact() {
   const prefersReducedMotion = useReducedMotion();
@@ -16,19 +17,26 @@ export default function Contact() {
         transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut" }}
         className="rounded-panel border border-line bg-gradient-panel p-8 shadow-surface sm:p-14"
       >
-        <div className="flex flex-col gap-10 md:flex-row md:items-center md:justify-between">
-          <div className="max-w-md">
-            <h2 className="font-display text-2xl font-semibold sm:text-3xl">
-              Let&apos;s Find Your Biggest Opportunity.
-            </h2>
-            <p className="mt-4 font-body text-text-muted">
-              No pressure. No hard sales pitch. Just a conversation about
-              where your business may be losing customers and how technology
-              can help.
-            </p>
+        <div className="max-w-md">
+          <h2 className="font-display text-2xl font-semibold sm:text-3xl">
+            Let&apos;s Find Your Biggest Opportunity.
+          </h2>
+          <p className="mt-4 font-body text-text-muted">
+            No pressure. No hard sales pitch. Just a conversation about
+            where your business may be losing customers and how technology
+            can help.
+          </p>
+        </div>
+
+        <div className="relative mt-10 flex flex-col gap-10 md:flex-row md:items-start">
+          <div className="md:w-3/5">
+            <LeadForm />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 md:w-2/5 md:border-l md:border-line md:pl-10">
+            <p className="font-body text-xs uppercase tracking-wide text-text-muted-dark">
+              Or reach me directly
+            </p>
             <a
               href="mailto:cdjohnsonzero@gmail.com"
               className="flex items-center gap-3 font-mono text-sm text-text-primary transition-colors hover:text-gold"

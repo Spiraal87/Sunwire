@@ -28,8 +28,8 @@ export default function Home() {
         <ROI />
         <SectionDivider litCount={5} tintSide="bottom" />
         <EmberCallWidget />
-        <FAQ />
         <Contact />
+        <FAQ />
       </main>
       <Footer />
     </>
