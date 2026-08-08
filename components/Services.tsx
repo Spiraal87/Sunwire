@@ -25,13 +25,11 @@ const cards: Card[] = [
     ctaHref: "/calculator",
     ctaLabel: "See what missed calls could be costing you",
     heading: "A line that never goes unanswered",
-    body: "Never lose another customer because nobody answered the phone. Our AI receptionists answer calls after hours, during busy periods, and whenever your team can't get to the phone — booking appointments, answering questions, and capturing every opportunity.",
+    body: "Never lose another customer because nobody answered the phone. Our AI receptionists answer after hours, during rushes, and whenever your team can't get to the phone.",
     bullets: [
       "Works alongside your existing phone number",
-      "Built specifically for your business",
       "Available 24/7",
       "Hundreds of voices to choose from, in multiple languages",
-      "Hear it working before making any decision",
     ],
   },
   {
@@ -40,10 +38,9 @@ const cards: Card[] = [
     iconAlt: "Website icon",
     label: "02 / Websites",
     heading: "A website that works as hard as you do",
-    body: "Your website should do more than exist — it should earn trust, answer questions, and turn visitors into customers. We build fast, modern websites designed around how people actually choose local businesses.",
+    body: "Your website should do more than exist — it should earn trust and turn visitors into customers. We build fast, modern sites designed around how people actually choose local businesses.",
     bullets: [
       "Mobile-first and lightning fast",
-      "Built around your business and your customers",
       "Easy to update as your business grows",
       "Built to be found — by Google, and by the AI tools people are increasingly asking for recommendations",
     ],

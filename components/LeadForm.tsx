@@ -111,41 +111,58 @@ export default function LeadForm() {
     }
   };
 
+  const glow = (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute -inset-4 -z-10 rounded-panel blur-2xl"
+      style={{
+        background:
+          "radial-gradient(circle, rgba(230,168,75,0.35) 0%, rgba(211,138,52,0.18) 50%, transparent 75%)",
+      }}
+    />
+  );
+
   if (status === "success") {
     return (
-      <motion.div
-        initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: prefersReducedMotion ? 0.2 : 0.5, ease: "easeOut" }}
-        className="rounded-card border border-gold/25 bg-panel p-6 shadow-glow"
-      >
-        <h3 className="font-display text-xl font-semibold text-text-primary">
-          Request received.
-        </h3>
-        <p className="mt-2 font-body text-sm text-text-muted">
-          While you wait, hear Ember - our live demo receptionist - right now.
-        </p>
-        <a
-          href={DEMO_PHONE_TEL}
-          className="mt-5 inline-flex items-center gap-2 rounded-btn bg-gradient-accent px-6 py-3 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
+      <div className="relative">
+        {glow}
+        <motion.div
+          initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: prefersReducedMotion ? 0.2 : 0.5, ease: "easeOut" }}
+          className="rounded-card border-2 border-gold/50 bg-gradient-panel p-6"
         >
-          <Phone size={16} />
-          Call the demo: {DEMO_PHONE_DISPLAY}
-        </a>
-        <p className="mt-4 font-body text-xs text-text-muted-dark">
-          We&apos;ll follow up personally within one business day with a demo
-          built around your business specifically.
-        </p>
-      </motion.div>
+          <h3 className="font-display text-xl font-semibold text-text-primary">
+            Request received.
+          </h3>
+          <p className="mt-2 font-body text-sm text-text-muted">
+            While you wait, hear Ember - our live demo receptionist - right now.
+          </p>
+          <a
+            href={DEMO_PHONE_TEL}
+            onClick={() => captureEvent("tel_link_clicked", { location: "lead_form_success" })}
+            className="mt-5 inline-flex items-center gap-2 rounded-btn bg-gradient-accent px-6 py-3 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
+          >
+            <Phone size={16} />
+            Call the demo: {DEMO_PHONE_DISPLAY}
+          </a>
+          <p className="mt-4 font-body text-xs text-text-muted-dark">
+            We&apos;ll follow up personally within one business day with a demo
+            built around your business specifically.
+          </p>
+        </motion.div>
+      </div>
     );
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      noValidate
-      className="relative rounded-card border border-gold/25 bg-panel p-6 shadow-glow"
-    >
+    <div className="relative">
+      {glow}
+      <form
+        onSubmit={handleSubmit}
+        noValidate
+        className="relative rounded-card border-2 border-gold/50 bg-gradient-panel p-5 sm:p-6"
+      >
       <p className="mb-5 font-display text-sm font-semibold uppercase tracking-wide text-gold">
         Tell me about your business
       </p>
@@ -270,7 +287,7 @@ export default function LeadForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="mt-2 rounded-btn bg-gradient-accent px-6 py-3 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+        className="mt-2 rounded-btn bg-gradient-accent px-8 py-4 font-display text-base font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {status === "submitting" ? "Sending..." : "Send it my way"}
       </button>
@@ -278,13 +295,18 @@ export default function LeadForm() {
       {status === "error" && (
         <p className="text-xs text-red-400">
           Something went wrong - call or text me directly at{" "}
-          <a href="tel:+17194245680" className="underline hover:text-gold">
+          <a
+            href="tel:+17194245680"
+            onClick={() => captureEvent("tel_link_clicked", { location: "lead_form_error" })}
+            className="underline hover:text-gold"
+          >
             719-424-5680
           </a>
           .
         </p>
       )}
       </div>
-    </form>
+      </form>
+    </div>
   );
 }

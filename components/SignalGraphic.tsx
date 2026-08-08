@@ -16,30 +16,55 @@ function jaggedPath(startX: number, endX: number, baseY: number, seed: number) {
   return points.join(" ");
 }
 
-const RADII = [42, 60, 78, 96, 114, 132];
+const BASE_RADII = [42, 60, 78, 96, 114, 132];
 const RING_DRAW_DURATION = 1.2;
 const RING_BASE_DELAY = 0.3;
 const RING_STAGGER = 0.15;
-const GLOW_STAGES = [
-  { rx: 185, ry: 60, opacity: 0.5 },
-  { rx: 230, ry: 72, opacity: 0.62 },
-  { rx: 280, ry: 88, opacity: 0.74 },
-  { rx: 340, ry: 108, opacity: 0.87 },
-  { rx: 420, ry: 135, opacity: 1 },
-];
-const EMBERS = [
+const BASE_EMBERS = [
   { x: -14, delay: 0 },
   { x: 10, delay: 1.1 },
   { x: -30, delay: 2.2 },
   { x: 26, delay: 0.6 },
 ];
+// Clearance derived from today's known-good numbers, so ringScale=1 reproduces
+// the original output exactly: 140 - 132 and 170 - 132.
+const RING_GAP_CLEARANCE = 8;
+const RING_HEADROOM_CLEARANCE = 38;
+
+// The molten-core background image (sunforge-scroller.png) is a raster layer,
+// not part of the SVG viewBox, so it doesn't scale with the rings automatically.
+// These calibrate its hand-tuned baseline position/size (width: 54.5%, top: -10.6%
+// of the fixed 1200x340 box) against the baseline ring radius/horizon, so it can
+// be recomputed proportionally for any ringScale below.
+const BASE_MAX_RADIUS = BASE_RADII[BASE_RADII.length - 1]; // 132
+const BASE_HORIZON_Y = BASE_MAX_RADIUS + RING_HEADROOM_CLEARANCE; // 170
+const BASE_IMG_WIDTH_PERCENT = 54.5;
+const BASE_IMG_TOP_PERCENT = -10.6;
+
+// Energy beam core flare — centered exactly on the rings' own center point
+// (centerX, horizonY), scaling with ringScale the same way. Its own PNG
+// background doesn't fade to transparent (same issue sunforge-scroller.png
+// had), so this uses mix-blend-screen instead of a mask: gray/dark pixels
+// barely register against the dark divider, while the bright flare pops.
+// Kept small/contained rather than the source PNG's full length so the beam
+// reads as a spark at the ring's core, not a line spanning the whole divider.
+const BASE_BEAM_WIDTH_PERCENT = 46;
+// The sphere image (sunforge-scroller.png) is positioned by its top edge via
+// its own separate calibration, not centered on horizonY the way this flare
+// is — nudged to visually match the sphere's actual center once rendered.
+const BEAM_VERTICAL_NUDGE_PERCENT = -0.1;
+const BEAM_HORIZONTAL_NUDGE_PERCENT = -0.5;
+const BEAM_FLICKER_DURATION = 0.5;
+const BEAM_PULSE_DURATION = 2.6;
 
 export default function SignalGraphic({
   inView,
   litCount = 1,
+  ringScale = 1,
 }: {
   inView: boolean;
   litCount?: number;
+  ringScale?: number;
 }) {
   const [reducedMotion, setReducedMotion] = useState(false);
 
@@ -51,15 +76,47 @@ export default function SignalGraphic({
     return () => mq.removeEventListener("change", handler);
   }, []);
 
+  const RADII = BASE_RADII.map((r) => r * ringScale);
+  const EMBERS = BASE_EMBERS.map((e) => ({ x: e.x * ringScale, delay: e.delay }));
+
   const width = 1200;
   const height = 340;
   const centerX = width / 2;
-  const horizonY = 170;
+
+  const maxRingRadius = RADII[RADII.length - 1];
+  const horizonY = maxRingRadius + RING_HEADROOM_CLEARANCE;
+  const horizonGapHalfWidth = maxRingRadius + RING_GAP_CLEARANCE;
+
+  // Scale the background image's width directly with ringScale, and reposition
+  // its top edge to track the (also-scaled) offset from horizonY, so it grows
+  // and resettles around the rings' new center instead of staying fixed size/place.
+  const imgWidthPercent = BASE_IMG_WIDTH_PERCENT * ringScale;
+  const baseImgTopOffsetFromHorizon = (BASE_IMG_TOP_PERCENT / 100) * height - BASE_HORIZON_Y;
+  const imgTopPercent =
+    ((horizonY + baseImgTopOffsetFromHorizon * ringScale) / height) * 100;
+
+  const beamWidthPercent = BASE_BEAM_WIDTH_PERCENT * ringScale;
+  const beamTopPercent = (horizonY / height) * 100 + BEAM_VERTICAL_NUDGE_PERCENT;
 
   const normalizedLitCount = Math.min(Math.max(litCount, 1), RADII.length);
   const rings = RADII.slice(0, normalizedLitCount);
-  const glow = GLOW_STAGES[Math.min(normalizedLitCount, GLOW_STAGES.length) - 1];
-  const glareRevealDuration = RING_DRAW_DURATION + (rings.length - 1) * RING_STAGGER;
+
+  // The last ring finishes its draw-in animation at this point — the beam
+  // core waits until then to flicker to life, rather than just appearing
+  // immediately alongside the rings.
+  const ringsCompleteAt =
+    RING_BASE_DELAY + RING_DRAW_DURATION + (rings.length - 1) * RING_STAGGER;
+
+  const [beamIgnited, setBeamIgnited] = useState(false);
+
+  useEffect(() => {
+    if (!inView || reducedMotion) return;
+    const timer = setTimeout(
+      () => setBeamIgnited(true),
+      (ringsCompleteAt + BEAM_FLICKER_DURATION) * 1000
+    );
+    return () => clearTimeout(timer);
+  }, [inView, reducedMotion, ringsCompleteAt]);
 
   return (
     <div className="relative aspect-[1200/340] w-full overflow-hidden">
@@ -67,12 +124,60 @@ export default function SignalGraphic({
         src="/images/sunforge-scroller.png"
         alt=""
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 w-[54.5%] max-w-none -translate-x-1/2 select-none"
+        className="pointer-events-none absolute left-1/2 max-w-none -translate-x-1/2 select-none"
         style={{
-          top: "-10.6%",
+          width: `${imgWidthPercent}%`,
+          top: `${imgTopPercent}%`,
           WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 42%, transparent 55%)",
           maskImage: "linear-gradient(to bottom, black 0%, black 42%, transparent 55%)",
         }}
+      />
+      <motion.img
+        src="/images/energy%20beam%20core.png"
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute max-w-none select-none mix-blend-screen"
+        style={{
+          width: `${beamWidthPercent}%`,
+          top: `${beamTopPercent}%`,
+          left: `${50 + BEAM_HORIZONTAL_NUDGE_PERCENT}%`,
+          // x/y handle the centering offset here (rather than Tailwind's
+          // -translate-x/y-1/2 classes) so they compose correctly with the
+          // animated scale below instead of Framer Motion's transform
+          // overwriting a separately-set CSS transform.
+          x: "-50%",
+          y: "-50%",
+          // Boosts how much light the screen-blended pixels actually
+          // contribute, on top of the mix-blend-screen already brightening
+          // against the dark background.
+          filter: "brightness(1.5) saturate(1.15)",
+        }}
+        initial={{ opacity: 0, scale: 1 }}
+        animate={
+          reducedMotion
+            ? { opacity: 1, scale: 1 }
+            : !inView
+              ? { opacity: 0, scale: 1 }
+              : beamIgnited
+                ? { opacity: [0.9, 1, 0.92, 1], scale: [1, 1.08, 1] }
+                : { opacity: [0, 0.7, 0.05, 1, 0.3, 1], scale: 1 }
+        }
+        transition={
+          reducedMotion || !inView
+            ? { duration: 0 }
+            : beamIgnited
+              ? {
+                  duration: BEAM_PULSE_DURATION,
+                  repeat: Infinity,
+                  repeatType: "mirror",
+                  ease: "easeInOut",
+                }
+              : {
+                  duration: BEAM_FLICKER_DURATION,
+                  delay: ringsCompleteAt,
+                  ease: "easeOut",
+                }
+        }
       />
       <svg
         viewBox={`0 0 ${width} ${height}`}
@@ -86,12 +191,6 @@ export default function SignalGraphic({
           <stop offset="50%" stopColor="#E6A84B" />
           <stop offset="100%" stopColor="#D38A34" />
         </linearGradient>
-        <radialGradient id="coreGlow" cx="50%" cy="50%" r="75%">
-          <stop offset="0%" stopColor="#F2C870" stopOpacity="0.48" />
-          <stop offset="38%" stopColor="#E6A84B" stopOpacity="0.22" />
-          <stop offset="72%" stopColor="#D38A34" stopOpacity="0.07" />
-          <stop offset="100%" stopColor="#D38A34" stopOpacity="0" />
-        </radialGradient>
         <linearGradient id="horizonFade" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#F7F6F3" stopOpacity="0.14" />
           <stop offset="36%" stopColor="#F7F6F3" stopOpacity="0.14" />
@@ -101,72 +200,10 @@ export default function SignalGraphic({
           <stop offset="64%" stopColor="#F7F6F3" stopOpacity="0.14" />
           <stop offset="100%" stopColor="#F7F6F3" stopOpacity="0.14" />
         </linearGradient>
-        <linearGradient
-          id="lowerGlareFade"
-          x1={0}
-          y1={horizonY}
-          x2={0}
-          y2={horizonY + 36}
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop offset="0%" stopColor="#fff" stopOpacity="0" />
-          <stop offset="35%" stopColor="#fff" stopOpacity="0.55" />
-          <stop offset="100%" stopColor="#fff" stopOpacity="1" />
-        </linearGradient>
-        <mask
-          id="lowerGlareMask"
-          maskUnits="userSpaceOnUse"
-          x={0}
-          y={horizonY}
-          width={width}
-          height={height - horizonY}
-        >
-          <rect
-            x={0}
-            y={horizonY}
-            width={width}
-            height={height - horizonY}
-            fill="url(#lowerGlareFade)"
-          />
-        </mask>
-        <filter id="glareBlur" x="-25%" y="-45%" width="150%" height="190%">
-          <feGaussianBlur stdDeviation="10" />
-        </filter>
         <filter id="moltenGlow" x="-60%" y="-60%" width="220%" height="220%">
           <feGaussianBlur stdDeviation="5" />
         </filter>
       </defs>
-
-      <motion.ellipse
-        cx={centerX}
-        cy={horizonY}
-        rx={glow.rx}
-        ry={glow.ry}
-        fill="url(#coreGlow)"
-        filter="url(#glareBlur)"
-        mask="url(#lowerGlareMask)"
-        initial={
-          reducedMotion
-            ? false
-            : { rx: glow.rx * 0.3, ry: glow.ry * 0.3, opacity: 0 }
-        }
-        animate={
-          reducedMotion
-            ? { rx: glow.rx, ry: glow.ry, opacity: glow.opacity }
-            : inView
-              ? { rx: glow.rx, ry: glow.ry, opacity: glow.opacity }
-              : { rx: glow.rx * 0.3, ry: glow.ry * 0.3, opacity: 0 }
-        }
-        transition={
-          reducedMotion || !inView
-            ? { duration: 0 }
-            : {
-                duration: glareRevealDuration,
-                delay: RING_BASE_DELAY,
-                ease: "easeInOut",
-              }
-        }
-      />
 
       <line
         x1={0}
@@ -178,7 +215,7 @@ export default function SignalGraphic({
       />
 
       <motion.path
-        d={jaggedPath(0, centerX - 140, horizonY, 0.9)}
+        d={jaggedPath(0, centerX - horizonGapHalfWidth, horizonY, 0.9)}
         fill="none"
         stroke="#A8A8AC"
         strokeWidth={1.5}
@@ -196,7 +233,7 @@ export default function SignalGraphic({
         }
       />
       <motion.path
-        d={jaggedPath(centerX + 140, width, horizonY, 1.1)}
+        d={jaggedPath(centerX + horizonGapHalfWidth, width, horizonY, 1.1)}
         fill="none"
         stroke="#A8A8AC"
         strokeWidth={1.5}

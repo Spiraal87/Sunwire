@@ -10,24 +10,28 @@ import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import SectionDivider from "@/components/SectionDivider";
+import EnergyLine from "@/components/EnergyLine";
 
 export default function Home() {
   return (
     <>
       <Nav />
       <main>
-        <Hero />
-        <BusinessCategories />
-        <SectionDivider litCount={1} tintSide="bottom" />
-        <Services />
-        <SectionDivider litCount={2} tintSide="top" />
-        <HowItWorks />
-        <SectionDivider litCount={3} tintSide="bottom" />
-        <Funnel />
-        <SectionDivider litCount={4} tintSide="top" />
-        <ROI />
-        <SectionDivider litCount={5} tintSide="bottom" />
-        <EmberCallWidget />
+        <div className="relative">
+          <EnergyLine />
+          <Hero />
+          <BusinessCategories />
+          <SectionDivider litCount={1} tintSide="bottom" ringScale={1.4} />
+          <Services />
+          <SectionDivider litCount={2} tintSide="top" ringScale={1.4} />
+          <HowItWorks />
+          <SectionDivider litCount={3} tintSide="bottom" ringScale={1.4} />
+          <Funnel />
+          <SectionDivider litCount={4} tintSide="top" ringScale={1.4} />
+          <ROI />
+          <SectionDivider litCount={5} tintSide="bottom" ringScale={1.4} />
+          <EmberCallWidget />
+        </div>
         <Contact />
         <FAQ />
       </main>

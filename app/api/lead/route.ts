@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
 const LEAD_RECIPIENT = "cdjohnsonzero@gmail.com";
-const LEAD_SENDER = "leads@sunforgedigital.com";
+const LEAD_SENDER = "Sunforge Leads <leads@sunforgedigital.com>";
 
 type LeadPayload = {
   firstName?: string;

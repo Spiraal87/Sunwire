@@ -8,19 +8,19 @@ const tracks = [
     steps: [
       {
         title: "Setup",
-        body: "The system is configured around your hours, services, pricing, and the questions customers actually ask — trained on your business, not a generic script.",
+        body: "Configured around your hours, services, and the questions customers actually ask — trained on your business, not a script.",
       },
       {
         title: "Answer",
-        body: "When a call comes in and goes unanswered — after hours, during a rush, or if every line is busy — a conversational AI voice system picks up and talks through what the caller needs.",
+        body: "Picks up calls that would otherwise go unanswered — after hours, during a rush, or when every line's busy.",
       },
       {
         title: "Capture & book",
-        body: "It collects the caller's info, checks real-time availability, and books the appointment straight onto your calendar — or takes a detailed message if it can't.",
+        body: "Collects the caller's info, checks availability, and books the appointment straight onto your calendar.",
       },
       {
         title: "Notify & follow up",
-        body: "You get notified right away with a summary of the call, so anything that needs a personal touch gets a callback from you or your team.",
+        body: "You're notified right away with a call summary, so anything needing a personal touch gets a callback.",
       },
     ],
   },
@@ -29,7 +29,7 @@ const tracks = [
     steps: [
       {
         title: "Discovery",
-        body: "A short conversation about your business — what you offer, who your customers are, and what they need to see.",
+        body: "A short conversation about your business — what you offer and who your customers are.",
       },
       {
         title: "Design & build",
@@ -37,11 +37,11 @@ const tracks = [
       },
       {
         title: "Review",
-        body: "You see it live, click through it, and ask for changes before anything is signed or launched.",
+        body: "You see it live and ask for changes before anything is signed or launched.",
       },
       {
         title: "Launch & maintain",
-        body: "Once you're happy, it goes live. Updates to hours, menus, or services get handled as your business changes.",
+        body: "Once you're happy, it goes live — updates get handled as your business changes.",
       },
     ],
   },
@@ -186,9 +186,8 @@ export default function HowItWorks() {
         </div>
 
         <p className="mt-12 font-body text-sm text-text-muted">
-          The phone system runs quietly alongside your existing number and team —
-          it&apos;s a voice AI answering as your business, not a replacement for
-          either.
+          It runs quietly alongside your existing number and team — a voice AI
+          answering as your business, not a replacement for either.
         </p>
       </div>
     </section>

@@ -1,3 +1,8 @@
+"use client";
+
+import type { SyntheticEvent } from "react";
+import { captureEvent } from "@/lib/analytics";
+
 const faqs = [
   {
     question: "Does the AI receptionist replace my phone number or my staff?",
@@ -54,6 +59,14 @@ const faqJsonLd = {
   })),
 };
 
+function handleToggle(question: string) {
+  return (e: SyntheticEvent<HTMLDetailsElement>) => {
+    if (e.currentTarget.open) {
+      captureEvent("faq_expanded", { question });
+    }
+  };
+}
+
 export default function FAQ() {
   return (
     <section id="faq" className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
@@ -76,6 +89,7 @@ export default function FAQ() {
         {faqs.map((faq) => (
           <details
             key={faq.question}
+            onToggle={handleToggle(faq.question)}
             className="group rounded-panel border border-line bg-gradient-panel px-6 py-5 shadow-surface"
           >
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-base font-semibold text-text-primary sm:text-lg">

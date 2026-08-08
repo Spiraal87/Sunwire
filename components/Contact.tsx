@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { captureEvent } from "@/lib/analytics";
 import LeadForm from "./LeadForm";
 
 export default function Contact() {
@@ -8,14 +9,15 @@ export default function Contact() {
   const distance = prefersReducedMotion ? 0 : 20;
 
   return (
-    <section id="contact" className="bg-panel-2-textured px-6 py-16 sm:py-24">
+    <section id="contact" className="bg-panel-2-textured px-4 py-16 sm:px-6 sm:py-24">
       <div className="mx-auto max-w-6xl">
       <motion.div
         initial={{ opacity: 0, y: distance }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut" }}
-        className="rounded-panel border border-line bg-gradient-panel p-8 shadow-surface sm:p-14"
+        data-energy-marker="lead-form"
+        className="rounded-panel border border-line bg-panel p-6 shadow-surface sm:p-10 lg:p-14"
       >
         <div className="max-w-md">
           <h2 className="font-display text-2xl font-semibold sm:text-3xl">
@@ -46,6 +48,7 @@ export default function Contact() {
             </a>
             <a
               href="tel:+17194245680"
+              onClick={() => captureEvent("tel_link_clicked", { location: "contact_section" })}
               className="flex items-center gap-3 font-mono text-sm text-text-primary transition-colors hover:text-gold"
             >
               <span aria-hidden="true" className="h-2 w-2 shrink-0 rounded-full border border-coral" />

@@ -115,12 +115,36 @@ export default function EmberCallWidget() {
     <section
       ref={sectionRef}
       id="demo"
-      className="relative overflow-hidden bg-panel-2-textured px-6 py-16 sm:py-24"
+      className="relative overflow-hidden bg-panel-2-textured px-4 py-16 sm:px-6 sm:py-24"
+      style={{
+        // bg-panel-2-textured is a flat solid fill, so the section's own box
+        // has a hard edge wherever it meets the page above/below — fade the
+        // whole section (background, glow, card, content) into transparency
+        // right at its own top/bottom rather than stopping in a straight line.
+        maskImage: "linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%)",
+        WebkitMaskImage:
+          "linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%)",
+      }}
     >
-      <div className="relative mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-1/2 top-1/2 -z-0 h-[72%] w-[76%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(242,200,112,0.5) 0%, rgba(230,168,75,0.28) 45%, transparent 72%)",
+        }}
+      />
+      <div className="relative mx-auto max-w-6xl">
+      <motion.div
+        initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
+        animate={inView ? { opacity: 1, y: 0 } : undefined}
+        transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut" }}
+        className="rounded-panel border border-gold/30 bg-gradient-panel p-6 shadow-[0_0_70px_16px_rgba(230,168,75,0.38),0_0_160px_44px_rgba(211,138,52,0.2)] sm:p-10 lg:p-14"
+      >
+      <div className="grid items-center gap-12 md:grid-cols-2">
         <div className="md:col-start-1 md:row-start-1">
           <h1 className="mb-6 font-display text-4xl font-bold leading-[1.12] tracking-tight text-text-primary sm:text-5xl">
-            Your customer called after you closed.{" "}
+            Your customer called while you were away.{" "}
             <span className="gradient-text">Ember answered.</span>
           </h1>
 
@@ -309,6 +333,12 @@ export default function EmberCallWidget() {
           <div className="flex flex-wrap gap-3">
             <Link
               href="/calculator"
+              onClick={() =>
+                captureEvent("cta_clicked", {
+                  cta: "missed_call_calculator",
+                  placement: "homepage_ember_widget",
+                })
+              }
               className="rounded-btn bg-gradient-accent px-6 py-3.5 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
             >
               See what missed calls cost you
@@ -320,6 +350,8 @@ export default function EmberCallWidget() {
             real thing, live.
           </p>
         </div>
+      </div>
+      </motion.div>
       </div>
     </section>
   );

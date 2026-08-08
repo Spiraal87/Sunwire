@@ -88,7 +88,7 @@ function ScrollArrow({ direction, onClick }: { direction: "left" | "right"; onCl
       type="button"
       onClick={onClick}
       aria-label={direction === "left" ? "Scroll left" : "Scroll right"}
-      className={`absolute top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-highlight/80 bg-gold text-bg shadow-forge transition-all duration-200 hover:scale-105 hover:bg-highlight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-highlight focus-visible:ring-offset-2 focus-visible:ring-offset-panel active:scale-95 ${
+      className={`absolute top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gold/60 bg-panel/95 text-gold shadow-surface backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:border-gold hover:bg-panel focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-highlight focus-visible:ring-offset-2 focus-visible:ring-offset-panel active:scale-95 ${
         direction === "left" ? "left-2" : "right-2"
       }`}
     >

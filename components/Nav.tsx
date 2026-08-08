@@ -131,7 +131,7 @@ export default function Nav() {
             className="whitespace-nowrap rounded-btn bg-gradient-accent px-2 py-2 font-display text-[10px] font-semibold text-bg shadow-forge transition-all duration-200 hover:scale-[1.02] hover:brightness-110 sm:px-4 sm:py-2.5 sm:text-xs"
           >
             <span className="md:hidden">Hear It Live</span>
-            <span className="hidden md:inline">Talk to the AI Receptionist</span>
+            <span className="hidden md:inline">Talk to the AI Receptionist - Free</span>
           </Link>
         </div>
       </nav>
@@ -204,7 +204,7 @@ export default function Nav() {
               }}
               className="mt-3 inline-flex items-center justify-center rounded-btn bg-gradient-accent px-4 py-3 font-display text-sm font-semibold text-bg shadow-forge transition-all duration-200 hover:brightness-110"
             >
-              Talk to the AI Receptionist
+              Talk to the AI Receptionist - Free
             </Link>
           </div>
         </div>

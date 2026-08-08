@@ -30,17 +30,35 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative flex items-center lg:min-h-[82vh]">
+    <section
+      data-energy-marker="hero-bottom"
+      className="relative flex items-center lg:min-h-[82vh]"
+    >
       <div className="absolute inset-0 -z-20 overflow-hidden">
-        <Image
-          src="/images/hero-image3.png"
-          alt="Concentric forged metal rings around a glowing molten core, with circuit-like data lines radiating outward"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover brightness-110"
-          style={{ objectPosition: "68% center" }}
-        />
+        {prefersReducedMotion ? (
+          <Image
+            src="/images/hero-image3.png"
+            alt="Concentric forged metal rings around a glowing molten core, with circuit-like data lines radiating outward"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover brightness-110"
+            style={{ objectPosition: "68% center" }}
+          />
+        ) : (
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster="/images/hero-image3.png"
+            aria-label="Concentric forged metal rings around a glowing molten core, with circuit-like data lines radiating outward"
+            className="h-full w-full object-cover brightness-110"
+            style={{ objectPosition: "68% center" }}
+          >
+            <source src="/images/hero-video.mp4" type="video/mp4" />
+          </video>
+        )}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(8,8,10,0.94)_0%,rgba(8,8,10,0.78)_28%,rgba(8,8,10,0.28)_52%,rgba(8,8,10,0.04)_75%,rgba(8,8,10,0.15)_100%)]" />
       </div>
       <div
@@ -87,9 +105,9 @@ export default function Hero() {
                   placement: "hero",
                 })
               }
-              className="rounded-btn bg-gradient-accent px-6 py-3 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
+              className="w-full rounded-btn bg-gradient-accent px-6 py-3 text-center font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110 sm:w-auto"
             >
-              Talk to the AI Receptionist
+              Talk to the AI Receptionist - Free
             </a>
             <Link
               href="/calculator"
@@ -99,7 +117,7 @@ export default function Hero() {
                   placement: "hero",
                 })
               }
-              className="rounded-btn border border-text-secondary/50 bg-bg/70 px-6 py-3 font-display text-sm font-semibold text-text-primary shadow-surface backdrop-blur-md transition-all duration-200 hover:scale-[1.02] hover:border-text-primary hover:bg-panel/80"
+              className="w-full rounded-btn border border-text-secondary/50 bg-bg/70 px-6 py-3 text-center font-display text-sm font-semibold text-text-primary shadow-surface backdrop-blur-md transition-all duration-200 hover:scale-[1.02] hover:border-text-primary hover:bg-panel/80 sm:w-auto"
             >
               See What Missed Calls Cost You
             </Link>

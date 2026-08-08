@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import TrackedTelLink from "@/components/TrackedTelLink";
 
 export const metadata: Metadata = {
   title: "Terms of Service | Sunforge Digital",
@@ -116,9 +117,13 @@ export default function TermsPage() {
                 cdjohnsonzero@gmail.com
               </a>{" "}
               or{" "}
-              <a href="tel:+17194245680" className="text-text-primary underline hover:text-gold">
+              <TrackedTelLink
+                href="tel:+17194245680"
+                location="terms_page"
+                className="text-text-primary underline hover:text-gold"
+              >
                 719-424-5680
-              </a>
+              </TrackedTelLink>
               .
             </p>
           </section>
