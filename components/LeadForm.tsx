@@ -289,7 +289,7 @@ export default function LeadForm() {
         disabled={status === "submitting"}
         className="mt-2 rounded-btn bg-gradient-accent px-8 py-4 font-display text-base font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {status === "submitting" ? "Sending..." : "Send it my way"}
+        {status === "submitting" ? "Sending..." : "Send it our way"}
       </button>
 
       {status === "error" && (
