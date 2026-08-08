@@ -47,7 +47,7 @@ const tracks = [
   },
 ];
 
-export default function HowItWorks() {
+export default function HowItWorks({ backlit = false }: { backlit?: boolean }) {
   const prefersReducedMotion = useReducedMotion();
   const distance = prefersReducedMotion ? 0 : 20;
 
@@ -108,7 +108,7 @@ export default function HowItWorks() {
   };
 
   return (
-    <section id="how-it-works" className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
+    <section className="mx-auto max-w-6xl px-6 pb-16 pt-6 sm:pb-24 sm:pt-10">
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <h2 className="font-display text-2xl font-semibold sm:text-3xl">How it works</h2>
         <span className="font-mono text-xs uppercase tracking-[0.15em] text-text-muted">
@@ -116,7 +116,11 @@ export default function HowItWorks() {
         </span>
       </div>
 
-      <div className="rounded-panel border border-line bg-gradient-panel p-8 shadow-surface sm:p-10">
+      <div
+        className={`rounded-panel border bg-gradient-panel p-8 transition-colors transition-shadow duration-1000 ease-out sm:p-10 ${
+          backlit ? "border-gold/25 shadow-glow" : "border-line shadow-surface"
+        }`}
+      >
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-12">
           {tracks.map((track, trackIndex) => (
           <motion.div

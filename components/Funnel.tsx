@@ -155,7 +155,7 @@ function OrbRow({
   );
 }
 
-export default function Funnel() {
+export default function Funnel({ backlit = false }: { backlit?: boolean }) {
   const prefersReducedMotion = useReducedMotion();
   const distance = prefersReducedMotion ? 0 : 20;
 
@@ -188,7 +188,7 @@ export default function Funnel() {
   }
 
   return (
-    <section className="bg-panel-2-textured px-6 py-16 sm:py-24">
+    <section className="bg-panel-2-textured px-6 pb-16 pt-6 sm:pb-24 sm:pt-10">
       <div className="mx-auto max-w-6xl">
       <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
         <h2 className="font-display text-2xl font-semibold sm:text-3xl">
@@ -206,7 +206,9 @@ export default function Funnel() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut" }}
-        className="rounded-panel border border-line bg-gradient-panel p-8 shadow-surface sm:p-10"
+        className={`rounded-panel border bg-gradient-panel p-8 transition-colors transition-shadow duration-1000 ease-out sm:p-10 ${
+          backlit ? "border-gold/25 shadow-glow" : "border-line shadow-surface"
+        }`}
       >
         <div className="relative">
           {canScrollLeft && <ScrollArrow direction="left" onClick={() => scrollByAmount(-1)} />}

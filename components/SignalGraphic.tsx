@@ -3,6 +3,19 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
+// A ring arc wrapped RING_WRAP_EXTRA_DEGREES past a plain semicircle on each
+// end, so it dips slightly below the horizon rather than stopping exactly at
+// it. Endpoints derived by rotating the semicircle's 9-o'clock/3-o'clock
+// points further round the circle (see RING_WRAP_* constants above).
+function ringArcPath(centerX: number, horizonY: number, r: number) {
+  const dx = r * RING_WRAP_COS;
+  const dy = r * RING_WRAP_SIN;
+  const startX = centerX - dx;
+  const endX = centerX + dx;
+  const y = horizonY + dy;
+  return `M ${startX} ${y} A ${r} ${r} 0 1 1 ${endX} ${y}`;
+}
+
 function jaggedPath(startX: number, endX: number, baseY: number, seed: number) {
   const points: string[] = [];
   const segments = 24;
@@ -17,9 +30,12 @@ function jaggedPath(startX: number, endX: number, baseY: number, seed: number) {
 }
 
 const BASE_RADII = [42, 60, 78, 96, 114, 132];
-const RING_DRAW_DURATION = 1.2;
-const RING_BASE_DELAY = 0.3;
-const RING_STAGGER = 0.15;
+// Kept short — on a fast scroll, a divider can enter and leave the viewport
+// in well under a second, so the rings/beam/backlight sequence needs to
+// mostly finish before that happens, not assume a leisurely dwell time.
+const RING_DRAW_DURATION = 0.6;
+const RING_BASE_DELAY = 0.15;
+const RING_STAGGER = 0.07;
 const BASE_EMBERS = [
   { x: -14, delay: 0 },
   { x: 10, delay: 1.1 },
@@ -30,6 +46,19 @@ const BASE_EMBERS = [
 // the original output exactly: 140 - 132 and 170 - 132.
 const RING_GAP_CLEARANCE = 8;
 const RING_HEADROOM_CLEARANCE = 38;
+
+// Each ring is a semicircle by default (180°). Extending both ends by this
+// many degrees wraps the arc a bit further round instead of stopping dead at
+// the horizon line — 2x this value added to 180° is roughly an 18% longer
+// arc (16*2 = 32; 32/180 ≈ 18%).
+const RING_WRAP_EXTRA_DEGREES = 16;
+const RING_WRAP_EXTRA_RADIANS = (RING_WRAP_EXTRA_DEGREES * Math.PI) / 180;
+const RING_WRAP_COS = Math.cos(RING_WRAP_EXTRA_RADIANS);
+const RING_WRAP_SIN = Math.sin(RING_WRAP_EXTRA_RADIANS);
+// Real sweep of the wrapped arc, in radians — used instead of the plain-
+// semicircle Math.PI so the stroke-draw (dasharray/dashoffset) animation's
+// length matches the actual longer path instead of cutting off early.
+const RING_ARC_RADIANS = Math.PI + 2 * RING_WRAP_EXTRA_RADIANS;
 
 // The molten-core background image (sunforge-scroller.png) is a raster layer,
 // not part of the SVG viewBox, so it doesn't scale with the rings automatically.
@@ -54,17 +83,22 @@ const BASE_BEAM_WIDTH_PERCENT = 46;
 // is — nudged to visually match the sphere's actual center once rendered.
 const BEAM_VERTICAL_NUDGE_PERCENT = -0.1;
 const BEAM_HORIZONTAL_NUDGE_PERCENT = -0.5;
-const BEAM_FLICKER_DURATION = 0.5;
+const BEAM_FLICKER_DURATION = 0.3;
 const BEAM_PULSE_DURATION = 2.6;
 
 export default function SignalGraphic({
   inView,
   litCount = 1,
   ringScale = 1,
+  onIgnite,
 }: {
   inView: boolean;
   litCount?: number;
   ringScale?: number;
+  /** Called once, the instant the beam flare's flicker-in finishes and it
+   * settles into its resting pulse — lets whatever section sits below this
+   * divider react (see components/SectionDivider.tsx / app/page.tsx). */
+  onIgnite?: () => void;
 }) {
   const [reducedMotion, setReducedMotion] = useState(false);
 
@@ -112,11 +146,14 @@ export default function SignalGraphic({
   useEffect(() => {
     if (!inView || reducedMotion) return;
     const timer = setTimeout(
-      () => setBeamIgnited(true),
+      () => {
+        setBeamIgnited(true);
+        onIgnite?.();
+      },
       (ringsCompleteAt + BEAM_FLICKER_DURATION) * 1000
     );
     return () => clearTimeout(timer);
-  }, [inView, reducedMotion, ringsCompleteAt]);
+  }, [inView, reducedMotion, ringsCompleteAt, onIgnite]);
 
   return (
     <div className="relative aspect-[1200/340] w-full overflow-hidden">
@@ -254,11 +291,11 @@ export default function SignalGraphic({
       {/* Soft blurred glow pass behind the crisp arcs, for a molten/forged look */}
       <g filter="url(#moltenGlow)" opacity={0.8}>
         {rings.map((r, i) => {
-          const circumference = Math.PI * r;
+          const circumference = RING_ARC_RADIANS * r;
           return (
             <motion.path
               key={`glow-${r}`}
-              d={`M ${centerX - r} ${horizonY} A ${r} ${r} 0 0 1 ${centerX + r} ${horizonY}`}
+              d={ringArcPath(centerX, horizonY, r)}
               fill="none"
               stroke="url(#signalGradient)"
               strokeWidth={5}
@@ -289,12 +326,12 @@ export default function SignalGraphic({
       </g>
 
       {rings.map((r, i) => {
-        const circumference = Math.PI * r;
+        const circumference = RING_ARC_RADIANS * r;
 
         return (
           <motion.path
             key={r}
-            d={`M ${centerX - r} ${horizonY} A ${r} ${r} 0 0 1 ${centerX + r} ${horizonY}`}
+            d={ringArcPath(centerX, horizonY, r)}
             fill="none"
             stroke="url(#signalGradient)"
             strokeWidth={3}

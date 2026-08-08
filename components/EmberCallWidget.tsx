@@ -76,7 +76,7 @@ function CallTimerBadge({ reducedMotion }: { reducedMotion: boolean | null }) {
   );
 }
 
-export default function EmberCallWidget() {
+export default function EmberCallWidget({ backlit = false }: { backlit?: boolean }) {
   const prefersReducedMotion = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
   const inView = useInView(sectionRef, { once: true, margin: "-100px" });
@@ -114,8 +114,7 @@ export default function EmberCallWidget() {
   return (
     <section
       ref={sectionRef}
-      id="demo"
-      className="relative overflow-hidden bg-panel-2-textured px-4 py-16 sm:px-6 sm:py-24"
+      className="relative overflow-hidden bg-panel-2-textured px-4 pb-16 pt-6 sm:px-6 sm:pb-24 sm:pt-10"
       style={{
         // bg-panel-2-textured is a flat solid fill, so the section's own box
         // has a hard edge wherever it meets the page above/below — fade the
@@ -126,20 +125,14 @@ export default function EmberCallWidget() {
           "linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%)",
       }}
     >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/2 -z-0 h-[72%] w-[76%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(242,200,112,0.5) 0%, rgba(230,168,75,0.28) 45%, transparent 72%)",
-        }}
-      />
       <div className="relative mx-auto max-w-6xl">
       <motion.div
         initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
         animate={inView ? { opacity: 1, y: 0 } : undefined}
         transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut" }}
-        className="rounded-panel border border-gold/30 bg-gradient-panel p-6 shadow-[0_0_70px_16px_rgba(230,168,75,0.38),0_0_160px_44px_rgba(211,138,52,0.2)] sm:p-10 lg:p-14"
+        className={`rounded-panel border bg-gradient-panel p-6 transition-colors transition-shadow duration-1000 ease-out sm:p-10 lg:p-14 ${
+          backlit ? "border-gold/25 shadow-glow" : "border-line shadow-surface"
+        }`}
       >
       <div className="grid items-center gap-12 md:grid-cols-2">
         <div className="md:col-start-1 md:row-start-1">

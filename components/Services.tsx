@@ -47,12 +47,12 @@ const cards: Card[] = [
   },
 ];
 
-export default function Services() {
+export default function Services({ backlit = false }: { backlit?: boolean }) {
   const prefersReducedMotion = useReducedMotion();
   const distance = prefersReducedMotion ? 0 : 20;
 
   return (
-    <section id="services" className="bg-panel-2-textured px-6 py-16 sm:py-24">
+    <section className="bg-panel-2-textured px-6 pb-16 pt-6 sm:pt-10 sm:pb-24">
       <div className="mx-auto max-w-6xl">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <h2 className="font-display text-2xl font-semibold sm:text-3xl">How we help</h2>
@@ -61,7 +61,11 @@ export default function Services() {
           </span>
         </div>
 
-        <div className="grid grid-cols-1 overflow-hidden rounded-panel border border-line shadow-surface md:grid-cols-2">
+        <div
+          className={`grid grid-cols-1 overflow-hidden rounded-panel border transition-colors transition-shadow duration-1000 ease-out md:grid-cols-2 ${
+            backlit ? "border-gold/25 shadow-glow" : "border-line shadow-surface"
+          }`}
+        >
           {cards.map((card, i) => (
           <motion.div
             key={card.label}

@@ -5,23 +5,32 @@ import { motion, useInView, useReducedMotion } from "framer-motion";
 import SignalGraphic from "./SignalGraphic";
 
 export default function SectionDivider({
+  id,
   litCount = 1,
   tintSide,
   ringScale = 1,
+  onIgnite,
 }: {
+  /** When set, makes this divider (rather than the section below it) the
+   * in-page anchor target, so jumping to it keeps the forge graphic in view
+   * alongside the section title instead of scrolling past it. */
+  id?: string;
   litCount?: number;
   tintSide?: "top" | "bottom";
   ringScale?: number;
+  /** Forwarded to SignalGraphic — fires once the ring's beam flare ignites. */
+  onIgnite?: () => void;
 }) {
   const prefersReducedMotion = useReducedMotion();
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <div ref={ref} className="relative py-6 sm:py-10">
+    <div id={id} ref={ref} className="relative scroll-mt-20 pt-6 sm:scroll-mt-24 sm:pt-10">
       {tintSide === "top" && (
         <div
-          className="absolute left-1/2 top-0 h-1/2 w-screen -translate-x-1/2 bg-panel-2-textured"
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-0 h-1/2 w-screen -translate-x-1/2 bg-panel-2-textured"
           style={{
             // Fades out toward the divider's midpoint instead of stopping
             // there in a straight line.
@@ -32,7 +41,8 @@ export default function SectionDivider({
       )}
       {tintSide === "bottom" && (
         <div
-          className="absolute bottom-0 left-1/2 h-1/2 w-screen -translate-x-1/2 bg-panel-2-textured"
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-0 left-1/2 h-1/2 w-screen -translate-x-1/2 bg-panel-2-textured"
           style={{
             // Fades in from the divider's midpoint instead of starting there
             // in a straight line.
@@ -47,7 +57,7 @@ export default function SectionDivider({
         transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut" }}
         className="relative mx-auto max-w-2xl px-6 opacity-80"
       >
-        <SignalGraphic inView={inView} litCount={litCount} ringScale={ringScale} />
+        <SignalGraphic inView={inView} litCount={litCount} ringScale={ringScale} onIgnite={onIgnite} />
       </motion.div>
     </div>
   );

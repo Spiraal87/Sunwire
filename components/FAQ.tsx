@@ -69,7 +69,7 @@ function handleToggle(question: string) {
 
 export default function FAQ() {
   return (
-    <section id="faq" className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
+    <section id="faq" className="mx-auto max-w-6xl scroll-mt-20 px-6 py-16 sm:scroll-mt-24 sm:py-24">
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger

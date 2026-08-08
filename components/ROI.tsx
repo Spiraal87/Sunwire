@@ -13,14 +13,24 @@ const examples = [
     iconAlt: "Time saved icon",
     text: "Saving your office manager one hour each day means more time spent helping customers instead of answering repetitive questions.",
   },
+  {
+    icon: "/images/icon-receptionist.svg",
+    iconAlt: "AI receptionist icon",
+    text: "Answering the calls that come in after hours or during a rush - instead of sending them to voicemail - can turn a handful of missed opportunities into booked jobs every week.",
+  },
+  {
+    icon: "/images/icon-website.svg",
+    iconAlt: "Website icon",
+    text: "Showing up when someone searches for your service nearby is often the difference between a booked appointment and a call to your competitor instead.",
+  },
 ];
 
-export default function ROI() {
+export default function ROI({ backlit = false }: { backlit?: boolean }) {
   const prefersReducedMotion = useReducedMotion();
   const distance = prefersReducedMotion ? 0 : 20;
 
   return (
-    <section className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
+    <section className="mx-auto max-w-6xl px-6 pb-16 pt-6 sm:pb-24 sm:pt-10">
       <div className="mb-14 flex flex-wrap items-end justify-between gap-4">
         <h2 className="font-display text-2xl font-semibold sm:text-3xl">
           Small Improvements. Big Results.
@@ -42,7 +52,9 @@ export default function ROI() {
               ease: "easeOut",
               delay: i * 0.1,
             }}
-            className="rounded-panel border border-line bg-gradient-panel p-8 shadow-surface sm:p-10"
+            className={`rounded-panel border bg-gradient-panel p-8 transition-colors transition-shadow duration-1000 ease-out sm:p-10 ${
+              backlit ? "border-gold/25 shadow-glow" : "border-line shadow-surface"
+            }`}
           >
             <div className="flex items-center gap-3">
               <img src={example.icon} alt={example.iconAlt} width={80} height={80} className="h-8 w-8 sm:h-9 sm:w-9" />

@@ -66,7 +66,7 @@ export default function GlowBorder({
       };
 
   return (
-    <div ref={ref} className="pointer-events-none absolute -inset-px">
+    <div ref={ref} aria-hidden="true" className="pointer-events-none absolute -inset-px">
       {w > 0 && h > 0 && (
         <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} className="absolute inset-0 overflow-visible">
           <defs>
