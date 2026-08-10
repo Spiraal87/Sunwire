@@ -24,6 +24,10 @@ export function initializeAnalytics(): Promise<PostHog | null> {
         });
       }
 
+      if (new URLSearchParams(window.location.search).get("internal") === "1") {
+        posthog.register({ is_internal: true });
+      }
+
       return posthog;
     });
   }
