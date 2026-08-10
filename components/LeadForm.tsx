@@ -164,7 +164,7 @@ export default function LeadForm() {
         className="relative rounded-card border-2 border-gold/50 bg-gradient-panel p-5 sm:p-6"
       >
       <p className="mb-5 font-display text-sm font-semibold uppercase tracking-wide text-gold">
-        Tell me about your business
+        Tell us about your business
       </p>
 
       <div className="flex flex-col gap-4">

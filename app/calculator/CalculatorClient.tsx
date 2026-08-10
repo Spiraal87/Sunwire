@@ -123,6 +123,12 @@ export default function CalculatorClient() {
   const [showStickyBar, setShowStickyBar] = useState(false);
   const [openSection, setOpenSection] = useState<CalculatorSection | null>("calls");
   const leakCardRef = useRef<HTMLDivElement>(null);
+  const sectionRefs = useRef<Record<CalculatorSection, HTMLElement | null>>({
+    calls: null,
+    value: null,
+    time: null,
+  });
+  const isFirstOpenRef = useRef(true);
 
   const d = defaults[activeVertical];
 
@@ -190,6 +196,19 @@ export default function CalculatorClient() {
     setOpenSection((current) => (current === section ? null : section));
   }
 
+  // Centers whichever section the user just opened, so the sliders they
+  // clicked to reveal aren't left cut off above/below the viewport. Skipped
+  // on first render so the page doesn't jump on load for the default-open
+  // "calls" section.
+  useEffect(() => {
+    if (isFirstOpenRef.current) {
+      isFirstOpenRef.current = false;
+      return;
+    }
+    if (!openSection) return;
+    sectionRefs.current[openSection]?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [openSection]);
+
   return (
     <div className="calcRoot min-h-screen bg-bg">
       <div className="print:hidden">
@@ -207,15 +226,10 @@ export default function CalculatorClient() {
         <h1 className="font-display text-3xl font-semibold text-text-primary sm:text-4xl">
           What are missed calls actually costing you?
         </h1>
-
-        <div className="mt-6">
-          <h2 className="font-display text-xl font-semibold text-text-primary">
-            Personalize your estimate in 3 quick sections
-          </h2>
-          <p className="mt-2 font-body text-sm text-text-secondary">
-            Open each section and adjust the sliders. Your live result updates instantly.
-          </p>
-        </div>
+        <p className="lede mt-3 max-w-xl font-body text-sm text-text-secondary print:hidden">
+          Pick your business type, then adjust the sliders below — your estimate updates
+          instantly.
+        </p>
 
         <div className="tabs mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
           {tabs.map((tab) => (
@@ -239,13 +253,8 @@ export default function CalculatorClient() {
           ))}
         </div>
 
-        <p className="mx-auto mt-2 max-w-xl text-center font-body text-xs leading-relaxed text-text-secondary">
-          Defaults are industry-informed starting points, not a picture of your business. Adjust
-          them to match your actual numbers.
-        </p>
-
         <div className="card mt-3 overflow-hidden rounded-panel border border-line bg-[linear-gradient(160deg,#1d1713,#17120f)] shadow-surface">
-          <section>
+          <section ref={(el) => { sectionRefs.current.calls = el; }}>
             <button
               type="button"
               onClick={() => toggleSection("calls")}
@@ -260,9 +269,6 @@ export default function CalculatorClient() {
                 <span className="min-w-0">
                   <span className="block font-display text-base font-semibold text-text-primary">
                     Calls &amp; missed opportunities
-                  </span>
-                  <span className="mt-1 block font-body text-xs font-medium text-text-secondary">
-                    2 sliders + customer source · {openSection === "calls" ? "Open" : "Tap to adjust"}
                   </span>
                   <span className="mt-1 block font-mono text-[11px] text-gold">
                     {calls} calls/mo · {miss}% unanswered · {Math.round(locations)} {locations === 1 ? "location" : "locations"}
@@ -363,7 +369,10 @@ export default function CalculatorClient() {
             </div>
           </section>
 
-          <section className="border-t border-line">
+          <section
+            ref={(el) => { sectionRefs.current.value = el; }}
+            className="border-t border-line"
+          >
             <button
               type="button"
               onClick={() => toggleSection("value")}
@@ -378,9 +387,6 @@ export default function CalculatorClient() {
                 <span className="min-w-0">
                   <span className="block font-display text-base font-semibold text-text-primary">
                     Customer value &amp; capacity
-                  </span>
-                  <span className="mt-1 block font-body text-xs font-medium text-text-secondary">
-                    2 sliders · {openSection === "value" ? "Open" : "Tap to adjust"}
                   </span>
                   <span className="mt-1 block font-mono text-[11px] text-gold">
                     {fmt(value)} per job · {capacity}% available capacity
@@ -421,8 +427,7 @@ export default function CalculatorClient() {
 
               <div className="field mt-6">
                 <label className="flex items-baseline justify-between gap-3 font-body text-sm font-semibold text-text-primary">
-                  If every call got answered, how much of that extra business could you actually take on
-                  right now <span className="font-mono text-coral">{capacity}%</span>
+                  Extra capacity you could take on <span className="font-mono text-coral">{capacity}%</span>
                 </label>
                 <input
                   type="range"
@@ -434,14 +439,18 @@ export default function CalculatorClient() {
                   className="calc-slider mt-2"
                 />
                 <div className="hint mt-1.5 font-mono text-xs leading-relaxed text-text-secondary/85">
-                  Not every missed call is recoverable if you&apos;re already at capacity — this is
-                  normal, adjust honestly.
+                  If every missed call got answered, how much of that extra business could you
+                  actually take on right now? Not every one is recoverable if you&apos;re already
+                  at capacity — adjust honestly.
                 </div>
               </div>
             </div>
           </section>
 
-          <section className="border-t border-line">
+          <section
+            ref={(el) => { sectionRefs.current.time = el; }}
+            className="border-t border-line"
+          >
             <button
               type="button"
               onClick={() => toggleSection("time")}
@@ -456,9 +465,6 @@ export default function CalculatorClient() {
                 <span className="min-w-0">
                   <span className="block font-display text-base font-semibold text-text-primary">
                     Time spent on routine calls
-                  </span>
-                  <span className="mt-1 block font-body text-xs font-medium text-text-secondary">
-                    1 slider · {openSection === "time" ? "Open" : "Tap to adjust"}
                   </span>
                   <span className="mt-1 block font-mono text-[11px] text-gold">
                     {routineCallHours} hrs/week · {monthlyRoutineCallHours} hrs/month
@@ -482,7 +488,7 @@ export default function CalculatorClient() {
             >
               <div className="field">
                 <label className="flex items-baseline justify-between gap-3 font-body text-sm font-semibold text-text-primary">
-                  Hours a week you or your staff spend answering routine calls{" "}
+                  Time spent on routine calls{" "}
                   <span className="font-mono text-coral">{routineCallHours} hrs</span>
                 </label>
                 <input
@@ -495,9 +501,10 @@ export default function CalculatorClient() {
                   className="calc-slider mt-2"
                 />
                 <div className="hint mt-1.5 font-mono text-xs leading-relaxed text-text-secondary/85">
-                  Hours, menu, pricing, &quot;are you open Sunday&quot; - the same handful of
-                  questions, over and over. This one&apos;s entirely your own estimate, no industry
-                  number behind it.
+                  Hours a week you or your staff spend answering routine questions — hours, menu,
+                  pricing, &quot;are you open Sunday&quot; — the same handful of questions, over
+                  and over. This one&apos;s entirely your own estimate, no industry number behind
+                  it.
                 </div>
               </div>
             </div>
@@ -651,17 +658,50 @@ export default function CalculatorClient() {
           )}
         </div>
 
-        <div className="print-summary hidden rounded-panel border border-line bg-white p-8 print:block">
-          <div className="mb-4 border-b border-line pb-3">
-            <div className="font-mono text-xs font-semibold uppercase tracking-[0.1em] text-text-muted">
-              Business type
+        <div className="print-summary hidden rounded-panel border border-line bg-white p-6 print:block">
+          <div className="print-header mb-4 flex items-end justify-between border-b-2 border-line pb-3">
+            <div className="flex items-center gap-2.5">
+              <svg viewBox="0 0 300 300" aria-hidden="true" className="h-9 w-9 shrink-0">
+                <defs>
+                  <linearGradient id="printLogoGrad" x1="0%" y1="0%" x2="60%" y2="100%">
+                    <stop offset="0%" stopColor="#F2C98A" />
+                    <stop offset="45%" stopColor="#D99A50" />
+                    <stop offset="100%" stopColor="#A8672A" />
+                  </linearGradient>
+                </defs>
+                <circle cx="150" cy="150" r="138" fill="none" stroke="url(#printLogoGrad)" strokeWidth="20" />
+                <circle cx="150" cy="150" r="100" fill="none" stroke="url(#printLogoGrad)" strokeWidth="18" />
+                <circle cx="150" cy="150" r="66" fill="none" stroke="url(#printLogoGrad)" strokeWidth="16" />
+                <circle cx="150" cy="150" r="34" fill="none" stroke="url(#printLogoGrad)" strokeWidth="10" />
+              </svg>
+              <div>
+                <div className="print-brand font-display text-lg font-bold leading-tight tracking-tight">
+                  Sunforge Digital
+                </div>
+                <div className="print-accent font-mono text-[10px] font-semibold uppercase tracking-[0.18em]">
+                  Missed-Call Revenue Estimate
+                </div>
+              </div>
             </div>
-            <div className="font-display text-lg font-semibold text-text-primary">
-              {tabs.find((t) => t.key === activeVertical)?.label}
+            <div className="print-accent font-mono text-[10px] uppercase tracking-[0.1em]">
+              {new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
             </div>
           </div>
 
-          <div className="mb-4 grid grid-cols-2 gap-y-2 font-body text-sm text-text-primary">
+          <div className="mb-3 border-b border-line pb-2">
+            <div className="print-accent font-mono text-xs font-semibold uppercase tracking-[0.1em]">
+              Business type
+            </div>
+            <div className="font-display text-base font-semibold text-text-primary">
+              {tabs.find((t) => t.key === activeVertical)?.label}
+            </div>
+            <div className="mt-1 font-mono text-[10px] leading-relaxed text-text-secondary/85">
+              Reflects the business type and sliders as set on screen — defaults shown if left
+              unchanged. Adjust to match your own numbers before sharing.
+            </div>
+          </div>
+
+          <div className="mb-3 grid grid-cols-2 gap-y-1.5 font-body text-sm text-text-primary">
             <div>Calls per month</div>
             <div className="font-mono font-semibold">{calls}</div>
 
@@ -684,14 +724,14 @@ export default function CalculatorClient() {
             <div className="font-mono font-semibold">{monthlyRoutineCallHours} hrs</div>
           </div>
 
-          <div className="mb-4 border-t border-line pt-4">
-            <div className="font-mono text-xs font-semibold uppercase tracking-[0.1em] text-text-muted">
+          <div className="print-highlight mb-3 rounded-lg border border-line p-4">
+            <div className="print-accent font-mono text-xs font-semibold uppercase tracking-[0.1em]">
               Estimated monthly revenue leak
             </div>
-            <div className="mt-1 font-display text-3xl font-bold tabular-nums text-text-primary">
+            <div className="print-brand mt-1 font-display text-5xl font-bold leading-none tabular-nums">
               {fmtRange(monthlyLow, monthly)}
             </div>
-            <div className="mt-1 font-mono text-sm font-semibold tabular-nums text-text-primary">
+            <div className="mt-2 font-mono text-base font-semibold tabular-nums text-text-primary">
               {fmtRange(annualLow, annual)} / year
             </div>
             <div className="mt-1.5 font-mono text-xs leading-relaxed text-text-secondary/85">
@@ -699,20 +739,19 @@ export default function CalculatorClient() {
             </div>
           </div>
 
-          <div className="border-t border-line pt-4 font-body text-sm text-text-muted">
+          <div className="border-t border-line pt-3 font-body text-sm text-text-muted">
             <p>
-              This estimate multiplies your calls per month by your missed-call rate to get missed
-              calls, then applies the share of that business you said you could actually take on
-              right now to get recoverable calls. Recoverable calls are multiplied by your typical
-              job value and by your number of locations to get the top of the monthly range above;
-              the annual figure is simply that number times twelve. The low end of each range
-              applies a conservative 30% conversion rate, since not every recoverable call turns
-              into a paying customer even when a business has the capacity to take it.
+              This estimate multiplies your calls per month by your missed-call rate, then applies
+              the share of that business you said you could take on right now to get recoverable
+              calls — multiplied by your job value and locations for the top of the range above.
+              The low end applies a conservative 30% conversion rate, since not every recoverable
+              call converts. These are starting-point estimates from your own figures, not a
+              guarantee of results.
             </p>
-            <p className="mt-2">
-              These numbers are only as accurate as the inputs above — they&apos;re a
-              starting-point estimate based on your own figures, not a guarantee of results.
-            </p>
+          </div>
+
+          <div className="print-accent mt-4 border-t border-line pt-3 font-mono text-[10px] uppercase tracking-[0.14em]">
+            Prepared by Sunforge Digital · sunforgedigital.com · 719-424-5680
           </div>
         </div>
 
@@ -723,61 +762,30 @@ export default function CalculatorClient() {
             </summary>
             <div className="mt-4 space-y-3 font-body text-sm text-text-muted">
               <p>
-                These are decent starting points, not verified facts about any specific business.
-                They&apos;re the most commonly repeated figures in this space, but the primary
-                sources behind them are thinner than the volume of citations suggests — several
-                trace back to a single dated study, or to companies that sell phone-answering
-                products and have a direct interest in the number being large. Treat every default
-                here as directional, not authoritative.
+                These are decent starting points, not verified facts about your business — most
+                trace back to thin, sometimes self-interested sources, so treat every default as
+                directional, not authoritative. The one exception is the home-services
+                value-per-job range, which draws on independent Service Roundtable contractor
+                data.
               </p>
               <p>
-                The one figure in this tool backed by an independent source with no stake in the
-                outcome is the home-services value-per-job range, which draws on Service Roundtable
-                contractor benchmarking data. Everything else — restaurant miss rates, call volumes
-                across every vertical, and all nightlife/VIP figures — is a reasonable planning
-                assumption, not a citation you should repeat as settled fact.
+                Two sliders — extra capacity and routine-call time — have no industry benchmark on
+                purpose. They&apos;re your own judgment call, not a citation, which is why they
+                start as a reasonable range instead of a hard number.
               </p>
               <p className="text-text-muted-dark">
-                This calculator exists to get a conversation started, not to hand over a defensible
-                number. The only real number is the one built from your own actual call volume and
-                average ticket — which is exactly what the sliders above are for.
-              </p>
-              <p>
-                Two sliders have no benchmark behind them at all, on purpose. The first is
-                &quot;how much of that extra business could you actually take on.&quot; Not every
-                missed call is free money - if you&apos;re already at capacity, answering more
-                calls doesn&apos;t create more tables, techs, or hours in the day. That&apos;s
-                entirely your judgment call, not an industry number, which is why it starts around
-                35-70% depending on the business type instead of 100%.
-              </p>
-              <p>
-                The second is the weekly routine-call estimate. There isn&apos;t a trustworthy
-                universal benchmark for how many hours your team burns on repetitive phone questions,
-                and pretending there is would make the tool look more precise than it really is. That
-                one should come straight from your own gut check of how often the phone pulls someone
-                away from real work.
-              </p>
-              <p>
-                The automatic &quot;lower end&quot; pop-up compares your number only to this tool&apos;s own
-                starting assumption for your business type, not an external industry standard —
-                treat it as a prompt to double-check, not a diagnosis.
-              </p>
-              <p>
-                A few more things worth knowing. For order-driven businesses, some of this
-                &quot;loss&quot; isn&apos;t fully gone — a customer who can&apos;t get through
-                sometimes orders through a delivery app instead, so part of the number above is
-                really a margin loss (the commission cut), not a total loss. This estimate also
-                isn&apos;t a promise of what any solution recovers — it&apos;s the size of the gap
-                today, not a guaranteed result after a fix. And it assumes a fairly typical month;
-                real call volume swings with season, weather, and local events, so treat this as a
-                representative month, not an annual guarantee.
+                A few more caveats: the automatic pop-up only compares you to this tool&apos;s own
+                assumption, not an industry standard. Some of this &quot;loss&quot; is really a
+                margin hit (a customer ordering through a delivery app instead), not a total loss,
+                and it&apos;s not a guarantee — just the size of today&apos;s gap in a typical
+                month.
               </p>
             </div>
           </details>
         </div>
 
-        <p className="mt-10 font-mono text-xs text-text-muted-dark">
-          Prepared by Sunforge Digital &middot; cdjohnsonzero@gmail.com
+        <p className="mt-10 font-mono text-xs text-text-muted-dark print:hidden">
+          Prepared by Sunforge Digital &middot; sunforgedigital.com &middot; 719-424-5680
         </p>
       </main>
 
@@ -969,25 +977,41 @@ export default function CalculatorClient() {
           .calcRoot {
             background: #fff !important;
           }
+          main {
+            padding: 0.5rem 1.5rem !important;
+          }
+          h1 {
+            margin-bottom: 0 !important;
+            font-size: 1.5rem !important;
+          }
           .tabs,
           .card,
-          .leak-visual {
-            display: none !important;
-          }
-          .method :global(summary) {
-            display: none !important;
-          }
-          .method :global(summary) ~ :global(*) {
-            display: none !important;
-          }
+          .leak-visual,
           .method {
-            background: #fff !important;
-            border: 2px solid #1b2040 !important;
+            display: none !important;
           }
           .print-summary {
             display: block !important;
+            margin-top: 1rem !important;
             background: #fff !important;
-            border: 2px solid #1b2040 !important;
+            border: 2px solid #b3762c !important;
+            border-radius: 14px !important;
+          }
+          .print-summary :global(.border-line) {
+            border-color: #e7cfa3 !important;
+          }
+          .print-header {
+            border-bottom-color: #b3762c !important;
+          }
+          .print-highlight {
+            background: #fbf3e6 !important;
+            border-color: #e7cfa3 !important;
+          }
+          .print-brand {
+            color: #a8672a !important;
+          }
+          .print-accent {
+            color: #b3762c !important;
           }
         }
       `}</style>

@@ -37,15 +37,8 @@ export default function Contact() {
 
           <div className="flex flex-col gap-4 md:w-2/5 md:border-l md:border-line md:pl-10">
             <p className="font-body text-xs uppercase tracking-wide text-text-muted-dark">
-              Or reach me directly
+              Or reach us directly
             </p>
-            <a
-              href="mailto:cdjohnsonzero@gmail.com"
-              className="flex items-center gap-3 font-mono text-sm text-text-primary transition-colors hover:text-gold"
-            >
-              <span aria-hidden="true" className="h-2 w-2 shrink-0 rounded-full border border-coral" />
-              cdjohnsonzero@gmail.com
-            </a>
             <a
               href="tel:+17194245680"
               onClick={() => captureEvent("tel_link_clicked", { location: "contact_section" })}
