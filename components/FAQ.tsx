@@ -15,6 +15,11 @@ const faqs = [
       "It's configured around your hours, services, pricing, and the questions your customers actually ask. When a call comes in that would otherwise go unanswered, it talks through what the caller needs, checks real-time availability, and books the appointment straight onto your calendar — or takes a detailed message if it can't. You're notified right away with a summary of the call.",
   },
   {
+    question: "Does it work with my existing calendar or CRM?",
+    answer:
+      "Yes — it's built to slot in alongside what you already use, not replace it. No new software for your team to learn, no rip-and-replace. Every setup is a little different, so tell me what you're on and I'll confirm exactly how it connects before we build anything.",
+  },
+  {
     question: "Will it sound robotic?",
     answer:
       "You don't have to take our word for it — call the interactive demo line yourself and hear how it handles a real conversation before deciding anything. The voice itself is customizable too: you can choose from hundreds of different receptionist voices, in multiple languages, to match how you want your business to sound.",
