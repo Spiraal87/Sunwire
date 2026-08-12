@@ -781,7 +781,7 @@ export default function CalculatorClient() {
           </details>
         </div>
 
-        <section className="mt-14 print:hidden">
+        <section className="relative left-1/2 mt-14 w-[calc(100vw-3rem)] max-w-6xl -translate-x-1/2 print:hidden">
           <p className="font-mono text-xs font-semibold uppercase tracking-[0.22em] text-[#8ea3b5]">
             Resources
           </p>
@@ -794,9 +794,9 @@ export default function CalculatorClient() {
               compare to traditional answering services, start here.
             </p>
           </div>
-          <div className="mt-4 grid gap-4">
-            <div className="rounded-panel border border-[#345064] bg-[linear-gradient(160deg,#121920,#0d1217)] p-6 shadow-[0_18px_40px_rgba(4,8,12,0.28)] sm:p-8">
-              <p className="font-display text-2xl font-semibold text-text-primary sm:text-3xl">
+          <div className="mt-4 grid gap-4 lg:grid-cols-3">
+            <div className="flex h-full flex-col rounded-panel border border-[#345064] bg-[linear-gradient(160deg,#121920,#0d1217)] p-6 shadow-[0_18px_40px_rgba(4,8,12,0.28)] sm:p-8">
+              <p className="font-display text-xl font-semibold text-text-primary sm:text-2xl">
                 How much do missed calls actually cost a local business?
               </p>
               <p className="mt-3 max-w-2xl font-body text-sm leading-relaxed text-text-secondary">
@@ -807,15 +807,15 @@ export default function CalculatorClient() {
                 href="/resources/missed-call-cost"
                 cta="resource_missed_call_cost"
                 placement="calculator_resource_section"
-                className="mt-6 inline-flex items-center gap-2 font-mono text-sm font-semibold uppercase tracking-[0.12em] text-[#9ec6da] transition-colors hover:text-text-primary"
+                className="mt-auto inline-flex items-center gap-2 pt-6 font-mono text-sm font-semibold uppercase tracking-[0.12em] text-[#9ec6da] transition-colors hover:text-text-primary"
               >
                 Read more
                 <span aria-hidden="true">-&gt;</span>
               </TrackedLink>
             </div>
 
-            <div className="rounded-panel border border-[#345064] bg-[linear-gradient(160deg,#121920,#0d1217)] p-6 shadow-[0_18px_40px_rgba(4,8,12,0.28)] sm:p-8">
-              <p className="font-display text-2xl font-semibold text-text-primary sm:text-3xl">
+            <div className="flex h-full flex-col rounded-panel border border-[#345064] bg-[linear-gradient(160deg,#121920,#0d1217)] p-6 shadow-[0_18px_40px_rgba(4,8,12,0.28)] sm:p-8">
+              <p className="font-display text-xl font-semibold text-text-primary sm:text-2xl">
                 Why your website still matters: SEO, GEO, and conversions
               </p>
               <p className="mt-3 max-w-2xl font-body text-sm leading-relaxed text-text-secondary">
@@ -826,15 +826,15 @@ export default function CalculatorClient() {
                 href="/resources/website-seo-geo-conversions"
                 cta="resource_website_seo_geo_conversions"
                 placement="calculator_resource_section"
-                className="mt-6 inline-flex items-center gap-2 font-mono text-sm font-semibold uppercase tracking-[0.12em] text-[#9ec6da] transition-colors hover:text-text-primary"
+                className="mt-auto inline-flex items-center gap-2 pt-6 font-mono text-sm font-semibold uppercase tracking-[0.12em] text-[#9ec6da] transition-colors hover:text-text-primary"
               >
                 Read more
                 <span aria-hidden="true">-&gt;</span>
               </TrackedLink>
             </div>
 
-            <div className="rounded-panel border border-[#345064] bg-[linear-gradient(160deg,#121920,#0d1217)] p-6 shadow-[0_18px_40px_rgba(4,8,12,0.28)] sm:p-8">
-              <p className="font-display text-2xl font-semibold text-text-primary sm:text-3xl">
+            <div className="flex h-full flex-col rounded-panel border border-[#345064] bg-[linear-gradient(160deg,#121920,#0d1217)] p-6 shadow-[0_18px_40px_rgba(4,8,12,0.28)] sm:p-8">
+              <p className="font-display text-xl font-semibold text-text-primary sm:text-2xl">
                 AI receptionist vs. answering service: what&apos;s the difference?
               </p>
               <p className="mt-3 max-w-2xl font-body text-sm leading-relaxed text-text-secondary">
@@ -845,7 +845,7 @@ export default function CalculatorClient() {
                 href="/resources/ai-receptionist-vs-answering-service"
                 cta="resource_ai_vs_answering_service"
                 placement="calculator_resource_section"
-                className="mt-6 inline-flex items-center gap-2 font-mono text-sm font-semibold uppercase tracking-[0.12em] text-[#9ec6da] transition-colors hover:text-text-primary"
+                className="mt-auto inline-flex items-center gap-2 pt-6 font-mono text-sm font-semibold uppercase tracking-[0.12em] text-[#9ec6da] transition-colors hover:text-text-primary"
               >
                 Read more
                 <span aria-hidden="true">-&gt;</span>
