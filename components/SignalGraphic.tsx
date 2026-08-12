@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
+
+const MotionImage = motion(Image);
 
 // A ring arc wrapped RING_WRAP_EXTRA_DEGREES past a plain semicircle on each
 // end, so it dips slightly below the horizon rather than stopping exactly at
@@ -157,11 +160,13 @@ export default function SignalGraphic({
 
   return (
     <div className="relative aspect-[1200/340] w-full overflow-hidden">
-      <img
+      <Image
         src="/images/sunforge-scroller.png"
         alt=""
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 max-w-none -translate-x-1/2 select-none"
+        width={1536}
+        height={1024}
+        className="pointer-events-none absolute left-1/2 h-auto max-w-none -translate-x-1/2 select-none"
         style={{
           width: `${imgWidthPercent}%`,
           top: `${imgTopPercent}%`,
@@ -169,11 +174,13 @@ export default function SignalGraphic({
           maskImage: "linear-gradient(to bottom, black 0%, black 42%, transparent 55%)",
         }}
       />
-      <motion.img
+      <MotionImage
         src="/images/energy%20beam%20core.png"
         alt=""
         aria-hidden="true"
-        className="pointer-events-none absolute max-w-none select-none mix-blend-screen"
+        width={1536}
+        height={1024}
+        className="pointer-events-none absolute h-auto max-w-none select-none mix-blend-screen"
         style={{
           width: `${beamWidthPercent}%`,
           top: `${beamTopPercent}%`,

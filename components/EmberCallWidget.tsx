@@ -136,10 +136,10 @@ export default function EmberCallWidget({ backlit = false }: { backlit?: boolean
       >
       <div className="grid items-center gap-12 md:grid-cols-2">
         <div className="md:col-start-1 md:row-start-1">
-          <h1 className="mb-6 font-display text-4xl font-bold leading-[1.12] tracking-tight text-text-primary sm:text-5xl">
+          <h2 className="mb-6 font-display text-4xl font-bold leading-[1.12] tracking-tight text-text-primary sm:text-5xl">
             Your customer called while you were away.{" "}
             <span className="gradient-text">Ember answered.</span>
-          </h1>
+          </h2>
 
           <p className="max-w-lg font-body text-lg leading-relaxed text-text-muted">
             Ember is our AI receptionist demo. She answers every call, books

@@ -3,9 +3,17 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import TrackedTelLink from "@/components/TrackedTelLink";
 
+const DESCRIPTION =
+  "How Sunforge Digital handles information collected through this website and the AI demo line.";
+
 export const metadata: Metadata = {
-  title: "Privacy Policy | Sunforge Digital",
-  description: "How Sunforge Digital handles information collected through this website and the AI demo line.",
+  title: "Privacy Policy",
+  description: DESCRIPTION,
+  openGraph: {
+    title: "Privacy Policy | Sunforge Digital",
+    description: DESCRIPTION,
+    type: "website",
+  },
 };
 
 export default function PrivacyPage() {

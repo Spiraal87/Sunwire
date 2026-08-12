@@ -8,6 +8,9 @@ Sunforge Digital builds two things: AI phone receptionists that answer calls a b
 
 - [Homepage](https://sunforgedigital.com/): Overview of both services, how the AI receptionist and website process work step by step, a before/after comparison of missed-call outcomes, and frequently asked questions.
 - [Missed Call Revenue Calculator](https://sunforgedigital.com/calculator): Interactive tool estimating monthly and annual revenue lost to missed calls, based on the user's own call volume, miss rate, job value, and capacity — explicitly framed as a starting-point estimate, not a guarantee.
+- [Resources](https://sunforgedigital.com/resources): Hub of answer-focused guides about missed calls and AI phone receptionists.
+  - [How Much Do Missed Calls Actually Cost a Local Business?](https://sunforgedigital.com/resources/missed-call-cost): Breaks down what a missed call costs, the math behind the estimate, and why generic industry averages are unreliable on their own.
+  - [AI Receptionist vs. Answering Service: What's the Difference?](https://sunforgedigital.com/resources/ai-receptionist-vs-answering-service): Compares how traditional live answering services and AI phone receptionists actually work, and when each fits.
 - [Privacy Policy](https://sunforgedigital.com/privacy)
 - [Terms of Service](https://sunforgedigital.com/terms)
 

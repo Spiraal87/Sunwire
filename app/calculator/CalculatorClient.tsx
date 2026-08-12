@@ -119,7 +119,6 @@ export default function CalculatorClient() {
   const [routineCallHours, setRoutineCallHours] = useState(6);
   const [customerSource, setCustomerSource] = useState<CustomerSourceKey>("mix");
   const [dismissedSourceModal, setDismissedSourceModal] = useState(false);
-  const [demoNumberRevealed, setDemoNumberRevealed] = useState(false);
   const [showStickyBar, setShowStickyBar] = useState(false);
   const [openSection, setOpenSection] = useState<CalculatorSection | null>("calls");
   const leakCardRef = useRef<HTMLDivElement>(null);
@@ -255,6 +254,7 @@ export default function CalculatorClient() {
 
         <div className="card mt-3 overflow-hidden rounded-panel border border-line bg-[linear-gradient(160deg,#1d1713,#17120f)] shadow-surface">
           <section ref={(el) => { sectionRefs.current.calls = el; }}>
+            <h2>
             <button
               type="button"
               onClick={() => toggleSection("calls")}
@@ -286,6 +286,7 @@ export default function CalculatorClient() {
                 </svg>
               </span>
             </button>
+            </h2>
             <div
               id="calculator-calls-section"
               className={`${openSection === "calls" ? "block" : "hidden"} px-5 pb-6 md:px-8 md:pb-8`}
@@ -373,6 +374,7 @@ export default function CalculatorClient() {
             ref={(el) => { sectionRefs.current.value = el; }}
             className="border-t border-line"
           >
+            <h2>
             <button
               type="button"
               onClick={() => toggleSection("value")}
@@ -404,6 +406,7 @@ export default function CalculatorClient() {
                 </svg>
               </span>
             </button>
+            </h2>
             <div
               id="calculator-value-section"
               className={`${openSection === "value" ? "block" : "hidden"} px-5 pb-6 md:px-8 md:pb-8`}
@@ -451,6 +454,7 @@ export default function CalculatorClient() {
             ref={(el) => { sectionRefs.current.time = el; }}
             className="border-t border-line"
           >
+            <h2>
             <button
               type="button"
               onClick={() => toggleSection("time")}
@@ -482,6 +486,7 @@ export default function CalculatorClient() {
                 </svg>
               </span>
             </button>
+            </h2>
             <div
               id="calculator-time-section"
               className={`${openSection === "time" ? "block" : "hidden"} px-5 pb-6 md:px-8 md:pb-8`}
@@ -625,37 +630,28 @@ export default function CalculatorClient() {
             growing. Hear it work on a real line before you decide anything.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <a
-              href="tel:6233039061"
-              onClick={() => {
-                setDemoNumberRevealed(true);
-                captureEvent("demo_call_started", { placement: "calculator_results" });
-              }}
+            <Link
+              href="/#demo"
+              onClick={() =>
+                captureEvent("demo_call_started", { placement: "calculator_results" })
+              }
               className="rounded-btn bg-gradient-accent px-6 py-3 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
             >
               Talk to the AI Receptionist
-            </a>
-            <a
-              href="mailto:cdjohnsonzero@gmail.com?subject=My%20missed-call%20numbers"
+            </Link>
+            <Link
+              href="/#contact"
               onClick={() =>
                 captureEvent("contact_clicked", {
-                  method: "email",
+                  method: "form",
                   placement: "calculator_results",
                 })
               }
               className="rounded-btn border border-line px-6 py-3 font-mono text-sm text-text-primary transition-colors hover:border-gold hover:text-gold"
             >
               Get in touch
-            </a>
+            </Link>
           </div>
-          {demoNumberRevealed && (
-            <a
-              href="tel:6233039061"
-              className="mt-3 inline-block font-mono text-sm text-text-muted transition-colors hover:text-gold"
-            >
-              623-303-9061
-            </a>
-          )}
         </div>
 
         <div className="print-summary hidden rounded-panel border border-line bg-white p-6 print:block">

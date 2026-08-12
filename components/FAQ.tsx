@@ -1,7 +1,5 @@
-"use client";
-
-import type { SyntheticEvent } from "react";
-import { captureEvent } from "@/lib/analytics";
+import FaqItem from "./FaqItem";
+import TrackedLink from "./TrackedLink";
 
 const faqs = [
   {
@@ -64,14 +62,6 @@ const faqJsonLd = {
   })),
 };
 
-function handleToggle(question: string) {
-  return (e: SyntheticEvent<HTMLDetailsElement>) => {
-    if (e.currentTarget.open) {
-      captureEvent("faq_expanded", { question });
-    }
-  };
-}
-
 export default function FAQ() {
   return (
     <section id="faq" className="mx-auto max-w-6xl scroll-mt-20 px-6 py-16 sm:scroll-mt-24 sm:py-24">
@@ -92,24 +82,31 @@ export default function FAQ() {
 
       <div className="space-y-3">
         {faqs.map((faq) => (
-          <details
-            key={faq.question}
-            onToggle={handleToggle(faq.question)}
-            className="group rounded-panel border border-line bg-gradient-panel px-6 py-5 shadow-surface"
-          >
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-base font-semibold text-text-primary sm:text-lg">
-              {faq.question}
-              <span
-                aria-hidden="true"
-                className="relative h-4 w-4 shrink-0 text-text-secondary"
-              >
-                <span className="absolute left-1/2 top-1/2 h-px w-4 -translate-x-1/2 -translate-y-1/2 bg-current" />
-                <span className="absolute left-1/2 top-1/2 h-4 w-px -translate-x-1/2 -translate-y-1/2 bg-current transition-transform duration-200 group-open:rotate-90" />
-              </span>
-            </summary>
+          <FaqItem key={faq.question} question={faq.question}>
             <p className="mt-3 font-body text-sm text-text-muted">{faq.answer}</p>
-          </details>
+          </FaqItem>
         ))}
+      </div>
+
+      <div className="mt-8 flex flex-wrap items-center gap-x-2 gap-y-1 font-body text-sm text-text-muted">
+        <span>Want the fuller breakdown?</span>
+        <TrackedLink
+          href="/resources/missed-call-cost"
+          cta="resources_missed_call_cost"
+          placement="homepage_faq"
+          className="text-text-primary underline hover:text-gold"
+        >
+          What missed calls actually cost
+        </TrackedLink>
+        <span aria-hidden="true">&middot;</span>
+        <TrackedLink
+          href="/resources/ai-receptionist-vs-answering-service"
+          cta="resources_ai_vs_answering_service"
+          placement="homepage_faq"
+          className="text-text-primary underline hover:text-gold"
+        >
+          AI receptionist vs. answering service
+        </TrackedLink>
       </div>
     </section>
   );

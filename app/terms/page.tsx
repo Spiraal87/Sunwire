@@ -3,9 +3,17 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import TrackedTelLink from "@/components/TrackedTelLink";
 
+const DESCRIPTION =
+  "The terms that apply to using the Sunforge Digital website and AI demo line.";
+
 export const metadata: Metadata = {
-  title: "Terms of Service | Sunforge Digital",
-  description: "The terms that apply to using the Sunforge Digital website and AI demo line.",
+  title: "Terms of Service",
+  description: DESCRIPTION,
+  openGraph: {
+    title: "Terms of Service | Sunforge Digital",
+    description: DESCRIPTION,
+    type: "website",
+  },
 };
 
 export default function TermsPage() {
