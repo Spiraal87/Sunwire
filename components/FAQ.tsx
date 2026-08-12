@@ -107,6 +107,15 @@ export default function FAQ() {
         >
           AI receptionist vs. answering service
         </TrackedLink>
+        <span aria-hidden="true">&middot;</span>
+        <TrackedLink
+          href="/resources/website-seo-geo-conversions"
+          cta="resources_website_seo_geo"
+          placement="homepage_faq"
+          className="text-text-primary underline hover:text-gold"
+        >
+          Website, SEO, and AI search
+        </TrackedLink>
       </div>
     </section>
   );

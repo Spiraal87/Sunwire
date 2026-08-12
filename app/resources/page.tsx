@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 const DESCRIPTION =
-  "Straight answers about missed calls, AI phone receptionists, and what they actually cost or save a local business.";
+  "Straight answers about missed calls, AI phone receptionists, websites, SEO, AI search visibility, and what they actually cost or save a local business.";
 
 export const metadata: Metadata = {
   title: "Resources",
@@ -27,6 +27,12 @@ const articles = [
     summary:
       "How AI phone receptionists and traditional answering services actually differ, and how to tell which one fits a local business.",
   },
+  {
+    href: "/resources/website-seo-geo-conversions",
+    title: "Why Your Website Still Matters: SEO, GEO, and Conversions for Local Businesses",
+    summary:
+      "A plain-English look at why local-business websites still matter, how SEO and AI-search visibility overlap, and how better conversion paths affect revenue.",
+  },
 ];
 
 export default function ResourcesPage() {
@@ -39,8 +45,8 @@ export default function ResourcesPage() {
         Guides &amp; Resources
       </h1>
       <p className="mt-3 max-w-xl font-body text-sm text-text-secondary">
-        Straight answers about missed calls, AI phone receptionists, and what they actually cost
-        or save a local business — no guesswork, no inflated claims.
+        Straight answers about missed calls, AI phone receptionists, websites, SEO, and AI search
+        visibility for local businesses - no guesswork, no inflated claims.
       </p>
 
       <div className="mt-10 space-y-4">

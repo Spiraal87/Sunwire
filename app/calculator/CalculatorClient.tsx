@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import TrackedLink from "@/components/TrackedLink";
 import { captureEvent } from "@/lib/analytics";
 
 type VerticalKey = "restaurant" | "home" | "club" | "other";
@@ -779,6 +780,79 @@ export default function CalculatorClient() {
             </div>
           </details>
         </div>
+
+        <section className="mt-14 print:hidden">
+          <p className="font-mono text-xs font-semibold uppercase tracking-[0.22em] text-[#8ea3b5]">
+            Resources
+          </p>
+          <div className="mt-3 max-w-2xl">
+            <h2 className="font-display text-3xl font-semibold text-text-primary sm:text-4xl">
+              Keep reading
+            </h2>
+            <p className="mt-3 font-body text-sm leading-relaxed text-text-secondary">
+              If you want the deeper breakdown behind missed-call math or how AI receptionists
+              compare to traditional answering services, start here.
+            </p>
+          </div>
+          <div className="mt-4 grid gap-4">
+            <div className="rounded-panel border border-[#345064] bg-[linear-gradient(160deg,#121920,#0d1217)] p-6 shadow-[0_18px_40px_rgba(4,8,12,0.28)] sm:p-8">
+              <p className="font-display text-2xl font-semibold text-text-primary sm:text-3xl">
+                How much do missed calls actually cost a local business?
+              </p>
+              <p className="mt-3 max-w-2xl font-body text-sm leading-relaxed text-text-secondary">
+                What a missed call really costs, how to estimate your own number, and why generic
+                industry averages only get you so far.
+              </p>
+              <TrackedLink
+                href="/resources/missed-call-cost"
+                cta="resource_missed_call_cost"
+                placement="calculator_resource_section"
+                className="mt-6 inline-flex items-center gap-2 font-mono text-sm font-semibold uppercase tracking-[0.12em] text-[#9ec6da] transition-colors hover:text-text-primary"
+              >
+                Read more
+                <span aria-hidden="true">-&gt;</span>
+              </TrackedLink>
+            </div>
+
+            <div className="rounded-panel border border-[#345064] bg-[linear-gradient(160deg,#121920,#0d1217)] p-6 shadow-[0_18px_40px_rgba(4,8,12,0.28)] sm:p-8">
+              <p className="font-display text-2xl font-semibold text-text-primary sm:text-3xl">
+                Why your website still matters: SEO, GEO, and conversions
+              </p>
+              <p className="mt-3 max-w-2xl font-body text-sm leading-relaxed text-text-secondary">
+                Why a local-business website still matters, how SEO and AI-search visibility
+                overlap, and how better conversion paths affect revenue.
+              </p>
+              <TrackedLink
+                href="/resources/website-seo-geo-conversions"
+                cta="resource_website_seo_geo_conversions"
+                placement="calculator_resource_section"
+                className="mt-6 inline-flex items-center gap-2 font-mono text-sm font-semibold uppercase tracking-[0.12em] text-[#9ec6da] transition-colors hover:text-text-primary"
+              >
+                Read more
+                <span aria-hidden="true">-&gt;</span>
+              </TrackedLink>
+            </div>
+
+            <div className="rounded-panel border border-[#345064] bg-[linear-gradient(160deg,#121920,#0d1217)] p-6 shadow-[0_18px_40px_rgba(4,8,12,0.28)] sm:p-8">
+              <p className="font-display text-2xl font-semibold text-text-primary sm:text-3xl">
+                AI receptionist vs. answering service: what&apos;s the difference?
+              </p>
+              <p className="mt-3 max-w-2xl font-body text-sm leading-relaxed text-text-secondary">
+                How AI phone receptionists and traditional answering services actually differ, and
+                how to tell which one fits a local business.
+              </p>
+              <TrackedLink
+                href="/resources/ai-receptionist-vs-answering-service"
+                cta="resource_ai_vs_answering_service"
+                placement="calculator_resource_section"
+                className="mt-6 inline-flex items-center gap-2 font-mono text-sm font-semibold uppercase tracking-[0.12em] text-[#9ec6da] transition-colors hover:text-text-primary"
+              >
+                Read more
+                <span aria-hidden="true">-&gt;</span>
+              </TrackedLink>
+            </div>
+          </div>
+        </section>
 
         <p className="mt-10 font-mono text-xs text-text-muted-dark print:hidden">
           Prepared by Sunforge Digital &middot; sunforgedigital.com &middot; 719-424-5680

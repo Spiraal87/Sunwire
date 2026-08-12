@@ -30,6 +30,9 @@ const ROUTE_SOURCES: Record<string, string[]> = {
   "/resources/ai-receptionist-vs-answering-service": [
     "app/resources/ai-receptionist-vs-answering-service/page.tsx",
   ],
+  "/resources/website-seo-geo-conversions": [
+    "app/resources/website-seo-geo-conversions/page.tsx",
+  ],
   "/privacy": ["app/privacy/page.tsx"],
   "/terms": ["app/terms/page.tsx"],
 };
