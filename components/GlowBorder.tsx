@@ -1,17 +1,72 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
-const DEFAULT_RADIUS = 20;
-const GLOW_STROKE_WIDTH = 9;
-const LINE_STROKE_WIDTH = 2.5;
+// Dim baseline ring - always fully present, doesn't move. Gives the border a
+// constant presence even before/without the comet passing over any given spot.
+const BASE_RING = "linear-gradient(135deg, #F2C870, #E6A84B 50%, #D38A34)";
+
+// A bright arc (~16deg core, soft fades on either side) surrounded by
+// transparent for the rest of the circle. Rotating this continuously reads
+// as a distinct light "chasing" around the ring, rather than the whole ring
+// shifting hue at once.
+const COMET =
+  "conic-gradient(from 0deg, transparent 0deg, transparent 10deg, #F2C870 40deg, #FFF3D6 48deg, #F2C870 56deg, transparent 90deg, transparent 360deg)";
+const COMET_LAP_SECONDS = 4.5;
+
+// A ring rendered via the CSS "padding + mask-composite: exclude" trick: the
+// mask carves out the content-box, leaving only the padding area (the ring)
+// visible. The gradient itself lives on an oversized child that rotates
+// freely underneath the (static) mask, so the highlight sweeps around the
+// ring without the ring's own geometry ever moving - unlike rotating the
+// whole element, which would visibly tilt a non-square card's corners.
+function MaskedRing({
+  padding,
+  blur,
+  opacity,
+  background,
+  rotate,
+}: {
+  padding: number;
+  blur?: number;
+  opacity: number;
+  background: string;
+  rotate: boolean;
+}) {
+  return (
+    <div
+      className="pointer-events-none absolute inset-0 overflow-hidden"
+      style={{
+        borderRadius: "inherit",
+        padding,
+        opacity,
+        filter: blur ? `blur(${blur}px)` : undefined,
+        WebkitMask:
+          "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0) border-box",
+        mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0) border-box",
+        WebkitMaskComposite: "xor",
+        maskComposite: "exclude",
+      }}
+    >
+      {rotate ? (
+        <motion.div
+          className="absolute inset-[-50%]"
+          style={{ background }}
+          animate={{ rotate: 360 }}
+          transition={{ duration: COMET_LAP_SECONDS, ease: "linear", repeat: Infinity }}
+        />
+      ) : (
+        <div className="absolute inset-0" style={{ background }} />
+      )}
+    </div>
+  );
+}
 
 export default function GlowBorder({
   inView,
   delay = 0,
-  duration = 2.6,
-  radius = DEFAULT_RADIUS,
+  duration = 1.4,
+  radius = 20,
 }: {
   inView: boolean;
   delay?: number;
@@ -19,98 +74,36 @@ export default function GlowBorder({
   radius?: number;
 }) {
   const prefersReducedMotion = useReducedMotion();
-  const gradientId = useId();
-  const filterId = useId();
-  const ref = useRef<HTMLDivElement>(null);
-  const [size, setSize] = useState({ w: 0, h: 0 });
-  const [hasDrawn, setHasDrawn] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current?.parentElement;
-    if (!el) return;
-
-    const updateSize = () => {
-      const { width, height } = el.getBoundingClientRect();
-      setSize({ w: width, h: height });
-    };
-
-    updateSize();
-
-    const observer = new ResizeObserver(() => {
-      updateSize();
-    });
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  const { w, h } = size;
-  const revealed = prefersReducedMotion || hasDrawn;
-  const glowInset = GLOW_STROKE_WIDTH / 2;
-  const lineInset = LINE_STROKE_WIDTH / 2;
-  const glowWidth = Math.max(0, w - GLOW_STROKE_WIDTH);
-  const glowHeight = Math.max(0, h - GLOW_STROKE_WIDTH);
-  const lineWidth = Math.max(0, w - LINE_STROKE_WIDTH);
-  const lineHeight = Math.max(0, h - LINE_STROKE_WIDTH);
-  const glowRadius = Math.max(0, Math.min(radius, glowWidth / 2, glowHeight / 2));
-  const lineRadius = Math.max(0, Math.min(radius, lineWidth / 2, lineHeight / 2));
-
-  const drawProps = revealed
-    ? {}
-    : {
-        initial: { pathLength: 0 },
-        animate: inView ? { pathLength: 1 } : { pathLength: 0 },
-        transition: !inView ? { duration: 0 } : { duration, delay, ease: "easeInOut" },
-        onAnimationComplete: () => {
-          if (inView) setHasDrawn(true);
-        },
-      };
+  const canAnimate = !prefersReducedMotion;
 
   return (
-    <div ref={ref} aria-hidden="true" className="pointer-events-none absolute -inset-px">
-      {w > 0 && h > 0 && (
-        <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} className="absolute inset-0 overflow-visible">
-          <defs>
-            <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#F2C870" />
-              <stop offset="50%" stopColor="#E6A84B" />
-              <stop offset="100%" stopColor="#D38A34" />
-            </linearGradient>
-            <filter id={filterId} x="-60%" y="-60%" width="220%" height="220%">
-              <feGaussianBlur stdDeviation="7" />
-            </filter>
-          </defs>
+    <motion.div
+      aria-hidden="true"
+      className="pointer-events-none absolute -inset-px"
+      style={{ borderRadius: radius }}
+      initial={{ opacity: 0 }}
+      animate={inView ? { opacity: 1 } : { opacity: 0 }}
+      transition={{
+        duration: prefersReducedMotion ? 0 : duration,
+        delay: prefersReducedMotion ? 0 : delay,
+        ease: "easeOut",
+      }}
+    >
+      <MaskedRing
+        padding={2.5}
+        opacity={canAnimate ? 0.55 : 1}
+        background={BASE_RING}
+        rotate={false}
+      />
 
-          <motion.rect
-            x={glowInset}
-            y={glowInset}
-            width={glowWidth}
-            height={glowHeight}
-            rx={glowRadius}
-            ry={glowRadius}
-            fill="none"
-            stroke={`url(#${gradientId})`}
-            strokeWidth={GLOW_STROKE_WIDTH}
-            strokeLinejoin="round"
-            filter={`url(#${filterId})`}
-            opacity={0.9}
-            {...drawProps}
-          />
-
-          <motion.rect
-            x={lineInset}
-            y={lineInset}
-            width={lineWidth}
-            height={lineHeight}
-            rx={lineRadius}
-            ry={lineRadius}
-            fill="none"
-            stroke={`url(#${gradientId})`}
-            strokeWidth={LINE_STROKE_WIDTH}
-            strokeLinejoin="round"
-            {...drawProps}
-          />
-        </svg>
+      {canAnimate && (
+        <>
+          {/* soft glow trail following the comet */}
+          <MaskedRing padding={7} blur={6} opacity={0.8} background={COMET} rotate />
+          {/* crisp bright comet on top */}
+          <MaskedRing padding={2.5} opacity={1} background={COMET} rotate />
+        </>
       )}
-    </div>
+    </motion.div>
   );
 }
