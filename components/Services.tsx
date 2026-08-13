@@ -16,7 +16,7 @@ type Card = {
   ctaLabel?: string;
 };
 
-const cards: Card[] = [
+const defaultCards: Card[] = [
   {
     id: "card-ai-receptionists",
     icon: "/images/icon-receptionist.svg",
@@ -47,7 +47,17 @@ const cards: Card[] = [
   },
 ];
 
-export default function Services({ backlit = false }: { backlit?: boolean }) {
+export default function Services({
+  backlit = false,
+  heading = "How we help",
+  eyebrow = "Two ways we drive growth",
+  cards = defaultCards,
+}: {
+  backlit?: boolean;
+  heading?: string;
+  eyebrow?: string;
+  cards?: Card[];
+}) {
   const prefersReducedMotion = useReducedMotion();
   const distance = prefersReducedMotion ? 0 : 20;
 
@@ -55,9 +65,9 @@ export default function Services({ backlit = false }: { backlit?: boolean }) {
     <section className="bg-panel-2-textured px-6 pb-16 pt-6 sm:pt-10 sm:pb-24">
       <div className="mx-auto max-w-6xl">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
-          <h2 className="font-display text-2xl font-semibold sm:text-3xl">How we help</h2>
+          <h2 className="font-display text-2xl font-semibold sm:text-3xl">{heading}</h2>
           <span className="font-mono text-xs uppercase tracking-[0.15em] text-text-muted">
-            Two ways we drive growth
+            {eyebrow}
           </span>
         </div>
 

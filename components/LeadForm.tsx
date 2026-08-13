@@ -64,9 +64,16 @@ type FieldErrors = Partial<Record<keyof FormState, string>>;
 const inputClasses =
   "w-full rounded-btn border border-white/15 bg-bg px-3 py-2.5 font-mono text-sm text-text-primary placeholder:text-text-muted-dark transition-colors focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/40";
 
-export default function LeadForm() {
+export default function LeadForm({
+  defaultBusinessType = "",
+}: {
+  defaultBusinessType?: string;
+}) {
   const prefersReducedMotion = useReducedMotion();
-  const [form, setForm] = useState<FormState>(INITIAL_STATE);
+  const [form, setForm] = useState<FormState>({
+    ...INITIAL_STATE,
+    businessType: defaultBusinessType,
+  });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 

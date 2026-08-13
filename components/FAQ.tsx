@@ -1,7 +1,9 @@
 import FaqItem from "./FaqItem";
 import TrackedLink from "./TrackedLink";
 
-const faqs = [
+export type FaqEntry = { question: string; answer: string };
+
+const defaultFaqs: FaqEntry[] = [
   {
     question: "Does the AI receptionist replace my phone number or my staff?",
     answer:
@@ -49,20 +51,28 @@ const faqs = [
   },
 ];
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqs.map((faq) => ({
-    "@type": "Question",
-    name: faq.question,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: faq.answer,
-    },
-  })),
-};
+export default function FAQ({
+  faqs = defaultFaqs,
+  heading = "Frequently Asked Questions",
+  eyebrow = "Straight answers",
+}: {
+  faqs?: FaqEntry[];
+  heading?: string;
+  eyebrow?: string;
+}) {
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  };
 
-export default function FAQ() {
   return (
     <section id="faq" className="mx-auto max-w-6xl scroll-mt-20 px-6 py-16 sm:scroll-mt-24 sm:py-24">
       <script
@@ -73,10 +83,10 @@ export default function FAQ() {
 
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <h2 className="font-display text-2xl font-semibold sm:text-3xl">
-          Frequently Asked Questions
+          {heading}
         </h2>
         <span className="font-mono text-xs uppercase tracking-[0.15em] text-text-muted">
-          Straight answers
+          {eyebrow}
         </span>
       </div>
 

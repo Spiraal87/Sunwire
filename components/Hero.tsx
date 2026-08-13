@@ -1,11 +1,85 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { captureEvent } from "@/lib/analytics";
 
-export default function Hero() {
+type HeroCta = {
+  label: string;
+  href: string;
+  cta: string;
+  placement: string;
+};
+
+const DEFAULT_HEADING = (
+  <>
+    Capture more customers.{" "}
+    <span className="gradient-text">Miss fewer calls.</span>
+  </>
+);
+
+const DEFAULT_SUBHEAD =
+  "Digital systems — AI receptionists and websites — that help local businesses capture every opportunity, book more jobs, and save valuable time.";
+
+const DEFAULT_PRIMARY_CTA: HeroCta = {
+  label: "Talk to the AI Receptionist - Free",
+  href: "#demo",
+  cta: "ai_receptionist_demo",
+  placement: "hero",
+};
+
+const DEFAULT_SECONDARY_CTA: HeroCta = {
+  label: "See What Missed Calls Cost You",
+  href: "/calculator",
+  cta: "missed_call_calculator",
+  placement: "hero",
+};
+
+// Hash anchors and non-http(s) schemes (tel:, mailto:) need a plain <a> —
+// only same-app paths benefit from Next's client-side <Link> navigation.
+function isInternalPath(href: string) {
+  return href.startsWith("/") && !href.startsWith("//");
+}
+
+function HeroCtaLink({
+  cta,
+  className,
+}: {
+  cta: HeroCta;
+  className: string;
+}) {
+  const onClick = () => captureEvent("cta_clicked", { cta: cta.cta, placement: cta.placement });
+
+  if (isInternalPath(cta.href)) {
+    return (
+      <Link href={cta.href} onClick={onClick} className={className}>
+        {cta.label}
+      </Link>
+    );
+  }
+
+  return (
+    <a href={cta.href} onClick={onClick} className={className}>
+      {cta.label}
+    </a>
+  );
+}
+
+export default function Hero({
+  eyebrow = "Digital Systems",
+  heading = DEFAULT_HEADING,
+  subhead = DEFAULT_SUBHEAD,
+  primaryCta = DEFAULT_PRIMARY_CTA,
+  secondaryCta = DEFAULT_SECONDARY_CTA,
+}: {
+  eyebrow?: string;
+  heading?: ReactNode;
+  subhead?: string;
+  primaryCta?: HeroCta;
+  secondaryCta?: HeroCta;
+}) {
   const prefersReducedMotion = useReducedMotion();
 
   const distance = prefersReducedMotion ? 0 : 16;
@@ -75,7 +149,7 @@ export default function Hero() {
           <motion.div variants={item} className="mb-6 flex items-center gap-3">
             <span aria-hidden="true" className="h-px w-8 bg-text-muted/60" />
             <span className="font-mono text-xs uppercase tracking-[0.2em] text-text-secondary">
-              Digital Systems
+              {eyebrow}
             </span>
           </motion.div>
 
@@ -83,44 +157,25 @@ export default function Hero() {
             variants={item}
             className="max-w-3xl font-display text-4xl font-semibold leading-tight tracking-tight sm:text-5xl sm:leading-tight md:text-6xl md:leading-tight"
           >
-            Capture more customers.{" "}
-            <span className="gradient-text">Miss fewer calls.</span>
+            {heading}
           </motion.h1>
 
           <motion.p
             variants={item}
             className="mt-6 max-w-xl font-body text-base text-text-muted sm:text-lg"
           >
-            Digital systems — AI receptionists and websites — that help local
-            businesses capture every opportunity, book more jobs, and save
-            valuable time.
+            {subhead}
           </motion.p>
 
           <motion.div variants={item} className="mt-8 flex flex-wrap items-center gap-4">
-            <a
-              href="#demo"
-              onClick={() =>
-                captureEvent("cta_clicked", {
-                  cta: "ai_receptionist_demo",
-                  placement: "hero",
-                })
-              }
+            <HeroCtaLink
+              cta={primaryCta}
               className="w-full rounded-btn bg-gradient-accent px-6 py-3 text-center font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110 sm:w-auto"
-            >
-              Talk to the AI Receptionist - Free
-            </a>
-            <Link
-              href="/calculator"
-              onClick={() =>
-                captureEvent("cta_clicked", {
-                  cta: "missed_call_calculator",
-                  placement: "hero",
-                })
-              }
+            />
+            <HeroCtaLink
+              cta={secondaryCta}
               className="w-full rounded-btn border border-text-secondary/50 bg-bg/70 px-6 py-3 text-center font-display text-sm font-semibold text-text-primary shadow-surface backdrop-blur-md transition-all duration-200 hover:scale-[1.02] hover:border-text-primary hover:bg-panel/80 sm:w-auto"
-            >
-              See What Missed Calls Cost You
-            </Link>
+            />
           </motion.div>
         </motion.div>
       </div>

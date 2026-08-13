@@ -24,7 +24,17 @@ const ROUTE_SOURCES: Record<string, string[]> = {
     "components/Nav.tsx",
   ],
   "/about": ["app/about/page.tsx"],
-  "/calculator": ["app/calculator/page.tsx"],
+  "/calculator": ["app/calculator/page.tsx", "components/CalculatorWidget.tsx", "lib/calculator.ts"],
+  "/hvac": [
+    "app/hvac/page.tsx",
+    "app/hvac/HvacClient.tsx",
+    "components/Hero.tsx",
+    "components/Services.tsx",
+    "components/CalculatorTeaser.tsx",
+    "lib/calculator.ts",
+    "components/FAQ.tsx",
+    "components/Contact.tsx",
+  ],
   "/resources": ["app/resources/page.tsx"],
   "/resources/missed-call-cost": ["app/resources/missed-call-cost/page.tsx"],
   "/resources/ai-receptionist-vs-answering-service": [

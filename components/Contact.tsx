@@ -4,7 +4,15 @@ import { motion, useReducedMotion } from "framer-motion";
 import { captureEvent } from "@/lib/analytics";
 import LeadForm from "./LeadForm";
 
-export default function Contact() {
+export default function Contact({
+  heading = "Let's Find Your Biggest Opportunity.",
+  body = "No pressure. No hard sales pitch. Just a conversation about where your business may be losing customers and how technology can help.",
+  defaultBusinessType,
+}: {
+  heading?: string;
+  body?: string;
+  defaultBusinessType?: string;
+}) {
   const prefersReducedMotion = useReducedMotion();
   const distance = prefersReducedMotion ? 0 : 20;
 
@@ -21,18 +29,16 @@ export default function Contact() {
       >
         <div className="max-w-md">
           <h2 className="font-display text-2xl font-semibold sm:text-3xl">
-            Let&apos;s Find Your Biggest Opportunity.
+            {heading}
           </h2>
           <p className="mt-4 font-body text-text-muted">
-            No pressure. No hard sales pitch. Just a conversation about
-            where your business may be losing customers and how technology
-            can help.
+            {body}
           </p>
         </div>
 
         <div className="relative mt-10 flex flex-col gap-10 md:flex-row md:items-start">
           <div className="md:w-3/5">
-            <LeadForm />
+            <LeadForm defaultBusinessType={defaultBusinessType} />
           </div>
 
           <div className="flex flex-col gap-4 md:w-2/5 md:border-l md:border-line md:pl-10">

@@ -7,71 +7,13 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import TrackedLink from "@/components/TrackedLink";
 import { captureEvent } from "@/lib/analytics";
-
-type VerticalKey = "restaurant" | "home" | "club" | "other";
-
-type VerticalDefaults = {
-  calls: number;
-  miss: number;
-  value: number;
-  cap: number;
-  hintCalls: string;
-  hintMiss: string;
-  hintValue: string;
-  hintCap: string;
-};
-
-const defaults: Record<VerticalKey, VerticalDefaults> = {
-  restaurant: {
-    calls: 300,
-    miss: 33,
-    value: 65,
-    cap: 55,
-    hintCalls: "Typical full-service restaurant/bar",
-    hintMiss: "Washington Hospitality Assoc. benchmark",
-    hintValue: "Blended order + reservation value",
-    hintCap:
-      "Peak-hour tables/kitchen throughput is fixed, but off-peak nights and to-go orders usually have real room.",
-  },
-  home: {
-    calls: 250,
-    miss: 28,
-    value: 210,
-    cap: 70,
-    hintCalls: "Typical single-location HVAC/plumbing/electrical shop",
-    hintMiss: "Home-services industry benchmark",
-    hintValue: "Blended service call + repair value",
-    hintCap:
-      "Most missed calls become a future scheduled job, not an instant one — capacity is more flexible than same-day capacity suggests.",
-  },
-  club: {
-    calls: 60,
-    miss: 27,
-    value: 500,
-    cap: 35,
-    hintCalls: "VIP / private-event inquiry calls only",
-    hintMiss: "Rough placeholder — no vertical-specific study exists",
-    hintValue: "Conservative VIP table minimum, secondary market",
-    hintCap:
-      "VIP tables are genuinely fixed inventory on busy nights — recoverable share is usually smaller than other verticals.",
-  },
-  other: {
-    calls: 200,
-    miss: 30,
-    value: 120,
-    cap: 50,
-    hintCalls: "General small-business estimate",
-    hintMiss: "General SMB benchmark",
-    hintValue: "General estimate — adjust to your own average sale",
-    hintCap: "Depends heavily on the business — adjust to how often you're actually turning away work.",
-  },
-};
+import { defaults, verticalLabels, fmt, fmtRange, computeLeak, type VerticalKey } from "@/lib/calculator";
 
 const tabs: { key: VerticalKey; label: string }[] = [
-  { key: "restaurant", label: "Restaurant / Bar" },
-  { key: "home", label: "Home Services" },
-  { key: "club", label: "Bar / Nightlife" },
-  { key: "other", label: "Other / Retail" },
+  { key: "restaurant", label: verticalLabels.restaurant },
+  { key: "home", label: verticalLabels.home },
+  { key: "club", label: verticalLabels.club },
+  { key: "other", label: verticalLabels.other },
 ];
 
 type CustomerSourceKey = "referral" | "mix" | "online";
@@ -82,21 +24,6 @@ const customerSourceOptions: { key: CustomerSourceKey; label: string }[] = [
   { key: "mix", label: "A mix" },
   { key: "online", label: "Online" },
 ];
-
-function fmt(n: number) {
-  return "$" + Math.round(n).toLocaleString("en-US");
-}
-
-function fmtRange(low: number, high: number) {
-  return `${fmt(low)}–${fmt(high)}`;
-}
-
-// Not every recoverable call converts into a paying customer even once the
-// business has the capacity to take it — some are comparison shopping, some
-// don't follow through regardless. The capacity input already discounts for
-// supply (can they serve it); this floor discounts for demand (would the
-// caller actually convert). Flat across all business types for now.
-const CONVERSION_RATE_FLOOR = 0.3;
 
 function getSourceNote(source: CustomerSourceKey, verticalLabel: string): string {
   switch (source) {
@@ -110,13 +37,23 @@ function getSourceNote(source: CustomerSourceKey, verticalLabel: string): string
   }
 }
 
-export default function CalculatorClient() {
-  const [activeVertical, setActiveVertical] = useState<VerticalKey>("restaurant");
-  const [calls, setCalls] = useState(defaults.restaurant.calls);
-  const [miss, setMiss] = useState(defaults.restaurant.miss);
-  const [value, setValue] = useState(defaults.restaurant.value);
+// Used both as the full standalone /calculator page (showChrome, the
+// default) and embedded inline within a vertical landing page's own section
+// (showChrome=false) — in the latter case the host page supplies its own
+// Nav/Footer/heading, so this renders just the interactive tool itself.
+export default function CalculatorWidget({
+  defaultVertical = "restaurant",
+  showChrome = true,
+}: {
+  defaultVertical?: VerticalKey;
+  showChrome?: boolean;
+}) {
+  const [activeVertical, setActiveVertical] = useState<VerticalKey>(defaultVertical);
+  const [calls, setCalls] = useState(defaults[defaultVertical].calls);
+  const [miss, setMiss] = useState(defaults[defaultVertical].miss);
+  const [value, setValue] = useState(defaults[defaultVertical].value);
   const [locationsInput, setLocationsInput] = useState("1");
-  const [capacity, setCapacity] = useState(defaults.restaurant.cap);
+  const [capacity, setCapacity] = useState(defaults[defaultVertical].cap);
   const [routineCallHours, setRoutineCallHours] = useState(6);
   const [customerSource, setCustomerSource] = useState<CustomerSourceKey>("mix");
   const [dismissedSourceModal, setDismissedSourceModal] = useState(false);
@@ -128,7 +65,6 @@ export default function CalculatorClient() {
     value: null,
     time: null,
   });
-  const isFirstOpenRef = useRef(true);
 
   const d = defaults[activeVertical];
 
@@ -149,14 +85,13 @@ export default function CalculatorClient() {
   }
 
   const locations = Math.max(1, Number(locationsInput) || 1);
-  const missPct = miss / 100;
-  const capPct = capacity / 100;
-  const missedCalls = calls * missPct * locations;
-  const recoverable = missedCalls * capPct;
-  const monthly = recoverable * value;
-  const annual = monthly * 12;
-  const monthlyLow = monthly * CONVERSION_RATE_FLOOR;
-  const annualLow = annual * CONVERSION_RATE_FLOOR;
+  const { monthly, annual, monthlyLow, annualLow } = computeLeak({
+    calls,
+    missPct: miss,
+    value,
+    capacityPct: capacity,
+    locations,
+  });
   const monthlyRoutineCallHours = Math.round((routineCallHours * 52) / 12);
   const isBelowCallThreshold = calls < d.calls * 0.6;
   const showSourceModal = isBelowCallThreshold && !dismissedSourceModal;
@@ -192,44 +127,54 @@ export default function CalculatorClient() {
     leakCardRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
+  // Centers whichever section the user just opened, so the sliders they
+  // clicked to reveal aren't left cut off above/below the viewport. Triggered
+  // directly from the click (not a useEffect keyed on openSection) so it only
+  // ever fires from real user interaction, never on mount — a
+  // mount-tracking-ref version of this broke under React 18 Strict Mode's
+  // double effect invocation, firing an unwanted scroll on page load.
   function toggleSection(section: CalculatorSection) {
-    setOpenSection((current) => (current === section ? null : section));
+    const opening = openSection !== section;
+    setOpenSection(opening ? section : null);
+    if (!opening) return;
+    requestAnimationFrame(() => {
+      sectionRefs.current[section]?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
   }
 
-  // Centers whichever section the user just opened, so the sliders they
-  // clicked to reveal aren't left cut off above/below the viewport. Skipped
-  // on first render so the page doesn't jump on load for the default-open
-  // "calls" section.
-  useEffect(() => {
-    if (isFirstOpenRef.current) {
-      isFirstOpenRef.current = false;
-      return;
-    }
-    if (!openSection) return;
-    sectionRefs.current[openSection]?.scrollIntoView({ behavior: "smooth", block: "center" });
-  }, [openSection]);
+  const Wrapper = showChrome ? "main" : "div";
 
   return (
     <div className="calcRoot min-h-screen bg-bg">
-      <div className="print:hidden">
-        <Nav />
-      </div>
+      {showChrome && (
+        <div className="print:hidden">
+          <Nav />
+        </div>
+      )}
 
-      <main className="mx-auto max-w-3xl px-6 py-16 sm:py-24">
-        <Link
-          href="/"
-          className="mb-8 inline-flex items-center gap-1.5 font-mono text-sm font-semibold uppercase tracking-wider text-text-secondary transition-colors hover:text-text-primary print:hidden"
-        >
-          <span aria-hidden="true">←</span> Back to Sunforge Digital
-        </Link>
+      <Wrapper
+        className={
+          showChrome ? "mx-auto max-w-3xl px-6 py-16 sm:py-24" : "mx-auto max-w-3xl"
+        }
+      >
+        {showChrome && (
+          <>
+            <Link
+              href="/"
+              className="mb-8 inline-flex items-center gap-1.5 font-mono text-sm font-semibold uppercase tracking-wider text-text-secondary transition-colors hover:text-text-primary print:hidden"
+            >
+              <span aria-hidden="true">←</span> Back to Sunforge Digital
+            </Link>
 
-        <h1 className="font-display text-3xl font-semibold text-text-primary sm:text-4xl">
-          What are missed calls actually costing you?
-        </h1>
-        <p className="lede mt-3 max-w-xl font-body text-sm text-text-secondary print:hidden">
-          Pick your business type, then adjust the sliders below — your estimate updates
-          instantly.
-        </p>
+            <h1 className="font-display text-3xl font-semibold text-text-primary sm:text-4xl">
+              What are missed calls actually costing you?
+            </h1>
+            <p className="lede mt-3 max-w-xl font-body text-sm text-text-secondary print:hidden">
+              Pick your business type, then adjust the sliders below — your estimate updates
+              instantly.
+            </p>
+          </>
+        )}
 
         <div className="tabs mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
           {tabs.map((tab) => (
@@ -781,87 +726,93 @@ export default function CalculatorClient() {
           </details>
         </div>
 
-        <section className="relative left-1/2 mt-14 w-[calc(100vw-3rem)] max-w-6xl -translate-x-1/2 print:hidden">
-          <p className="font-mono text-xs font-semibold uppercase tracking-[0.22em] text-[#8ea3b5]">
-            Resources
-          </p>
-          <div className="mt-3 max-w-2xl">
-            <h2 className="font-display text-3xl font-semibold text-text-primary sm:text-4xl">
-              Keep reading
-            </h2>
-            <p className="mt-3 font-body text-sm leading-relaxed text-text-secondary">
-              If you want the deeper breakdown behind missed-call math or how AI receptionists
-              compare to traditional answering services, start here.
+        {showChrome && (
+          <>
+            <section className="relative left-1/2 mt-14 w-[calc(100vw-3rem)] max-w-6xl -translate-x-1/2 print:hidden">
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.22em] text-[#8ea3b5]">
+                Resources
+              </p>
+              <div className="mt-3 max-w-2xl">
+                <h2 className="font-display text-3xl font-semibold text-text-primary sm:text-4xl">
+                  Keep reading
+                </h2>
+                <p className="mt-3 font-body text-sm leading-relaxed text-text-secondary">
+                  If you want the deeper breakdown behind missed-call math or how AI receptionists
+                  compare to traditional answering services, start here.
+                </p>
+              </div>
+              <div className="mt-4 grid gap-4 lg:grid-cols-3">
+                <div className="flex h-full flex-col rounded-panel border border-[#345064] bg-[linear-gradient(160deg,#121920,#0d1217)] p-6 shadow-[0_18px_40px_rgba(4,8,12,0.28)] sm:p-8">
+                  <p className="font-display text-xl font-semibold text-text-primary sm:text-2xl">
+                    How much do missed calls actually cost a local business?
+                  </p>
+                  <p className="mt-3 max-w-2xl font-body text-sm leading-relaxed text-text-secondary">
+                    What a missed call really costs, how to estimate your own number, and why generic
+                    industry averages only get you so far.
+                  </p>
+                  <TrackedLink
+                    href="/resources/missed-call-cost"
+                    cta="resource_missed_call_cost"
+                    placement="calculator_resource_section"
+                    className="mt-auto inline-flex items-center gap-2 pt-6 font-mono text-sm font-semibold uppercase tracking-[0.12em] text-[#9ec6da] transition-colors hover:text-text-primary"
+                  >
+                    Read more
+                    <span aria-hidden="true">-&gt;</span>
+                  </TrackedLink>
+                </div>
+
+                <div className="flex h-full flex-col rounded-panel border border-[#345064] bg-[linear-gradient(160deg,#121920,#0d1217)] p-6 shadow-[0_18px_40px_rgba(4,8,12,0.28)] sm:p-8">
+                  <p className="font-display text-xl font-semibold text-text-primary sm:text-2xl">
+                    Why your website still matters: SEO, GEO, and conversions
+                  </p>
+                  <p className="mt-3 max-w-2xl font-body text-sm leading-relaxed text-text-secondary">
+                    Why a local-business website still matters, how SEO and AI-search visibility
+                    overlap, and how better conversion paths affect revenue.
+                  </p>
+                  <TrackedLink
+                    href="/resources/website-seo-geo-conversions"
+                    cta="resource_website_seo_geo_conversions"
+                    placement="calculator_resource_section"
+                    className="mt-auto inline-flex items-center gap-2 pt-6 font-mono text-sm font-semibold uppercase tracking-[0.12em] text-[#9ec6da] transition-colors hover:text-text-primary"
+                  >
+                    Read more
+                    <span aria-hidden="true">-&gt;</span>
+                  </TrackedLink>
+                </div>
+
+                <div className="flex h-full flex-col rounded-panel border border-[#345064] bg-[linear-gradient(160deg,#121920,#0d1217)] p-6 shadow-[0_18px_40px_rgba(4,8,12,0.28)] sm:p-8">
+                  <p className="font-display text-xl font-semibold text-text-primary sm:text-2xl">
+                    AI receptionist vs. answering service: what&apos;s the difference?
+                  </p>
+                  <p className="mt-3 max-w-2xl font-body text-sm leading-relaxed text-text-secondary">
+                    How AI phone receptionists and traditional answering services actually differ, and
+                    how to tell which one fits a local business.
+                  </p>
+                  <TrackedLink
+                    href="/resources/ai-receptionist-vs-answering-service"
+                    cta="resource_ai_vs_answering_service"
+                    placement="calculator_resource_section"
+                    className="mt-auto inline-flex items-center gap-2 pt-6 font-mono text-sm font-semibold uppercase tracking-[0.12em] text-[#9ec6da] transition-colors hover:text-text-primary"
+                  >
+                    Read more
+                    <span aria-hidden="true">-&gt;</span>
+                  </TrackedLink>
+                </div>
+              </div>
+            </section>
+
+            <p className="mt-10 font-mono text-xs text-text-muted-dark print:hidden">
+              Prepared by Sunforge Digital &middot; sunforgedigital.com &middot; 719-424-5680
             </p>
-          </div>
-          <div className="mt-4 grid gap-4 lg:grid-cols-3">
-            <div className="flex h-full flex-col rounded-panel border border-[#345064] bg-[linear-gradient(160deg,#121920,#0d1217)] p-6 shadow-[0_18px_40px_rgba(4,8,12,0.28)] sm:p-8">
-              <p className="font-display text-xl font-semibold text-text-primary sm:text-2xl">
-                How much do missed calls actually cost a local business?
-              </p>
-              <p className="mt-3 max-w-2xl font-body text-sm leading-relaxed text-text-secondary">
-                What a missed call really costs, how to estimate your own number, and why generic
-                industry averages only get you so far.
-              </p>
-              <TrackedLink
-                href="/resources/missed-call-cost"
-                cta="resource_missed_call_cost"
-                placement="calculator_resource_section"
-                className="mt-auto inline-flex items-center gap-2 pt-6 font-mono text-sm font-semibold uppercase tracking-[0.12em] text-[#9ec6da] transition-colors hover:text-text-primary"
-              >
-                Read more
-                <span aria-hidden="true">-&gt;</span>
-              </TrackedLink>
-            </div>
+          </>
+        )}
+      </Wrapper>
 
-            <div className="flex h-full flex-col rounded-panel border border-[#345064] bg-[linear-gradient(160deg,#121920,#0d1217)] p-6 shadow-[0_18px_40px_rgba(4,8,12,0.28)] sm:p-8">
-              <p className="font-display text-xl font-semibold text-text-primary sm:text-2xl">
-                Why your website still matters: SEO, GEO, and conversions
-              </p>
-              <p className="mt-3 max-w-2xl font-body text-sm leading-relaxed text-text-secondary">
-                Why a local-business website still matters, how SEO and AI-search visibility
-                overlap, and how better conversion paths affect revenue.
-              </p>
-              <TrackedLink
-                href="/resources/website-seo-geo-conversions"
-                cta="resource_website_seo_geo_conversions"
-                placement="calculator_resource_section"
-                className="mt-auto inline-flex items-center gap-2 pt-6 font-mono text-sm font-semibold uppercase tracking-[0.12em] text-[#9ec6da] transition-colors hover:text-text-primary"
-              >
-                Read more
-                <span aria-hidden="true">-&gt;</span>
-              </TrackedLink>
-            </div>
-
-            <div className="flex h-full flex-col rounded-panel border border-[#345064] bg-[linear-gradient(160deg,#121920,#0d1217)] p-6 shadow-[0_18px_40px_rgba(4,8,12,0.28)] sm:p-8">
-              <p className="font-display text-xl font-semibold text-text-primary sm:text-2xl">
-                AI receptionist vs. answering service: what&apos;s the difference?
-              </p>
-              <p className="mt-3 max-w-2xl font-body text-sm leading-relaxed text-text-secondary">
-                How AI phone receptionists and traditional answering services actually differ, and
-                how to tell which one fits a local business.
-              </p>
-              <TrackedLink
-                href="/resources/ai-receptionist-vs-answering-service"
-                cta="resource_ai_vs_answering_service"
-                placement="calculator_resource_section"
-                className="mt-auto inline-flex items-center gap-2 pt-6 font-mono text-sm font-semibold uppercase tracking-[0.12em] text-[#9ec6da] transition-colors hover:text-text-primary"
-              >
-                Read more
-                <span aria-hidden="true">-&gt;</span>
-              </TrackedLink>
-            </div>
-          </div>
-        </section>
-
-        <p className="mt-10 font-mono text-xs text-text-muted-dark print:hidden">
-          Prepared by Sunforge Digital &middot; sunforgedigital.com &middot; 719-424-5680
-        </p>
-      </main>
-
-      <div className="print:hidden">
-        <Footer />
-      </div>
+      {showChrome && (
+        <div className="print:hidden">
+          <Footer />
+        </div>
+      )}
 
       <div className="print:hidden">
         <AnimatePresence>
