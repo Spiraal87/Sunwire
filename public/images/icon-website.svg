@@ -1,19 +1,16 @@
-<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="iconGrad1" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="iconGradWebsite" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#FFC759"/>
       <stop offset="100%" stop-color="#FF6B4A"/>
     </linearGradient>
   </defs>
-  <circle cx="40" cy="40" r="38" fill="none" stroke="url(#iconGrad1)" stroke-width="1" opacity="0.25"/>
-  <!-- browser window -->
-  <rect x="18" y="22" width="44" height="34" rx="4" fill="none" stroke="url(#iconGrad1)" stroke-width="2"/>
-  <line x1="18" y1="30" x2="62" y2="30" stroke="url(#iconGrad1)" stroke-width="2"/>
-  <circle cx="24" cy="26" r="1.6" fill="#FF6B4A"/>
-  <circle cx="29" cy="26" r="1.6" fill="#FFC759"/>
-  <circle cx="34" cy="26" r="1.6" fill="#F6F3EC" opacity="0.6"/>
-  <!-- content lines inside window -->
-  <line x1="25" y1="38" x2="48" y2="38" stroke="url(#iconGrad1)" stroke-width="1.5" opacity="0.7"/>
-  <line x1="25" y1="44" x2="55" y2="44" stroke="url(#iconGrad1)" stroke-width="1.5" opacity="0.5"/>
-  <line x1="25" y1="50" x2="40" y2="50" stroke="url(#iconGrad1)" stroke-width="1.5" opacity="0.5"/>
+  <rect x="20" y="20" width="160" height="140" rx="12" fill="none" stroke="url(#iconGradWebsite)" stroke-width="3"/>
+  <line x1="20" y1="45" x2="180" y2="45" stroke="url(#iconGradWebsite)" stroke-width="2"/>
+  <circle cx="35" cy="32" r="4" fill="url(#iconGradWebsite)"/>
+  <circle cx="52" cy="32" r="4" fill="url(#iconGradWebsite)"/>
+  <circle cx="69" cy="32" r="4" fill="url(#iconGradWebsite)"/>
+  <rect x="45" y="60" width="110" height="85" rx="4" fill="none" stroke="url(#iconGradWebsite)" stroke-width="2"/>
+  <polyline points="55,130 75,95 95,115 115,85 145,130" fill="none" stroke="url(#iconGradWebsite)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="125" cy="78" r="8" fill="none" stroke="url(#iconGradWebsite)" stroke-width="2"/>
 </svg>

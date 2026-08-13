@@ -154,7 +154,7 @@ export default function MissedCallCostPage() {
             placement="resource_missed_call_cost_footer"
             className="rounded-btn border border-line px-6 py-3.5 font-display text-sm font-semibold text-text-primary transition-colors hover:border-gold hover:text-gold"
           >
-            Hear the AI receptionist live
+            Talk to the AI Receptionist
           </TrackedLink>
         </div>
       </div>

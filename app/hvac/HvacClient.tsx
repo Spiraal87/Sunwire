@@ -1,23 +1,25 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
+import SectionDivider from "@/components/SectionDivider";
 import CalculatorTeaser from "@/components/CalculatorTeaser";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import type { FaqEntry } from "@/components/FAQ";
-
-const DEMO_PHONE_TEL = "tel:+16233039061";
+import { captureEvent } from "@/lib/analytics";
 
 // Swap in the real HVAC photo by setting `src` here — everything else
 // (sizing, positioning, fallback) already matches the category-grid image
 // treatment used elsewhere on the site.
 const HVAC_SECTION_IMAGE: { src: string | null; alt: string } = {
-  src: null,
+  src: "/images/hvac-page.png",
   alt: "HVAC technician servicing a rooftop condenser unit under a warm Phoenix sky",
 };
 
@@ -208,7 +210,48 @@ function HvacWhyItMatters() {
   );
 }
 
+function HvacDemoCta() {
+  const prefersReducedMotion = useReducedMotion();
+  const distance = prefersReducedMotion ? 0 : 20;
+
+  return (
+    <section className="px-6 pb-6 sm:pb-10">
+      <motion.div
+        initial={{ opacity: 0, y: distance }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut" }}
+        className="mx-auto max-w-4xl rounded-panel border border-gold/35 bg-[linear-gradient(160deg,#1b1511,#120e0b)] p-6 shadow-surface sm:p-8"
+      >
+        <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+          <div className="max-w-2xl">
+            <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.15em] text-gold">
+              Hear it first
+            </p>
+            <h2 className="mt-2 font-display text-2xl font-semibold text-text-primary sm:text-3xl">
+              Want to hear the receptionist handle a real call?
+            </h2>
+            <p className="mt-3 font-body text-sm leading-relaxed text-text-secondary">
+              Go straight to the live Ember demo on the main page and hear how it responds before
+              deciding anything.
+            </p>
+          </div>
+          <Link
+            href="/#demo"
+            onClick={() => captureEvent("demo_call_started", { placement: "hvac_post_hero" })}
+            className="inline-flex shrink-0 items-center justify-center self-start whitespace-nowrap rounded-btn bg-gradient-accent px-6 py-3.5 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110 md:self-auto"
+          >
+            Talk to the AI Receptionist
+          </Link>
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+
 export default function HvacClient() {
+  const [servicesLit, setServicesLit] = useState(false);
+
   return (
     <>
       <Nav />
@@ -223,7 +266,7 @@ export default function HvacClient() {
           subhead="Every missed emergency call is a customer who's already dialing the next HVAC company in Phoenix. An AI receptionist trained on your business answers instantly, day or night, so a broken system never becomes a lost customer."
           primaryCta={{
             label: "Talk to the AI Receptionist — Free",
-            href: DEMO_PHONE_TEL,
+            href: "/#demo",
             cta: "ai_receptionist_demo",
             placement: "hvac_hero",
           }}
@@ -237,7 +280,16 @@ export default function HvacClient() {
 
         <HvacProblem />
 
+        <SectionDivider
+          id="services"
+          litCount={5}
+          tintSide="bottom"
+          ringScale={1.4}
+          onIgnite={() => setServicesLit(true)}
+        />
+
         <Services
+          backlit={servicesLit}
           heading="How We Help"
           eyebrow="Two ways we drive growth"
           cards={hvacServiceCards}
@@ -246,6 +298,8 @@ export default function HvacClient() {
         <HvacCalculatorSection />
 
         <HvacWhyItMatters />
+
+        <HvacDemoCta />
 
         <FAQ
           faqs={hvacFaqs}

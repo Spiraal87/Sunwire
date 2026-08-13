@@ -1,12 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import type { MouseEvent } from "react";
 import { RefreshCw, ArrowLeft } from "lucide-react";
 import { captureEvent } from "@/lib/analytics";
+
+// Pointer-follow tilt only makes sense with a real mouse: a fine pointer
+// paired with continuous hover tracking and a reliable "leave" event. On
+// touch devices, tapping a card fires a synthetic mousemove at the tap
+// point with no matching mouseleave to reset it, leaving the card stuck
+// tilted toward wherever it was last tapped - so skip the effect entirely
+// there rather than let it get stuck.
+function useCanHover() {
+  const [canHover, setCanHover] = useState(true);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
+    setCanHover(mq.matches);
+    const handler = () => setCanHover(mq.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  return canHover;
+}
 
 type Subcategory = { name: string; href?: string };
 
@@ -83,6 +103,7 @@ function CategoryCard({
   distance: number;
   prefersReducedMotion: boolean | null;
 }) {
+  const canHover = useCanHover();
   const pointerX = useMotionValue(0);
   const pointerY = useMotionValue(0);
   const springConfig = { stiffness: 300, damping: 22 };
@@ -90,7 +111,7 @@ function CategoryCard({
   const rotateY = useSpring(useTransform(pointerX, [-0.5, 0.5], [-4, 4]), springConfig);
 
   function handleMouseMove(e: MouseEvent<HTMLDivElement>) {
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion || !canHover) return;
     const rect = e.currentTarget.getBoundingClientRect();
     pointerX.set((e.clientX - rect.left) / rect.width - 0.5);
     pointerY.set((e.clientY - rect.top) / rect.height - 0.5);
@@ -154,6 +175,7 @@ function FlippableCategoryCard({
   prefersReducedMotion: boolean | null;
 }) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const canHover = useCanHover();
   const pointerX = useMotionValue(0);
   const pointerY = useMotionValue(0);
   const springConfig = { stiffness: 300, damping: 22 };
@@ -161,7 +183,7 @@ function FlippableCategoryCard({
   const rotateY = useSpring(useTransform(pointerX, [-0.5, 0.5], [-4, 4]), springConfig);
 
   function handleMouseMove(e: MouseEvent<HTMLDivElement>) {
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion || !canHover) return;
     const rect = e.currentTarget.getBoundingClientRect();
     pointerX.set((e.clientX - rect.left) / rect.width - 0.5);
     pointerY.set((e.clientY - rect.top) / rect.height - 0.5);

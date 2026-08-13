@@ -153,7 +153,7 @@ export default function AiReceptionistVsAnsweringServicePage() {
             placement="resource_ai_vs_answering_service_footer"
             className="rounded-btn bg-gradient-accent px-6 py-3.5 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
           >
-            Hear the AI receptionist live
+            Talk to the AI Receptionist
           </TrackedLink>
           <TrackedLink
             href="/calculator"

@@ -1,16 +1,48 @@
-<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="iconGrad2" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="iconGradReceptionist" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#FFC759"/>
       <stop offset="100%" stop-color="#FF6B4A"/>
     </linearGradient>
   </defs>
-  <circle cx="40" cy="40" r="38" fill="none" stroke="url(#iconGrad2)" stroke-width="1" opacity="0.25"/>
-  <!-- phone handset -->
-  <path d="M 28 24 C 26 24 24 26 24 28 C 24 42 34 56 48 56 C 50 56 52 54 52 52 L 52 46 C 52 44.5 50.8 43.2 49.3 43 L 43 42 C 41.7 41.8 40.4 42.3 39.6 43.3 L 37.5 45.8 C 33.2 43 30 38.8 28.2 33.5 L 31 31.6 C 32 30.9 32.6 29.6 32.4 28.4 L 31.3 22.1 C 31.1 20.7 29.8 19.5 28.4 19.6 Z"
-    fill="none" stroke="url(#iconGrad2)" stroke-width="2" stroke-linejoin="round"/>
-  <!-- sound waves emanating -->
-  <path d="M 55 26 Q 60 30 60 36" stroke="url(#iconGrad2)" stroke-width="1.6" fill="none" opacity="0.8"/>
-  <path d="M 60 20 Q 68 28 68 38" stroke="url(#iconGrad2)" stroke-width="1.6" fill="none" opacity="0.55"/>
-  <path d="M 65 15 Q 76 26 76 40" stroke="url(#iconGrad2)" stroke-width="1.6" fill="none" opacity="0.3"/>
+
+  <!-- Outer circle -->
+  <circle cx="100" cy="100" r="90" fill="none" stroke="url(#iconGradReceptionist)" stroke-width="2"/>
+
+  <!-- Headset headband -->
+  <path d="M 65 85 Q 65 45 100 45 Q 135 45 135 85"
+        fill="none" stroke="url(#iconGradReceptionist)" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Left ear cup -->
+  <rect x="55" y="80" width="20" height="30" rx="6"
+        fill="none" stroke="url(#iconGradReceptionist)" stroke-width="2.5"/>
+
+  <!-- Right ear cup -->
+  <rect x="125" y="80" width="20" height="30" rx="6"
+        fill="none" stroke="url(#iconGradReceptionist)" stroke-width="2.5"/>
+
+  <!-- Microphone boom -->
+  <path d="M 135 105 Q 135 125 115 125"
+        fill="none" stroke="url(#iconGradReceptionist)" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Microphone -->
+  <rect x="105" y="120" width="20" height="10" rx="5"
+        fill="none" stroke="url(#iconGradReceptionist)" stroke-width="2"/>
+
+  <!-- Phone handset -->
+  <path d="M 75 115 Q 65 115 60 125 Q 55 135 60 145 Q 65 155 75 155 L 85 155 Q 90 155 90 150 L 90 145 Q 90 140 85 140 L 80 140 Q 75 140 75 135 L 75 125 Q 75 120 80 120 L 85 120 Q 90 120 90 115 L 90 110 Q 90 105 85 105 L 75 105"
+        fill="none" stroke="url(#iconGradReceptionist)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Sound wave bars -->
+  <line x1="95" y1="85" x2="95" y2="105" stroke="url(#iconGradReceptionist)" stroke-width="2" stroke-linecap="round"/>
+  <line x1="100" y1="80" x2="100" y2="110" stroke="url(#iconGradReceptionist)" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="105" y1="85" x2="105" y2="105" stroke="url(#iconGradReceptionist)" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Small dots for extended sound waves -->
+  <circle cx="88" cy="95" r="1.5" fill="url(#iconGradReceptionist)"/>
+  <circle cx="112" cy="95" r="1.5" fill="url(#iconGradReceptionist)"/>
+
+  <!-- Wireless/signal waves -->
+  <path d="M 145 65 Q 155 55 165 65" fill="none" stroke="url(#iconGradReceptionist)" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 150 72 Q 160 62 170 72" fill="none" stroke="url(#iconGradReceptionist)" stroke-width="2" stroke-linecap="round"/>
 </svg>
