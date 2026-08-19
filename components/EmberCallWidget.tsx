@@ -131,7 +131,7 @@ export default function EmberCallWidget({ backlit = false }: { backlit?: boolean
         animate={inView ? { opacity: 1, y: 0 } : undefined}
         transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut" }}
         className={`rounded-panel border bg-gradient-panel p-6 transition-colors transition-shadow duration-1000 ease-out sm:p-10 lg:p-14 ${
-          backlit ? "border-gold/25 shadow-glow" : "border-line shadow-surface"
+          backlit ? "forge-lit-panel-strong" : "border-line shadow-surface"
         }`}
       >
       <div className="grid items-center gap-12 md:grid-cols-2">

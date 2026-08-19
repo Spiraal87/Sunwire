@@ -67,9 +67,7 @@ export default function Services({
   const prefersReducedMotion = useReducedMotion();
   const distance = prefersReducedMotion ? 0 : 20;
   const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
-  const panelClassName = backlit
-    ? "border-gold/20 shadow-[0_0_0_1px_rgba(230,168,75,0.08),0_0_38px_rgba(211,138,52,0.12)]"
-    : "border-line shadow-surface";
+  const panelClassName = backlit ? "forge-lit-panel-strong" : "border-line shadow-surface";
 
   function toggleCard(id: string) {
     setExpandedCards((prev) => ({ ...prev, [id]: !prev[id] }));

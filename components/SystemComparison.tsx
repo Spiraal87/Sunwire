@@ -36,9 +36,7 @@ export default function SystemComparison({ backlit = false }: { backlit?: boolea
   const prefersReducedMotion = useReducedMotion();
   const distance = prefersReducedMotion ? 0 : 20;
   const [openRow, setOpenRow] = useState(0);
-  const panelClassName = backlit
-    ? "border-gold/20 shadow-[0_0_0_1px_rgba(230,168,75,0.07),0_0_28px_rgba(211,138,52,0.1)]"
-    : "border-line shadow-surface";
+  const panelClassName = backlit ? "forge-lit-panel" : "border-line shadow-surface";
 
   return (
     <section className="px-6 pb-16 pt-6 sm:pb-24 sm:pt-10">

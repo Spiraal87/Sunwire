@@ -177,9 +177,7 @@ export default function HowItWorks({ backlit = false }: { backlit?: boolean }) {
   const prefersReducedMotion = useReducedMotion();
   const distance = prefersReducedMotion ? 0 : 20;
   const [activeTrack, setActiveTrack] = useState(0);
-  const panelClassName = backlit
-    ? "border-gold/20 shadow-[0_0_0_1px_rgba(230,168,75,0.08),0_0_34px_rgba(242,200,112,0.12)]"
-    : "border-line shadow-surface";
+  const panelClassName = backlit ? "forge-lit-panel-strong" : "border-line shadow-surface";
 
   return (
     <section className="mx-auto max-w-6xl px-6 pb-16 pt-6 sm:pb-24 sm:pt-10">
