@@ -56,8 +56,8 @@ export default function ROI({ backlit = false }: { backlit?: boolean }) {
           transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut" }}
           className={`${panelClassName} overflow-hidden`}
         >
-          <div className="grid h-full grid-cols-1 lg:grid-cols-[1.05fr_0.95fr]">
-            <div className="flex flex-col justify-center p-8 sm:p-10">
+          <div className="flex h-full flex-col p-8 sm:p-10">
+            <div className="flex flex-col justify-center">
               <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[color:var(--steel-blue)]">
                 What better handling looks like
               </p>
@@ -94,14 +94,14 @@ export default function ROI({ backlit = false }: { backlit?: boolean }) {
               </ul>
             </div>
 
-            <div className="flex items-center justify-center border-t border-line/80 bg-[radial-gradient(circle_at_50%_42%,rgba(230,168,75,0.16),transparent_58%),linear-gradient(180deg,#120f0d_0%,#0d0a09_100%)] p-8 lg:border-l lg:border-t-0 sm:p-10">
-              <div className="relative w-full max-w-[240px] sm:max-w-[280px]">
+            <div className="mt-8 flex justify-center border-t border-line/80 bg-[radial-gradient(circle_at_50%_30%,rgba(230,168,75,0.14),transparent_58%),linear-gradient(180deg,rgba(18,15,13,0.32)_0%,rgba(13,10,9,0.82)_100%)] px-6 pb-4 pt-8 sm:px-8 sm:pt-10">
+              <div className="relative w-full max-w-[210px] sm:max-w-[240px]">
                 <Image
                   src="/images/call-handoff-proof.png"
                   alt="Phone screen showing a call handoff summary with a captured caller, service issue, booked appointment, and notifications sent"
                   width={1024}
                   height={1536}
-                  sizes="(min-width: 1024px) 22vw, 52vw"
+                  sizes="(min-width: 1024px) 18vw, 42vw"
                   className="h-auto w-full drop-shadow-[0_24px_48px_rgba(0,0,0,0.45)]"
                 />
               </div>

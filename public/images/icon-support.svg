@@ -1,0 +1,16 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="iconGradSupport" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFC759"/>
+      <stop offset="100%" stop-color="#FF6B4A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Shield -->
+  <path d="M 100 25 L 155 45 L 155 100 Q 155 145 100 175 Q 45 145 45 100 L 45 45 Z"
+        fill="none" stroke="url(#iconGradSupport)" stroke-width="3" stroke-linejoin="round"/>
+
+  <!-- Check -->
+  <path d="M 75 100 L 92 118 L 128 80" fill="none" stroke="url(#iconGradSupport)" stroke-width="4"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

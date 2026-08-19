@@ -7,6 +7,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import TrackedLink from "@/components/TrackedLink";
 import { captureEvent } from "@/lib/analytics";
+import { CTA_LABELS } from "@/lib/cta";
 import { defaults, verticalLabels, fmt, fmtRange, computeLeak, type VerticalKey } from "@/lib/calculator";
 
 const tabs: { key: VerticalKey; label: string }[] = [
@@ -583,7 +584,7 @@ export default function CalculatorWidget({
               }
               className="rounded-btn bg-gradient-accent px-6 py-3 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
             >
-              Talk to the AI Receptionist
+              {CTA_LABELS.aiDemo}
             </Link>
             <Link
               href="/#contact"
@@ -595,7 +596,7 @@ export default function CalculatorWidget({
               }
               className="rounded-btn border border-line px-6 py-3 font-mono text-sm text-text-primary transition-colors hover:border-gold hover:text-gold"
             >
-              Get in touch
+              {CTA_LABELS.assessment}
             </Link>
           </div>
         </div>

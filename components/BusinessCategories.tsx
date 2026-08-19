@@ -28,7 +28,7 @@ function useCanHover() {
   return canHover;
 }
 
-type Subcategory = { name: string; href?: string };
+type Subcategory = { name: string; href?: string; comingSoon?: boolean };
 
 type Category = {
   name: string;
@@ -51,10 +51,10 @@ const categories: Category[] = [
     alt: "Home Services in Phoenix",
     subcategories: [
       { name: "HVAC", href: "/hvac" },
-      { name: "Plumbing" },
-      { name: "Electrical" },
-      { name: "Garage Doors" },
-      { name: "Auto Services / Auto Repair" },
+      { name: "Plumbing", comingSoon: true },
+      { name: "Electrical", comingSoon: true },
+      { name: "Garage Doors", comingSoon: true },
+      { name: "Auto Services / Auto Repair", comingSoon: true },
     ],
   },
   {
@@ -292,12 +292,24 @@ function FlippableCategoryCard({
                   </Link>
                 </li>
               ) : (
-                <li key={sub.name} className="px-3 py-2 font-body text-sm text-text-muted-dark">
-                  {sub.name}
+                <li
+                  key={sub.name}
+                  className="flex items-center justify-between gap-3 rounded-btn px-3 py-2 font-body text-sm text-text-muted-dark"
+                >
+                  <span>{sub.name}</span>
+                  {sub.comingSoon && (
+                    <span className="rounded-full border border-line bg-panel px-2 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-text-muted">
+                      Coming soon
+                    </span>
+                  )}
                 </li>
               )
             )}
           </ul>
+          <p className="mt-5 border-t border-line/80 pt-4 font-body text-xs leading-relaxed text-text-muted">
+            Plus more home service trades. If yours is not listed yet, we can still talk through
+            it.
+          </p>
         </div>
       </motion.div>
     </motion.div>
@@ -352,7 +364,7 @@ export default function BusinessCategories() {
         </div>
 
         <p className="mt-10 text-center font-body text-sm text-text-muted-dark">
-          And more — if your business runs on phone calls and foot traffic, we should talk.
+          And more. If your business runs on phone calls and customer follow-up, we should talk.
         </p>
       </div>
     </section>

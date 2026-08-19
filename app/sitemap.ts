@@ -35,6 +35,14 @@ const ROUTE_SOURCES: Record<string, string[]> = {
     "components/FAQ.tsx",
     "components/Contact.tsx",
   ],
+  "/website": [
+    "app/website/page.tsx",
+    "app/website/WebsiteClient.tsx",
+    "components/Hero.tsx",
+    "components/Services.tsx",
+    "components/FAQ.tsx",
+    "components/Contact.tsx",
+  ],
   "/resources": ["app/resources/page.tsx"],
   "/resources/missed-call-cost": ["app/resources/missed-call-cost/page.tsx"],
   "/resources/ai-receptionist-vs-answering-service": [

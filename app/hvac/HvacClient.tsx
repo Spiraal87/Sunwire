@@ -14,6 +14,7 @@ import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import type { FaqEntry } from "@/components/FAQ";
 import { captureEvent } from "@/lib/analytics";
+import { CTA_LABELS, getVerticalAssessmentLabel } from "@/lib/cta";
 
 // Swap in the real HVAC photo by setting `src` here — everything else
 // (sizing, positioning, fallback) already matches the category-grid image
@@ -241,7 +242,7 @@ function HvacDemoCta() {
             onClick={() => captureEvent("demo_call_started", { placement: "hvac_post_hero" })}
             className="inline-flex shrink-0 items-center justify-center self-start whitespace-nowrap rounded-btn bg-gradient-accent px-6 py-3.5 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110 md:self-auto"
           >
-            Talk to the AI Receptionist
+            {CTA_LABELS.aiDemo}
           </Link>
         </div>
       </motion.div>
@@ -265,15 +266,15 @@ export default function HvacClient() {
           }
           subhead="Every missed emergency call is a customer who's already dialing the next HVAC company in Phoenix. An AI receptionist trained on your business answers instantly, day or night, so a broken system never becomes a lost customer."
           primaryCta={{
-            label: "Talk to the AI Receptionist — Free",
-            href: "/#demo",
-            cta: "ai_receptionist_demo",
+            label: getVerticalAssessmentLabel("HVAC"),
+            href: "#contact",
+            cta: "assessment_request",
             placement: "hvac_hero",
           }}
           secondaryCta={{
-            label: "See What Missed Calls Cost You →",
-            href: "/calculator?vertical=home",
-            cta: "missed_call_calculator",
+            label: CTA_LABELS.aiDemo,
+            href: "/#demo",
+            cta: "ai_receptionist_demo",
             placement: "hvac_hero",
           }}
         />
@@ -308,7 +309,7 @@ export default function HvacClient() {
         />
 
         <Contact
-          heading="Let's Find Where You're Losing Calls"
+          heading={getVerticalAssessmentLabel("HVAC")}
           body="No pressure. No hard sales pitch. Just a conversation about where your business may be losing customers and how technology can help."
           defaultBusinessType="HVAC"
         />

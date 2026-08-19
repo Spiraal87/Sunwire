@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import TrackedLink from "@/components/TrackedLink";
+import { CTA_LABELS } from "@/lib/cta";
 
 const TITLE = "AI Receptionist vs. Answering Service: What's the Difference?";
 const DESCRIPTION =
@@ -148,20 +149,20 @@ export default function AiReceptionistVsAnsweringServicePage() {
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
           <TrackedLink
-            href="/#demo"
-            cta="ai_receptionist_demo"
+            href="/#contact"
+            cta="assessment_request"
             placement="resource_ai_vs_answering_service_footer"
             className="rounded-btn bg-gradient-accent px-6 py-3.5 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
           >
-            Talk to the AI Receptionist
+            {CTA_LABELS.assessment}
           </TrackedLink>
           <TrackedLink
-            href="/calculator"
-            cta="missed_call_calculator"
+            href="/#demo"
+            cta="ai_receptionist_demo"
             placement="resource_ai_vs_answering_service_footer"
             className="rounded-btn border border-line px-6 py-3.5 font-display text-sm font-semibold text-text-primary transition-colors hover:border-gold hover:text-gold"
           >
-            See what missed calls cost you
+            {CTA_LABELS.aiDemo}
           </TrackedLink>
         </div>
       </div>

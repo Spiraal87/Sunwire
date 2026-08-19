@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import TrackedLink from "@/components/TrackedLink";
+import { CTA_LABELS } from "@/lib/cta";
 
 const TITLE = "How Much Do Missed Calls Actually Cost a Local Business?";
 const DESCRIPTION =
@@ -141,20 +142,20 @@ export default function MissedCallCostPage() {
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
           <TrackedLink
-            href="/calculator"
-            cta="missed_call_calculator"
+            href="/#contact"
+            cta="assessment_request"
             placement="resource_missed_call_cost_footer"
             className="rounded-btn bg-gradient-accent px-6 py-3.5 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
           >
-            Try the calculator
+            {CTA_LABELS.assessment}
           </TrackedLink>
           <TrackedLink
-            href="/#demo"
-            cta="ai_receptionist_demo"
+            href="/calculator"
+            cta="missed_call_calculator"
             placement="resource_missed_call_cost_footer"
             className="rounded-btn border border-line px-6 py-3.5 font-display text-sm font-semibold text-text-primary transition-colors hover:border-gold hover:text-gold"
           >
-            Talk to the AI Receptionist
+            {CTA_LABELS.calculator}
           </TrackedLink>
         </div>
       </div>

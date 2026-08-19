@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { captureEvent } from "@/lib/analytics";
+import { CTA_LABELS } from "@/lib/cta";
 
 const mobileSectionLinks = [
   {
@@ -100,6 +101,18 @@ export default function Nav() {
             <span className="hidden md:inline">Missed-Call Calculator</span>
           </Link>
           <Link
+            href="/website"
+            onClick={() =>
+              captureEvent("cta_clicked", {
+                cta: "website_page",
+                placement: "navigation",
+              })
+            }
+            className="whitespace-nowrap px-1 py-2 font-display text-[10px] font-semibold text-text-secondary transition-colors duration-200 hover:text-gold sm:px-2 sm:text-xs"
+          >
+            Websites
+          </Link>
+          <Link
             href="/resources"
             onClick={() =>
               captureEvent("cta_clicked", {
@@ -122,7 +135,7 @@ export default function Nav() {
             className="group inline-flex items-center gap-1 whitespace-nowrap px-1 py-2 font-display text-[10px] font-semibold text-text-primary transition-colors duration-200 hover:text-gold sm:px-2 sm:text-xs"
           >
             <span className="sm:hidden">Demo</span>
-            <span className="hidden sm:inline">Try the AI Demo</span>
+            <span className="hidden sm:inline">{CTA_LABELS.aiDemo}</span>
             <span
               aria-hidden="true"
               className="text-gold transition-transform duration-200 group-hover:translate-x-0.5"
@@ -141,7 +154,7 @@ export default function Nav() {
             className="whitespace-nowrap rounded-btn bg-gradient-accent px-2 py-2 font-display text-[10px] font-semibold text-bg shadow-forge transition-all duration-200 hover:scale-[1.02] hover:brightness-110 sm:px-4 sm:py-2.5 sm:text-xs"
           >
             <span className="md:hidden">Assessment</span>
-            <span className="hidden md:inline">Book a 15-Minute Assessment</span>
+            <span className="hidden md:inline">{CTA_LABELS.assessment}</span>
           </Link>
         </div>
       </nav>
@@ -177,6 +190,19 @@ export default function Nav() {
               className="rounded-2xl px-4 py-3 font-display text-sm font-semibold text-text-primary transition-colors hover:text-gold"
             >
               Missed-Call Calculator
+            </Link>
+            <Link
+              href="/website"
+              onClick={() => {
+                captureEvent("cta_clicked", {
+                  cta: "website_page",
+                  placement: "navigation_mobile",
+                });
+                closeMenu();
+              }}
+              className="rounded-2xl px-4 py-3 font-display text-sm font-semibold text-text-primary transition-colors hover:text-gold"
+            >
+              Websites
             </Link>
             <Link
               href="/resources"
@@ -227,7 +253,7 @@ export default function Nav() {
               }}
               className="mt-3 inline-flex items-center justify-center rounded-btn bg-gradient-accent px-4 py-3 font-display text-sm font-semibold text-bg shadow-forge transition-all duration-200 hover:brightness-110"
             >
-              Book a 15-Minute Assessment
+              {CTA_LABELS.assessment}
             </Link>
           </div>
         </div>

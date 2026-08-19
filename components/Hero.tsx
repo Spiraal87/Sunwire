@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { captureEvent } from "@/lib/analytics";
+import { CTA_LABELS } from "@/lib/cta";
 
 type HeroCta = {
   label: string;
@@ -24,14 +25,14 @@ const DEFAULT_SUBHEAD =
   "Practical systems for local businesses that want to capture more customers, book more work, and run smoother.";
 
 const DEFAULT_PRIMARY_CTA: HeroCta = {
-  label: "Book a 15-Minute Assessment",
+  label: CTA_LABELS.assessment,
   href: "#contact",
   cta: "assessment_request",
   placement: "hero",
 };
 
 const DEFAULT_SECONDARY_CTA: HeroCta = {
-  label: "Try the AI Demo",
+  label: CTA_LABELS.aiDemo,
   href: "#demo",
   cta: "ai_receptionist_demo",
   placement: "hero",

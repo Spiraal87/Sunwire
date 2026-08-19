@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import TrackedLink from "@/components/TrackedLink";
+import { CTA_LABELS } from "@/lib/cta";
 
 const TITLE = "Why Your Website Still Matters: SEO, GEO, and Conversions for Local Businesses";
 const DESCRIPTION =
@@ -201,11 +202,11 @@ export default function WebsiteSeoGeoConversionsPage() {
         <div className="mt-5 flex flex-wrap gap-3">
           <TrackedLink
             href="/#contact"
-            cta="website_contact"
+            cta="assessment_request"
             placement="resource_website_seo_geo_footer"
             className="rounded-btn bg-gradient-accent px-6 py-3.5 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
           >
-            Talk about your website
+            {CTA_LABELS.assessment}
           </TrackedLink>
           <TrackedLink
             href="/#card-websites"
@@ -213,7 +214,7 @@ export default function WebsiteSeoGeoConversionsPage() {
             placement="resource_website_seo_geo_footer"
             className="rounded-btn border border-line px-6 py-3.5 font-display text-sm font-semibold text-text-primary transition-colors hover:border-gold hover:text-gold"
           >
-            See the website service
+            {CTA_LABELS.websiteSystem}
           </TrackedLink>
         </div>
       </div>

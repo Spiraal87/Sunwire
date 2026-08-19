@@ -40,14 +40,15 @@ const defaultCards: Card[] = [
     icon: "/images/icon-website.svg",
     iconAlt: "Website icon",
     label: "02 / Website + Conversion System",
-    ctaHref: "/#contact",
-    ctaLabel: "Talk through your website",
+    ctaHref: "/website",
+    ctaLabel: "See the website system",
     heading: "For businesses that need a stronger online first impression",
     body: "A custom site built to help people understand what you do, trust the business faster, and take the next step without hunting for it.",
     bullets: [
       "Custom website design and build",
       "Mobile-first pages with clearer service messaging",
       "Conversion paths that make calling or reaching out easier",
+      "Optional on-site chatbot for lead capture",
       "Local search foundations and updates as the business evolves",
     ],
   },
@@ -91,6 +92,18 @@ export default function Services({
             const mobileBullets = isExpanded ? card.bullets : card.bullets.slice(0, 2);
             const hasExtraBullets = card.bullets.length > 2;
 
+            const isLastMobile = i === cards.length - 1;
+            const isLastCol = i % 2 === 1 || i === cards.length - 1;
+            const isLastRow = Math.floor(i / 2) === Math.floor((cards.length - 1) / 2);
+            const borderClasses = [
+              !isLastMobile && "border-b border-line/80",
+              "md:border-b-0",
+              !isLastCol && "md:border-r md:border-line/80",
+              !isLastRow && "md:border-b md:border-line/80",
+            ]
+              .filter(Boolean)
+              .join(" ");
+
             return (
               <motion.div
                 key={card.label}
@@ -100,9 +113,7 @@ export default function Services({
                 viewport={{ once: true, margin: "-80px" }}
                 whileHover={prefersReducedMotion ? undefined : { y: -4 }}
                 transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut" }}
-                className={`group relative scroll-mt-24 bg-gradient-panel p-8 transition-shadow duration-300 hover:shadow-forge sm:p-10 ${
-                  i === 0 ? "border-b border-line/80 md:border-b-0 md:border-r" : ""
-                }`}
+                className={`group relative scroll-mt-24 bg-gradient-panel p-8 transition-shadow duration-300 hover:shadow-forge sm:p-10 ${borderClasses}`}
               >
                 <img
                   src={card.icon}

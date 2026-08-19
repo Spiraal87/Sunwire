@@ -1,0 +1,20 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="iconGradChatbot" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFC759"/>
+      <stop offset="100%" stop-color="#FF6B4A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Chat bubble -->
+  <path d="M 30 45 Q 30 30 45 30 L 155 30 Q 170 30 170 45 L 170 120 Q 170 135 155 135 L 90 135 L 65 158 L 68 135 L 45 135 Q 30 135 30 120 Z"
+        fill="none" stroke="url(#iconGradChatbot)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Dots -->
+  <circle cx="72" cy="83" r="6" fill="url(#iconGradChatbot)"/>
+  <circle cx="100" cy="83" r="6" fill="url(#iconGradChatbot)"/>
+  <circle cx="128" cy="83" r="6" fill="url(#iconGradChatbot)"/>
+
+  <!-- Signal/spark above bubble -->
+  <path d="M 140 20 L 143 28 L 151 31 L 143 34 L 140 42 L 137 34 L 129 31 L 137 28 Z" fill="url(#iconGradChatbot)"/>
+</svg>
