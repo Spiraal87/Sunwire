@@ -8,8 +8,8 @@ import { captureEvent } from "@/lib/analytics";
 const mobileSectionLinks = [
   {
     href: "/#services",
-    label: "How we help",
-    cta: "how_we_help",
+    label: "Systems",
+    cta: "systems",
   },
   {
     href: "/#how-it-works",
@@ -18,8 +18,8 @@ const mobileSectionLinks = [
   },
   {
     href: "/#demo",
-    label: "Hear the demo",
-    cta: "hear_demo",
+    label: "AI demo",
+    cta: "ai_demo",
   },
   {
     href: "/#faq",
@@ -28,8 +28,8 @@ const mobileSectionLinks = [
   },
   {
     href: "/#contact",
-    label: "Get in touch",
-    cta: "get_in_touch",
+    label: "Assessment",
+    cta: "assessment_request",
   },
 ];
 
@@ -49,9 +49,7 @@ export default function Nav() {
   return (
     <header
       className={`sticky top-0 z-50 border-b transition-colors duration-300 ${
-        scrolled
-          ? "border-line bg-bg/70 backdrop-blur-md"
-          : "border-transparent bg-transparent"
+        scrolled ? "border-line bg-bg/70 backdrop-blur-md" : "border-transparent bg-transparent"
       }`}
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-4 sm:px-6 sm:py-5">
@@ -114,17 +112,17 @@ export default function Nav() {
             Resources
           </Link>
           <Link
-            href="/#contact"
+            href="/#demo"
             onClick={() =>
               captureEvent("cta_clicked", {
-                cta: "get_in_touch",
+                cta: "ai_receptionist_demo",
                 placement: "navigation",
               })
             }
             className="group inline-flex items-center gap-1 whitespace-nowrap px-1 py-2 font-display text-[10px] font-semibold text-text-primary transition-colors duration-200 hover:text-gold sm:px-2 sm:text-xs"
           >
-            <span className="sm:hidden">Contact</span>
-            <span className="hidden sm:inline">Get in touch</span>
+            <span className="sm:hidden">Demo</span>
+            <span className="hidden sm:inline">Try the AI Demo</span>
             <span
               aria-hidden="true"
               className="text-gold transition-transform duration-200 group-hover:translate-x-0.5"
@@ -133,17 +131,17 @@ export default function Nav() {
             </span>
           </Link>
           <Link
-            href="/#demo"
+            href="/#contact"
             onClick={() =>
               captureEvent("cta_clicked", {
-                cta: "ai_receptionist_demo",
+                cta: "assessment_request",
                 placement: "navigation",
               })
             }
             className="whitespace-nowrap rounded-btn bg-gradient-accent px-2 py-2 font-display text-[10px] font-semibold text-bg shadow-forge transition-all duration-200 hover:scale-[1.02] hover:brightness-110 sm:px-4 sm:py-2.5 sm:text-xs"
           >
-            <span className="md:hidden">Hear It Live</span>
-            <span className="hidden md:inline">Talk to the AI Receptionist - Free</span>
+            <span className="md:hidden">Assessment</span>
+            <span className="hidden md:inline">Book a 15-Minute Assessment</span>
           </Link>
         </div>
       </nav>
@@ -219,17 +217,17 @@ export default function Nav() {
             </div>
 
             <Link
-              href="/#demo"
+              href="/#contact"
               onClick={() => {
                 captureEvent("cta_clicked", {
-                  cta: "ai_receptionist_demo",
+                  cta: "assessment_request",
                   placement: "navigation_mobile",
                 });
                 closeMenu();
               }}
               className="mt-3 inline-flex items-center justify-center rounded-btn bg-gradient-accent px-4 py-3 font-display text-sm font-semibold text-bg shadow-forge transition-all duration-200 hover:brightness-110"
             >
-              Talk to the AI Receptionist - Free
+              Book a 15-Minute Assessment
             </Link>
           </div>
         </div>

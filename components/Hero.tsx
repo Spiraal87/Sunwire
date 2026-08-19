@@ -15,30 +15,28 @@ type HeroCta = {
 
 const DEFAULT_HEADING = (
   <>
-    Capture more customers.{" "}
-    <span className="gradient-text">Miss fewer calls.</span>
+    Stop losing good customers to{" "}
+    <span className="gradient-text">missed calls and weak follow-up.</span>
   </>
 );
 
 const DEFAULT_SUBHEAD =
-  "Digital systems — AI receptionists and websites — that help local businesses capture every opportunity, book more jobs, and save valuable time.";
+  "Practical systems for local businesses that want to capture more customers, book more work, and run smoother.";
 
 const DEFAULT_PRIMARY_CTA: HeroCta = {
-  label: "Talk to the AI Receptionist - Free",
+  label: "Book a 15-Minute Assessment",
+  href: "#contact",
+  cta: "assessment_request",
+  placement: "hero",
+};
+
+const DEFAULT_SECONDARY_CTA: HeroCta = {
+  label: "Try the AI Demo",
   href: "#demo",
   cta: "ai_receptionist_demo",
   placement: "hero",
 };
 
-const DEFAULT_SECONDARY_CTA: HeroCta = {
-  label: "See What Missed Calls Cost You",
-  href: "/calculator",
-  cta: "missed_call_calculator",
-  placement: "hero",
-};
-
-// Hash anchors and non-http(s) schemes (tel:, mailto:) need a plain <a> —
-// only same-app paths benefit from Next's client-side <Link> navigation.
 function isInternalPath(href: string) {
   return href.startsWith("/") && !href.startsWith("//");
 }
@@ -68,7 +66,7 @@ function HeroCtaLink({
 }
 
 export default function Hero({
-  eyebrow = "Digital Systems",
+  eyebrow = "Systems for Local Businesses",
   heading = DEFAULT_HEADING,
   subhead = DEFAULT_SUBHEAD,
   primaryCta = DEFAULT_PRIMARY_CTA,
@@ -81,7 +79,6 @@ export default function Hero({
   secondaryCta?: HeroCta;
 }) {
   const prefersReducedMotion = useReducedMotion();
-
   const distance = prefersReducedMotion ? 0 : 16;
 
   const container = {
@@ -104,10 +101,7 @@ export default function Hero({
   };
 
   return (
-    <section
-      data-energy-marker="hero-bottom"
-      className="relative flex items-center lg:min-h-[82vh]"
-    >
+    <section data-energy-marker="hero-bottom" className="relative flex items-center lg:min-h-[82vh]">
       <div className="absolute inset-0 -z-20 overflow-hidden">
         {prefersReducedMotion ? (
           <Image
@@ -177,6 +171,10 @@ export default function Hero({
               className="w-full rounded-btn border border-text-secondary/50 bg-bg/70 px-6 py-3 text-center font-display text-sm font-semibold text-text-primary shadow-surface backdrop-blur-md transition-all duration-200 hover:scale-[1.02] hover:border-text-primary hover:bg-panel/80 sm:w-auto"
             />
           </motion.div>
+
+          <motion.p variants={item} className="mt-4 font-body text-sm text-text-muted-dark">
+            15 minutes. No pressure. We will figure out where the biggest leak is.
+          </motion.p>
         </motion.div>
       </div>
 
