@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -106,35 +107,53 @@ function WebsiteProblem() {
 
   return (
     <section className="px-6 py-16 sm:py-24">
-      <div className="mx-auto max-w-3xl">
-        <motion.div
-          initial={{ opacity: 0, y: distance }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut" }}
-        >
-          <h2 className="font-display text-2xl font-semibold sm:text-3xl">
-            Where Websites Actually Lose Customers
-          </h2>
-          <ul className="mt-6 space-y-4">
-            {problemBullets.map((bullet) => (
-              <li
-                key={bullet}
-                className="flex items-start gap-3 font-body text-sm text-text-primary sm:text-base"
-              >
-                <span
-                  aria-hidden="true"
-                  className="mt-1.5 h-2 w-2 shrink-0 rounded-full border border-coral"
-                />
-                {bullet}
-              </li>
-            ))}
-          </ul>
-          <p className="mt-6 font-body text-text-muted">
-            A site that looks fine isn&apos;t the same as a site that converts. The goal is the
-            second one.
-          </p>
-        </motion.div>
+      <div className="mx-auto max-w-6xl">
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
+          <motion.div
+            initial={{ opacity: 0, y: distance }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut" }}
+          >
+            <h2 className="font-display text-2xl font-semibold sm:text-3xl">
+              Where Websites Actually Lose Customers
+            </h2>
+            <ul className="mt-6 space-y-4">
+              {problemBullets.map((bullet) => (
+                <li
+                  key={bullet}
+                  className="flex items-start gap-3 font-body text-sm text-text-primary sm:text-base"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="mt-1.5 h-2 w-2 shrink-0 rounded-full border border-coral"
+                  />
+                  {bullet}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-6 font-body text-text-muted">
+              A site that looks fine isn&apos;t the same as a site that converts. The goal is the
+              second one.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: distance }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut", delay: 0.1 }}
+            className="relative aspect-[4/3] overflow-hidden rounded-panel border border-line bg-panel-2-textured shadow-surface"
+          >
+            <Image
+              src="/images/website-problem-phone.png"
+              alt="A visitor holding a phone, waiting on a slow-loading, generic-looking website"
+              fill
+              sizes="(min-width: 1024px) 40vw, 100vw"
+              className="object-cover"
+            />
+          </motion.div>
+        </div>
       </div>
     </section>
   );
