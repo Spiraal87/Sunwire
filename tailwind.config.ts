@@ -18,7 +18,7 @@ const config: Config = {
         "text-primary": "#F7F6F3",
         "text-secondary": "#CAC7C1",
         "text-muted": "#A8A8AC",
-        "text-muted-dark": "#6B6B6F",
+        "text-muted-dark": "#8A8A8E",
       },
       fontFamily: {
         display: ["var(--font-space-grotesk)", "sans-serif"],
