@@ -29,22 +29,22 @@ export default function Home() {
     <>
       <Nav />
       <main>
+        <EnergyLine />
+        <Hero />
         <div className="relative">
-          <EnergyLine />
-          <Hero />
           <BusinessCategories />
           <SectionDivider
             id="services"
             litCount={1}
             tintSide="bottom"
-            ringScale={1.4}
+            ringScale={1.6}
             onIgnite={() => setServicesLit(true)}
           />
           <Services backlit={servicesLit} />
           <SectionDivider
             litCount={2}
             tintSide="top"
-            ringScale={1.4}
+            ringScale={1.6}
             onIgnite={() => setComparisonLit(true)}
           />
           <SystemComparison backlit={comparisonLit} />
@@ -53,35 +53,35 @@ export default function Home() {
             id="how-it-works"
             litCount={3}
             tintSide="bottom"
-            ringScale={1.4}
+            ringScale={1.6}
             onIgnite={() => setHowItWorksLit(true)}
           />
           <HowItWorks backlit={howItWorksLit} />
           <SectionDivider
             litCount={4}
             tintSide="top"
-            ringScale={1.4}
+            ringScale={1.6}
             onIgnite={() => setFunnelLit(true)}
           />
           <Funnel backlit={funnelLit} />
           <SectionDivider
             litCount={5}
             tintSide="bottom"
-            ringScale={1.4}
+            ringScale={1.6}
             onIgnite={() => setRoiLit(true)}
           />
           <ROI backlit={roiLit} />
           <SectionDivider
             id="demo"
-            litCount={6}
+            litCount={5}
             tintSide="top"
-            ringScale={1.4}
+            ringScale={1.6}
             onIgnite={() => setEmberLit(true)}
           />
           <EmberCallWidget backlit={emberLit} />
+          <Contact />
+          <FAQ />
         </div>
-        <Contact />
-        <FAQ />
       </main>
       <Footer />
     </>

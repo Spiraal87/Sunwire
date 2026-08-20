@@ -126,7 +126,7 @@ function HvacProblem() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut", delay: 0.1 }}
-            className="relative aspect-[4/3] overflow-hidden rounded-panel border border-line bg-panel-2-textured shadow-surface"
+            className="relative aspect-[4/3] overflow-hidden rounded-panel border border-gold/30 bg-panel-2-textured shadow-surface"
           >
             {HVAC_SECTION_IMAGE.src ? (
               <Image
@@ -285,7 +285,7 @@ export default function HvacClient() {
           id="services"
           litCount={5}
           tintSide="bottom"
-          ringScale={1.4}
+          ringScale={1.6}
           onIgnite={() => setServicesLit(true)}
         />
 

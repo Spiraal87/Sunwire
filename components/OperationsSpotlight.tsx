@@ -23,7 +23,7 @@ export default function OperationsSpotlight() {
           transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut" }}
           className="grid items-stretch gap-6 lg:grid-cols-[1.15fr_0.85fr]"
         >
-          <div className="relative min-h-[320px] overflow-hidden rounded-panel border border-line shadow-surface sm:min-h-[420px]">
+          <div className="relative min-h-[320px] overflow-hidden rounded-panel border border-gold/30 bg-panel-2-textured shadow-surface sm:min-h-[420px]">
             <Image
               src="/images/operations-assessment-scene.png"
               alt="Busy local business front desk where a customer is being helped while operations continue in the background"

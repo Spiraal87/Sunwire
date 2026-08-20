@@ -38,6 +38,21 @@ export default function SystemComparison({ backlit = false }: { backlit?: boolea
   const [openRow, setOpenRow] = useState(0);
   const panelClassName = backlit ? "forge-lit-panel" : "border-line shadow-surface";
 
+  const listVariants = {
+    hidden: {},
+    show: {
+      transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+    },
+  };
+  const rowVariants = {
+    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 14 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: prefersReducedMotion ? 0.2 : 0.4, ease: "easeOut" },
+    },
+  };
+
   return (
     <section className="px-6 pb-16 pt-6 sm:pb-24 sm:pt-10">
       <div className="mx-auto max-w-6xl">
@@ -81,10 +96,17 @@ export default function SystemComparison({ backlit = false }: { backlit?: boolea
             </p>
           </div>
 
-          <div className="hidden md:block">
+          <motion.div
+            className="hidden md:block"
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={listVariants}
+          >
             {rows.map((row, index) => (
-              <div
+              <motion.div
                 key={row.need}
+                variants={rowVariants}
                 className={`grid gap-3 px-6 py-5 md:grid-cols-[1.35fr_0.8fr_1fr] md:gap-6 ${
                   index < rows.length - 1 ? "border-b border-line/80" : ""
                 }`}
@@ -98,16 +120,26 @@ export default function SystemComparison({ backlit = false }: { backlit?: boolea
                 <div>
                   <p className="font-body text-sm text-text-muted">{row.why}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
-          <div className="md:hidden">
+          <motion.div
+            className="md:hidden"
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={listVariants}
+          >
             {rows.map((row, index) => {
               const isOpen = openRow === index;
 
               return (
-                <div key={row.need} className={index < rows.length - 1 ? "border-b border-line/80" : ""}>
+                <motion.div
+                  key={row.need}
+                  variants={rowVariants}
+                  className={index < rows.length - 1 ? "border-b border-line/80" : ""}
+                >
                   <button
                     type="button"
                     onClick={() => setOpenRow(isOpen ? -1 : index)}
@@ -152,10 +184,10 @@ export default function SystemComparison({ backlit = false }: { backlit?: boolea
                       </motion.div>
                     )}
                   </AnimatePresence>
-                </div>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

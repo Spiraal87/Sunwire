@@ -1,10 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { captureEvent } from "@/lib/analytics";
+
+type Stat = {
+  value: string;
+  label: string;
+};
 
 type Card = {
   id: string;
@@ -16,7 +21,44 @@ type Card = {
   bullets: string[];
   ctaHref?: string;
   ctaLabel?: string;
+  stats?: Stat[];
+  statsCaveat?: string;
 };
+
+// Animates the trailing number in a stat value (e.g. "76%" or "67–80%") from
+// 0 up to its target once scrolled into view, once. Any prefix ("67–") or
+// suffix ("%") around that number is left untouched.
+function AnimatedStatValue({ value }: { value: string }) {
+  const prefersReducedMotion = useReducedMotion();
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const match = value.match(/^(.*?)(\d+)(\D*)$/);
+  const [display, setDisplay] = useState(
+    match && !prefersReducedMotion ? `${match[1]}0${match[3]}` : value
+  );
+
+  useEffect(() => {
+    if (!match || prefersReducedMotion || !isInView) return;
+    const [, prefix, digits, suffix] = match;
+    const target = parseInt(digits, 10);
+    const duration = 1200;
+    const start = performance.now();
+    let raf: number;
+
+    function tick(now: number) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setDisplay(`${prefix}${Math.round(target * eased)}${suffix}`);
+      if (progress < 1) raf = requestAnimationFrame(tick);
+    }
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isInView, prefersReducedMotion]);
+
+  return <span ref={ref}>{display}</span>;
+}
 
 const defaultCards: Card[] = [
   {
@@ -28,6 +70,10 @@ const defaultCards: Card[] = [
     ctaLabel: "Book a 15-minute assessment",
     heading: "For businesses losing opportunities when calls go unanswered",
     body: "A practical call-handling system for missed calls, overflow calls, and busy stretches when your team cannot always get to the phone in time.",
+    stats: [
+      { value: "67–80%", label: "of callers who reach voicemail hang up without leaving a message" },
+    ],
+    statsCaveat: "Industry-cited estimate, not verified for your business.",
     bullets: [
       "AI receptionist configured around your business",
       "Coverage for missed, overflow, and after-hours calls",
@@ -44,6 +90,10 @@ const defaultCards: Card[] = [
     ctaLabel: "See the website system",
     heading: "For businesses that need a stronger online first impression",
     body: "A custom site built to help people understand what you do, trust the business faster, and take the next step without hunting for it.",
+    stats: [
+      { value: "76%", label: "of people who search for something nearby on their phone visit a business within a day" },
+    ],
+    statsCaveat: "Source: Google local search research (Think with Google).",
     bullets: [
       "Custom website design and build",
       "Mobile-first pages with clearer service messaging",
@@ -129,6 +179,26 @@ export default function Services({
                   {card.heading}
                 </h3>
                 <p className="mt-4 font-body text-text-muted">{card.body}</p>
+
+                {card.stats && card.stats.length > 0 && (
+                  <div className="mt-6 flex flex-wrap gap-x-8 gap-y-4 border-y border-line/60 py-6">
+                    {card.stats.map((stat) => (
+                      <div key={stat.label}>
+                        <p className="font-display text-5xl font-bold leading-none text-gold sm:text-6xl">
+                          <AnimatedStatValue value={stat.value} />
+                        </p>
+                        <p className="mt-2 max-w-[18rem] font-body text-sm text-text-muted">
+                          {stat.label}
+                        </p>
+                      </div>
+                    ))}
+                    {card.statsCaveat && (
+                      <p className="w-full font-body text-[11px] italic text-text-muted-dark">
+                        {card.statsCaveat}
+                      </p>
+                    )}
+                  </div>
+                )}
 
                 <ul className="mt-6 space-y-3 md:hidden">
                   {mobileBullets.map((bullet) => (

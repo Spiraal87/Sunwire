@@ -143,7 +143,7 @@ function WebsiteProblem() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut", delay: 0.1 }}
-            className="relative aspect-[4/3] overflow-hidden rounded-panel border border-line bg-panel-2-textured shadow-surface"
+            className="relative aspect-[4/3] overflow-hidden rounded-panel border border-gold/30 bg-panel-2-textured shadow-surface"
           >
             <Image
               src="/images/website-problem-phone.png"
@@ -195,7 +195,7 @@ export default function WebsiteClient() {
           id="services"
           litCount={1}
           tintSide="bottom"
-          ringScale={1.4}
+          ringScale={1.6}
           onIgnite={() => setServicesLit(true)}
         />
 

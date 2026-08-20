@@ -44,7 +44,7 @@ export default function Contact({
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut" }}
           data-energy-marker="lead-form"
-          className="relative rounded-panel border border-line bg-[rgba(20,18,16,0.72)] p-6 shadow-surface backdrop-blur-[2px] sm:p-10 lg:p-14"
+          className="relative rounded-panel border border-line bg-[rgba(22,22,22,0.72)] p-6 shadow-surface backdrop-blur-[2px] sm:p-10 lg:p-14"
         >
           <div className="max-w-md">
             <h2 className="font-display text-2xl font-semibold sm:text-3xl">{heading}</h2>
@@ -57,7 +57,7 @@ export default function Contact({
             </div>
 
             <div className="flex flex-col gap-5 md:w-2/5 md:border-l md:border-line md:pl-10">
-              <div className="rounded-card border border-line/80 bg-[rgba(13,11,9,0.46)] p-5 backdrop-blur-[1px]">
+              <div className="rounded-card border border-line/80 bg-[rgba(12,12,12,0.46)] p-5 backdrop-blur-[1px]">
                 <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--steel-blue)]">
                   Assessment call
                 </p>

@@ -135,7 +135,7 @@ function CategoryCard({
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ rotateX, rotateY, transformPerspective: 800 }}
-      className="overflow-hidden rounded-panel border border-line bg-gradient-panel shadow-surface transition-[border-color,box-shadow] duration-300 hover:border-gold/60 hover:shadow-forge"
+      className="overflow-hidden rounded-panel border border-gold/30 bg-gradient-panel shadow-surface transition-[border-color,box-shadow] duration-300 hover:border-gold/60 hover:shadow-forge"
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-panel-2-textured">
         <Image
@@ -229,7 +229,7 @@ function FlippableCategoryCard({
           aria-label={`${category.name} — tap to see the trades we cover`}
           tabIndex={isFlipped ? -1 : 0}
           style={{ backfaceVisibility: "hidden" }}
-          className="col-start-1 row-start-1 block w-full cursor-pointer appearance-none overflow-hidden rounded-panel border border-line bg-gradient-panel p-0 text-left shadow-surface transition-colors duration-300 hover:border-gold/60 hover:shadow-forge focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-gold"
+          className="col-start-1 row-start-1 block w-full cursor-pointer appearance-none overflow-hidden rounded-panel border border-gold/30 bg-gradient-panel p-0 text-left shadow-surface transition-colors duration-300 hover:border-gold/60 hover:shadow-forge focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-gold"
         >
           <div className="relative aspect-[4/3] overflow-hidden bg-panel-2-textured">
             <Image

@@ -95,15 +95,18 @@ export default function ROI({ backlit = false }: { backlit?: boolean }) {
             </div>
 
             <div className="mt-8 flex justify-center border-t border-line/80 bg-[radial-gradient(circle_at_50%_30%,rgba(230,168,75,0.14),transparent_58%),linear-gradient(180deg,rgba(18,15,13,0.32)_0%,rgba(13,10,9,0.82)_100%)] px-6 pb-4 pt-8 sm:px-8 sm:pt-10">
-              <div className="relative w-full max-w-[210px] sm:max-w-[240px]">
+              <div className="w-full max-w-[320px] rounded-panel border border-gold/30 bg-[linear-gradient(180deg,rgba(30,23,18,0.92)_0%,rgba(18,14,11,0.96)_100%)] p-3 shadow-surface sm:max-w-[420px] sm:p-4">
+                <div className="relative overflow-hidden rounded-[22px] sm:rounded-[26px]">
                 <Image
-                  src="/images/call-handoff-proof.png"
-                  alt="Phone screen showing a call handoff summary with a captured caller, service issue, booked appointment, and notifications sent"
-                  width={1024}
-                  height={1536}
-                  sizes="(min-width: 1024px) 18vw, 42vw"
+                  src="/images/a1150029-dab7-4a91-b474-3f80483f0389.png"
+                  alt="Phone standing on a desk showing a call handoff summary with a captured caller, service issue, booked appointment, and notifications sent"
+                  width={1448}
+                  height={1086}
+                  quality={90}
+                  sizes="(min-width: 1024px) 28vw, 70vw"
                   className="h-auto w-full drop-shadow-[0_24px_48px_rgba(0,0,0,0.45)]"
                 />
+                </div>
               </div>
             </div>
           </div>

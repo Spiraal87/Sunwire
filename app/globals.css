@@ -11,8 +11,8 @@
 
 :root {
   --bg: #08080a;
-  --panel: #141210;
-  --panel-2: #0d0b09;
+  --panel: #161616;
+  --panel-2: #0c0c0c;
   --line: rgba(247, 246, 243, 0.07);
   --gold: #e6a84b;
   --coral: #d38a34;
@@ -73,19 +73,17 @@ button:focus-visible {
 }
 
 .forge-lit-panel {
-  border-color: rgba(230, 168, 75, 0.34);
+  border-color: rgba(230, 168, 75, 0.42);
   box-shadow:
-    0 0 0 1px rgba(246, 196, 103, 0.1),
-    0 0 48px rgba(230, 168, 75, 0.16),
-    0 0 96px rgba(171, 112, 38, 0.11);
+    0 0 0 1px rgba(246, 196, 103, 0.14),
+    inset 0 0 24px rgba(230, 168, 75, 0.17);
 }
 
 .forge-lit-panel-strong {
-  border-color: rgba(230, 168, 75, 0.38);
+  border-color: rgba(230, 168, 75, 0.46);
   box-shadow:
-    0 0 0 1px rgba(246, 196, 103, 0.12),
-    0 0 56px rgba(230, 168, 75, 0.19),
-    0 0 110px rgba(171, 112, 38, 0.13);
+    0 0 0 1px rgba(246, 196, 103, 0.16),
+    inset 0 0 28px rgba(230, 168, 75, 0.21);
 }
 
 @keyframes ember-ring-pulse {
