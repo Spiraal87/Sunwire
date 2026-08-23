@@ -54,6 +54,10 @@ body {
   color: var(--text-primary);
 }
 
+html[data-theme="light"] body {
+  background-image: none;
+}
+
 ::selection {
   background: var(--coral);
   color: var(--bg);
@@ -73,6 +77,13 @@ button:focus-visible {
   color: transparent;
 }
 
+html[data-theme="light"] .gradient-text {
+  background: linear-gradient(135deg, #d38a34 0%, #c97a24 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 .scrollbar-hide {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -87,6 +98,10 @@ button:focus-visible {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
+html[data-theme="light"] .bg-panel-2-textured {
+  background-image: none;
+}
+
 .forge-lit-panel {
   border-color: rgba(230, 168, 75, 0.42);
   box-shadow:
@@ -99,6 +114,22 @@ button:focus-visible {
   box-shadow:
     0 0 0 1px rgba(246, 196, 103, 0.16),
     inset 0 0 28px rgba(230, 168, 75, 0.21);
+}
+
+html[data-theme="light"] .forge-lit-panel {
+  border-color: rgba(211, 138, 52, 0.25);
+  box-shadow: none;
+}
+
+html[data-theme="light"] .forge-lit-panel-strong {
+  border-color: rgba(211, 138, 52, 0.35);
+  box-shadow: none;
+}
+
+/* Light theme: subtle shadows instead of glowing effects */
+html[data-theme="light"] [class*="shadow-forge"],
+html[data-theme="light"] [class*="shadow-glow"] {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
 }
 
 @keyframes ember-ring-pulse {
