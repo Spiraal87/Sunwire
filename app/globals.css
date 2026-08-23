@@ -24,6 +24,21 @@
   --text-muted-dark: #8a8a8e;
 }
 
+html[data-theme="light"] {
+  --bg: #fefcf9;
+  --panel: #f5f3f0;
+  --panel-2: #fafaf8;
+  --line: rgba(26, 26, 26, 0.08);
+  --gold: #d38a34;
+  --coral: #c97a24;
+  --highlight: #e6a84b;
+  --steel-blue: #5a7a8f;
+  --text-primary: #1a1a1a;
+  --text-secondary: #4a4a4a;
+  --text-muted: #808080;
+  --text-muted-dark: #a0a0a0;
+}
+
 * {
   scroll-behavior: smooth;
 }

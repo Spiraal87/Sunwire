@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { captureEvent } from "@/lib/analytics";
 import { CTA_LABELS } from "@/lib/cta";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const mobileSectionLinks = [
   {
@@ -74,6 +75,7 @@ export default function Nav() {
         </button>
 
         <div className="hidden items-center gap-1 sm:gap-2 lg:gap-3 md:flex">
+          <ThemeToggle />
           <Link
             href="/about"
             onClick={() =>
@@ -218,7 +220,14 @@ export default function Nav() {
               Resources
             </Link>
 
-            <div className="mt-2 border-t border-line pt-4">
+            <div className="mt-4 flex items-center gap-2 border-b border-line pb-4">
+              <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-text-muted">
+                Theme:
+              </span>
+              <ThemeToggle />
+            </div>
+
+            <div className="mt-4 border-t border-line pt-4">
               <p className="px-4 font-mono text-[10px] uppercase tracking-[0.15em] text-text-muted">
                 On this page
               </p>
