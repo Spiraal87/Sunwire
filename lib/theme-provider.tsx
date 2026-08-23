@@ -19,6 +19,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const preferred = saved || "dark";
     setTheme(preferred);
     document.documentElement.setAttribute("data-theme", preferred);
+    document.documentElement.style.colorScheme = preferred;
     setMounted(true);
   }, []);
 
@@ -27,6 +28,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
     document.documentElement.setAttribute("data-theme", newTheme);
+    document.documentElement.style.colorScheme = newTheme;
   };
 
   if (!mounted) return children;
