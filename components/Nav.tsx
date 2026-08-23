@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { captureEvent } from "@/lib/analytics";
 import { CTA_LABELS } from "@/lib/cta";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ThemeToggle } from "@/components/ThemeToggleWrapper";
 
 const mobileSectionLinks = [
   {
