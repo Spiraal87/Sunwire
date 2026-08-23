@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1272 382">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="60%" y2="100%">
+      <stop offset="0%" stop-color="#F2C98A"/>
+      <stop offset="45%" stop-color="#D99A50"/>
+      <stop offset="100%" stop-color="#A8672A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ICON (same geometry as icon.svg, shifted into place) -->
+  <g>
+    <circle cx="302" cy="191" r="138" fill="none" stroke="url(#goldGrad)" stroke-width="24"/>
+    <circle cx="302" cy="191" r="100" fill="none" stroke="url(#goldGrad)" stroke-width="22"/>
+    <circle cx="302" cy="191" r="66"  fill="none" stroke="url(#goldGrad)" stroke-width="20"/>
+    <circle cx="302" cy="191" r="34"  fill="none" stroke="url(#goldGrad)" stroke-width="12"/>
+    <rect x="292" y="30"  width="20" height="322" fill="#0A0B0F"/>
+    <rect x="150" y="181" width="304" height="20"  fill="#0A0B0F"/>
+  </g>
+  <g fill="none" stroke="url(#goldGrad)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 40 155 L 78 155 L 100 173 L 165 173"/>
+    <path d="M 40 191 L 165 191"/>
+    <path d="M 40 227 L 78 227 L 100 209 L 165 209"/>
+  </g>
+  <g fill="#0A0B0F" stroke="url(#goldGrad)" stroke-width="6">
+    <circle cx="40" cy="155" r="9"/>
+    <circle cx="40" cy="191" r="9"/>
+    <circle cx="40" cy="227" r="9"/>
+  </g>
+
+  <!-- WORDMARK -->
+  <text x="510" y="235" font-family="Arial, Helvetica, sans-serif" font-weight="700"
+        font-size="150" fill="#F5F3EF">Sunforge</text>
+  <text x="516" y="300" font-family="Arial, Helvetica, sans-serif" font-weight="500"
+        font-size="46" letter-spacing="14" fill="#D99A50">DIGITAL</text>
+</svg>

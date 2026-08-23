@@ -248,9 +248,12 @@ export default function Services({
                         placement: "services",
                       })
                     }
-                    className="mt-6 inline-flex items-center gap-1.5 font-mono text-sm text-gold transition-colors hover:text-highlight"
+                    className="mt-7 inline-flex items-center gap-2 rounded-full border border-gold/45 bg-[linear-gradient(180deg,rgba(230,168,75,0.12),rgba(230,168,75,0.05))] px-4 py-2.5 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-gold shadow-[0_0_0_1px_rgba(230,168,75,0.06)] transition-all duration-200 hover:border-gold/70 hover:bg-[linear-gradient(180deg,rgba(230,168,75,0.18),rgba(230,168,75,0.08))] hover:text-highlight hover:shadow-[0_0_18px_rgba(230,168,75,0.12)]"
                   >
-                    {card.ctaLabel} <span aria-hidden="true">&rarr;</span>
+                    <span>{card.ctaLabel}</span>
+                    <span aria-hidden="true" className="text-sm transition-transform duration-200 group-hover:translate-x-0.5">
+                      &rarr;
+                    </span>
                   </Link>
                 )}
               </motion.div>

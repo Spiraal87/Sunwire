@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import TrackedLink from "@/components/TrackedLink";
+import ResourceArticleLayout from "@/components/resources/ResourceArticleLayout";
+import ResourceSection from "@/components/resources/ResourceSection";
 import { CTA_LABELS } from "@/lib/cta";
 
 const TITLE = "AI Receptionist vs. Answering Service: What's the Difference?";
@@ -33,139 +33,149 @@ const articleJsonLd = {
 
 export default function AiReceptionistVsAnsweringServicePage() {
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16 sm:py-24">
+    <>
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
-
-      <p className="font-mono text-xs uppercase tracking-[0.2em] text-text-secondary">
-        <Link href="/resources" className="hover:text-gold">
-          Resources
-        </Link>
-      </p>
-      <h1 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">{TITLE}</h1>
-
-      <div className="mt-8 rounded-panel border border-gold/40 bg-gold/5 p-6">
-        <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-gold">
-          Quick answer
-        </p>
-        <p className="mt-3 font-body text-base leading-relaxed text-text-primary">
-          A traditional answering service uses human operators, usually working from a script,
-          often with limited hours and a per-minute or per-call cost. An AI receptionist is
-          software that answers instantly, any time of day, using the business&apos;s own hours,
-          services, and pricing to hold a real conversation and book the job directly onto the
-          calendar — without a human operator on the other end. Both exist to catch calls a
-          business would otherwise miss; they just work in fundamentally different ways
-          underneath.
-        </p>
-      </div>
-
-      <div className="mt-10 space-y-8 font-body text-text-muted">
-        <section>
-          <h2 className="font-display text-lg font-semibold text-text-primary">
-            How a traditional answering service works
-          </h2>
-          <p className="mt-3">
+      <ResourceArticleLayout
+        title={TITLE}
+        description={DESCRIPTION}
+        quickAnswer="A traditional answering service uses human operators, usually working from a script, often with limited hours and a per-minute or per-call cost. An AI receptionist is software that answers instantly, any time of day, using the business's own hours, services, and pricing to hold a real conversation and book the job directly onto the calendar without a human operator on the other end."
+        guideItems={[
+          { id: "answering-service", label: "How a traditional answering service works" },
+          { id: "ai-receptionist", label: "How an AI receptionist works" },
+          { id: "voice-recording", label: "What about a voice recording?" },
+          { id: "differences", label: "Where they actually differ" },
+          { id: "when-each-fits", label: "When each option makes sense" },
+        ]}
+        summaryCards={[
+          {
+            eyebrow: "Live operator",
+            title: "Answering service",
+            description: "A person picks up, follows a script, and usually passes a message back to the business.",
+          },
+          {
+            eyebrow: "One-way audio",
+            title: "Voice recording",
+            description: "A caller hears pre-recorded information or leaves voicemail, but nobody handles the conversation.",
+          },
+          {
+            eyebrow: "Real-time system",
+            title: "AI receptionist",
+            description: "The caller gets answers, next-step guidance, and often direct booking without waiting for a callback.",
+          },
+        ]}
+        footerCta={{
+          title: "Hear an AI receptionist handle a real call",
+          description: "Call the live demo line and judge for yourself. No info required.",
+          placement: "resource_ai_vs_answering_service_footer",
+          primary: {
+            href: "/#contact",
+            cta: "assessment_request",
+            label: CTA_LABELS.assessment,
+          },
+          secondary: {
+            href: "/#demo",
+            cta: "ai_receptionist_demo",
+            label: CTA_LABELS.aiDemo,
+          },
+        }}
+      >
+        <ResourceSection id="answering-service" title="How a traditional answering service works">
+          <p>
             A live answering service routes your unanswered calls to a call center, where a human
-            operator picks up — often reading from a general script rather than speaking with deep
-            knowledge of your specific business. They take a message or basic details and pass
-            them along, but usually can&apos;t check your real-time calendar or book an
-            appointment on the spot. Pricing is typically per-minute or per-call, so cost scales
-            directly with call volume, and coverage is limited to whatever hours the service
-            staffs.
+            operator picks up, often reading from a general script rather than speaking with deep
+            knowledge of your specific business. They take a message or basic details and pass them
+            along, but usually cannot check your real-time calendar or book an appointment on the
+            spot.
           </p>
-        </section>
+          <p>
+            Pricing is typically per-minute or per-call, so cost scales directly with call volume,
+            and coverage is limited to whatever hours the service staffs.
+          </p>
+        </ResourceSection>
 
-        <section>
-          <h2 className="font-display text-lg font-semibold text-text-primary">
-            How an AI receptionist works
-          </h2>
-          <p className="mt-3">
+        <ResourceSection id="ai-receptionist" title="How an AI receptionist works">
+          <p>
             An AI receptionist is configured around a specific business&apos;s hours, services,
             pricing, and the questions its customers actually ask. When a call comes in that would
             otherwise go unanswered, it talks through what the caller needs, checks real-time
-            availability, and books the appointment straight onto the calendar — or takes a
-            detailed message if it can&apos;t. The business is notified right away with a summary
-            of the call. It runs 24/7 alongside the business&apos;s existing phone number and
-            staff, not as a replacement for either.
+            availability, and books the appointment straight onto the calendar, or takes a detailed
+            message if it cannot.
           </p>
-        </section>
+          <p>
+            The business is notified right away with a summary of the call. It runs 24/7 alongside
+            the business&apos;s existing phone number and staff, not as a replacement for either.
+          </p>
+        </ResourceSection>
 
-        <section>
-          <h2 className="font-display text-lg font-semibold text-text-primary">
-            Where they actually differ
-          </h2>
-          <ul className="mt-3 list-disc space-y-2 pl-5">
+        <ResourceSection id="voice-recording" title="What about a voice recording or voicemail menu?">
+          <p>
+            A voice recording is a different category from a live answering service. It can tell
+            callers your hours, route them to a department, or ask them to leave a voicemail, but
+            it is still one-way. It cannot answer follow-up questions, adapt to what the caller
+            says, or check live availability.
+          </p>
+          <p>
+            If the goal is simply to share basic information after hours and capture a name and
+            number, a recording can be enough. If the goal is to rescue ready-to-book callers in
+            the moment, it usually falls short because the caller still has to wait for someone to
+            call back.
+          </p>
+        </ResourceSection>
+
+        <ResourceSection id="differences" title="Where they actually differ">
+          <ul className="list-disc space-y-3 pl-5 marker:text-gold">
             <li>
               <span className="text-text-primary">Availability:</span> an answering service is
-              staffed during set hours; an AI receptionist answers instantly, 24/7.
+              staffed during set hours, a voice recording only plays what you recorded, and an AI
+              receptionist answers instantly, 24/7.
+            </li>
+            <li>
+              <span className="text-text-primary">Conversation quality:</span> a recording cannot
+              respond at all, a live operator can respond but often from a script, and an AI
+              receptionist can answer common questions based on your configured business details.
             </li>
             <li>
               <span className="text-text-primary">Booking:</span> an AI receptionist can check
-              real-time availability and book directly onto a calendar; a live operator typically
-              takes a message for someone else to follow up on.
+              real-time availability and book directly onto a calendar. A live operator typically
+              takes a message, and a recording pushes the caller to voicemail or another step.
             </li>
             <li>
               <span className="text-text-primary">Consistency:</span> a live operator&apos;s
-              familiarity with your business varies call to call; an AI receptionist answers from
-              the same configured knowledge of your hours, services, and pricing every time.
+              familiarity with your business varies call to call, while a recording and an AI
+              receptionist both stay on-message, with only the AI able to handle back-and-forth.
             </li>
             <li>
               <span className="text-text-primary">Cost structure:</span> answering services are
-              usually billed per minute or per call, so cost rises with volume; an AI receptionist
-              is typically a flat monthly rate regardless of how many calls come in.
+              usually billed per minute or per call, so cost rises with volume. A recording is
+              cheaper but limited, while an AI receptionist is typically a flat monthly rate.
             </li>
           </ul>
-        </section>
+        </ResourceSection>
 
-        <section>
-          <h2 className="font-display text-lg font-semibold text-text-primary">
-            When each one makes sense
-          </h2>
-          <p className="mt-3">
+        <ResourceSection id="when-each-fits" title="When each option makes sense">
+          <p>
             A live answering service can still make sense for businesses that need a human handling
             genuinely complex, non-scriptable conversations, or that have call volume too low to
-            justify a dedicated system. For most local businesses fielding routine calls — booking
-            questions, hours, pricing, availability — an AI receptionist tends to close the actual
-            gap: it answers immediately instead of during business hours only, and books the job
-            instead of just taking a message.
+            justify a dedicated system. A basic recording can work if all you need is an after-hours
+            message and voicemail capture.
           </p>
-          <p className="mt-3">
-            The most direct way to judge either option is to hear it handle a real conversation.
+          <p>
+            For most local businesses fielding routine calls about booking, hours, pricing, and
+            availability, an AI receptionist tends to close the real gap. It answers immediately
+            instead of sending callers to a recording, and it books the job instead of only taking
+            a message.
+          </p>
+          <p>
+            The most direct way to judge the difference is to hear it handle a real conversation.
             Our own AI receptionist, Ember, has a live interactive demo line you can call before
             deciding anything.
           </p>
-        </section>
-      </div>
-
-      <div className="mt-12 rounded-panel border border-line bg-gradient-panel p-6 sm:p-8">
-        <p className="font-display text-lg font-semibold text-text-primary">
-          Hear an AI receptionist handle a real call
-        </p>
-        <p className="mt-2 font-body text-sm text-text-muted">
-          Call the live demo line and judge for yourself — no info required.
-        </p>
-        <div className="mt-5 flex flex-wrap gap-3">
-          <TrackedLink
-            href="/#contact"
-            cta="assessment_request"
-            placement="resource_ai_vs_answering_service_footer"
-            className="rounded-btn bg-gradient-accent px-6 py-3.5 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110"
-          >
-            {CTA_LABELS.assessment}
-          </TrackedLink>
-          <TrackedLink
-            href="/#demo"
-            cta="ai_receptionist_demo"
-            placement="resource_ai_vs_answering_service_footer"
-            className="rounded-btn border border-line px-6 py-3.5 font-display text-sm font-semibold text-text-primary transition-colors hover:border-gold hover:text-gold"
-          >
-            {CTA_LABELS.aiDemo}
-          </TrackedLink>
-        </div>
-      </div>
-    </div>
+        </ResourceSection>
+      </ResourceArticleLayout>
+    </>
   );
 }

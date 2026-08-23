@@ -115,27 +115,29 @@ function WebsiteProblem() {
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut" }}
           >
-            <h2 className="font-display text-2xl font-semibold sm:text-3xl">
-              Where Websites Actually Lose Customers
-            </h2>
-            <ul className="mt-6 space-y-4">
-              {problemBullets.map((bullet) => (
-                <li
-                  key={bullet}
-                  className="flex items-start gap-3 font-body text-sm text-text-primary sm:text-base"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="mt-1.5 h-2 w-2 shrink-0 rounded-full border border-coral"
-                  />
-                  {bullet}
-                </li>
-              ))}
-            </ul>
-            <p className="mt-6 font-body text-text-muted">
-              A site that looks fine isn&apos;t the same as a site that converts. The goal is the
-              second one.
-            </p>
+            <div className="rounded-panel border border-gold/20 bg-[linear-gradient(165deg,rgba(27,21,17,0.96),rgba(14,11,9,0.98))] p-6 shadow-surface sm:p-8">
+              <h2 className="font-display text-2xl font-semibold sm:text-3xl">
+                Where Websites Actually Lose Customers
+              </h2>
+              <ul className="mt-6 space-y-4">
+                {problemBullets.map((bullet) => (
+                  <li
+                    key={bullet}
+                    className="flex items-start gap-3 font-body text-sm text-text-primary sm:text-base"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="mt-1.5 h-2 w-2 shrink-0 rounded-full border border-coral"
+                    />
+                    {bullet}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-6 font-body text-text-muted">
+                A site that looks fine isn&apos;t the same as a site that converts. The goal is the
+                second one.
+              </p>
+            </div>
           </motion.div>
 
           <motion.div
@@ -146,7 +148,7 @@ function WebsiteProblem() {
             className="relative aspect-[4/3] overflow-hidden rounded-panel border border-gold/30 bg-panel-2-textured shadow-surface"
           >
             <Image
-              src="/images/website-problem-phone.png"
+              src="/images/website-lost%20customer.png"
               alt="A visitor holding a phone, waiting on a slow-loading, generic-looking website"
               fill
               sizes="(min-width: 1024px) 40vw, 100vw"
@@ -175,6 +177,11 @@ export default function WebsiteClient() {
             </>
           }
           subhead="A custom site built to help people trust your business faster and take the next step — with local search foundations and an on-site chatbot to catch the visitors who won't pick up the phone."
+          mobileSubhead="Built to earn trust faster and turn local visitors into real calls."
+          mobileCompact
+          mobileMediaFirst
+          hideSecondaryCtaOnMobile
+          videoSrc="/images/website-hero.mp4"
           primaryCta={{
             label: getVerticalAssessmentLabel("Website"),
             href: "#contact",

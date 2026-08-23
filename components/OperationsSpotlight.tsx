@@ -35,12 +35,14 @@ export default function OperationsSpotlight() {
             />
             <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,8,10,0.68)_0%,rgba(8,8,10,0.22)_38%,rgba(8,8,10,0.18)_100%)]" />
             <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
-              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-gold">
-                What this looks like in real life
-              </p>
-              <h2 className="mt-3 max-w-xl font-display text-2xl font-semibold text-text-primary sm:text-3xl">
-                When the day gets busy, the business still feels handled.
-              </h2>
+              <div className="inline-flex max-w-xl flex-col rounded-card border border-gold/35 bg-[linear-gradient(180deg,rgba(10,10,10,0.22),rgba(10,10,10,0.58))] px-5 py-4 backdrop-blur-[2px] sm:px-6 sm:py-5">
+                <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-gold">
+                  What this looks like in real life
+                </p>
+                <h2 className="mt-3 font-display text-2xl font-semibold text-text-primary sm:text-3xl">
+                  When the day gets busy, the business still feels handled.
+                </h2>
+              </div>
             </div>
           </div>
 

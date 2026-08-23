@@ -31,7 +31,7 @@ export default function Home() {
       <main>
         <EnergyLine />
         <Hero />
-        <div className="relative">
+        <div className="relative bg-panel-2-textured">
           <BusinessCategories />
           <SectionDivider
             id="services"
