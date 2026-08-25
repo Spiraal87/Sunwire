@@ -7,10 +7,6 @@ import BusinessCategories from "@/components/BusinessCategories";
 import Services from "@/components/Services";
 import SystemComparison from "@/components/SystemComparison";
 import OperationsSpotlight from "@/components/OperationsSpotlight";
-import HowItWorks from "@/components/HowItWorks";
-import Funnel from "@/components/Funnel";
-import ROI from "@/components/ROI";
-import EmberCallWidget from "@/components/EmberCallWidget";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
@@ -20,17 +16,28 @@ import EnergyLine from "@/components/EnergyLine";
 export default function Home() {
   const [servicesLit, setServicesLit] = useState(false);
   const [comparisonLit, setComparisonLit] = useState(false);
-  const [howItWorksLit, setHowItWorksLit] = useState(false);
-  const [funnelLit, setFunnelLit] = useState(false);
-  const [roiLit, setRoiLit] = useState(false);
-  const [emberLit, setEmberLit] = useState(false);
 
   return (
     <>
       <Nav />
       <main>
         <EnergyLine />
-        <Hero />
+        <Hero
+          heading={
+            <>
+              Capture customers through{" "}
+              <span className="gradient-text">calls and online.</span>
+            </>
+          }
+          subhead="Build a complete customer-capture system with an AI receptionist that answers calls and a website that converts visitors. Start with what your business needs most, then layer in the rest as you grow."
+          eyebrow="A Suite of Systems for Local Business"
+          secondaryCta={{
+            label: "Try the AI Demo",
+            href: "/receptionist#demo",
+            cta: "ai_receptionist_demo",
+            placement: "homepage_hero",
+          }}
+        />
         <div className="relative bg-panel-2-textured">
           <BusinessCategories />
           <SectionDivider
@@ -49,36 +56,6 @@ export default function Home() {
           />
           <SystemComparison backlit={comparisonLit} />
           <OperationsSpotlight />
-          <SectionDivider
-            id="how-it-works"
-            litCount={3}
-            tintSide="bottom"
-            ringScale={1.6}
-            onIgnite={() => setHowItWorksLit(true)}
-          />
-          <HowItWorks backlit={howItWorksLit} />
-          <SectionDivider
-            litCount={4}
-            tintSide="top"
-            ringScale={1.6}
-            onIgnite={() => setFunnelLit(true)}
-          />
-          <Funnel backlit={funnelLit} />
-          <SectionDivider
-            litCount={5}
-            tintSide="bottom"
-            ringScale={1.6}
-            onIgnite={() => setRoiLit(true)}
-          />
-          <ROI backlit={roiLit} />
-          <SectionDivider
-            id="demo"
-            litCount={5}
-            tintSide="top"
-            ringScale={1.6}
-            onIgnite={() => setEmberLit(true)}
-          />
-          <EmberCallWidget backlit={emberLit} />
           <Contact />
           <FAQ />
         </div>

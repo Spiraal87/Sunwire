@@ -103,6 +103,18 @@ export default function Nav() {
             <span className="hidden md:inline">Missed-Call Calculator</span>
           </Link>
           <Link
+            href="/receptionist"
+            onClick={() =>
+              captureEvent("cta_clicked", {
+                cta: "receptionist_page",
+                placement: "navigation",
+              })
+            }
+            className="whitespace-nowrap px-1 py-2 font-display text-[10px] font-semibold text-text-secondary transition-colors duration-200 hover:text-gold sm:px-2 sm:text-xs"
+          >
+            Receptionist
+          </Link>
+          <Link
             href="/website"
             onClick={() =>
               captureEvent("cta_clicked", {
@@ -125,25 +137,6 @@ export default function Nav() {
             className="whitespace-nowrap px-1 py-2 font-display text-[10px] font-semibold text-text-secondary transition-colors duration-200 hover:text-gold sm:px-2 sm:text-xs"
           >
             Resources
-          </Link>
-          <Link
-            href="/#demo"
-            onClick={() =>
-              captureEvent("cta_clicked", {
-                cta: "ai_receptionist_demo",
-                placement: "navigation",
-              })
-            }
-            className="group inline-flex items-center gap-1 whitespace-nowrap px-1 py-2 font-display text-[10px] font-semibold text-text-primary transition-colors duration-200 hover:text-gold sm:px-2 sm:text-xs"
-          >
-            <span className="sm:hidden">Demo</span>
-            <span className="hidden sm:inline">{CTA_LABELS.aiDemo}</span>
-            <span
-              aria-hidden="true"
-              className="text-gold transition-transform duration-200 group-hover:translate-x-0.5"
-            >
-              &rarr;
-            </span>
           </Link>
           <Link
             href="/#contact"
@@ -192,6 +185,19 @@ export default function Nav() {
               className="rounded-2xl px-4 py-3 font-display text-sm font-semibold text-text-primary transition-colors hover:text-gold"
             >
               Missed-Call Calculator
+            </Link>
+            <Link
+              href="/receptionist"
+              onClick={() => {
+                captureEvent("cta_clicked", {
+                  cta: "receptionist_page",
+                  placement: "navigation_mobile",
+                });
+                closeMenu();
+              }}
+              className="rounded-2xl px-4 py-3 font-display text-sm font-semibold text-text-primary transition-colors hover:text-gold"
+            >
+              Receptionist
             </Link>
             <Link
               href="/website"

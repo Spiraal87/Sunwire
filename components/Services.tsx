@@ -66,8 +66,8 @@ const defaultCards: Card[] = [
     icon: "/images/icon-receptionist.svg",
     iconAlt: "AI receptionist icon",
     label: "01 / Front Desk System",
-    ctaHref: "/#contact",
-    ctaLabel: "Book a 15-minute assessment",
+    ctaHref: "/receptionist",
+    ctaLabel: "Explore the AI Receptionist",
     heading: "For businesses losing opportunities when calls go unanswered",
     body: "A practical call-handling system for missed calls, overflow calls, and busy stretches when your team cannot always get to the phone in time.",
     stats: [
