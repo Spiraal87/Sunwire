@@ -101,6 +101,60 @@ const websiteFaqs: FaqEntry[] = [
   },
 ];
 
+function ReferralContext() {
+  const prefersReducedMotion = useReducedMotion();
+  const distance = prefersReducedMotion ? 0 : 20;
+
+  const points = [
+    {
+      title: "Referral Expansion",
+      description:
+        "Referrals are great. A site makes sure your referral customers can find you instantly and book without playing phone tag.",
+    },
+    {
+      title: "The Search-First Reality",
+      description:
+        "76% of people who search for a service nearby visit a business within a day. If they can't find you online, you're invisible to that majority.",
+    },
+    {
+      title: "Opportunity Cost",
+      description:
+        "Right now, referrals bring people to your phone. A site turns those moments into immediate bookings instead of missed calls and voicemails.",
+    },
+  ];
+
+  return (
+    <section className="px-6 py-16 sm:py-24">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-10">
+          <h2 className="font-display text-2xl font-semibold sm:text-3xl">
+            Even If You're Running on Referrals
+          </h2>
+          <p className="mt-4 max-w-2xl font-body text-text-muted">
+            Word-of-mouth got you here. But most customers search before they call.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          {points.map((point, i) => (
+            <motion.div
+              key={point.title}
+              initial={{ opacity: 0, y: distance }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut", delay: i * 0.1 }}
+              className="rounded-panel border border-gold/20 bg-[linear-gradient(165deg,rgba(27,21,17,0.96),rgba(14,11,9,0.98))] p-6 shadow-surface sm:p-8"
+            >
+              <h3 className="font-display text-lg font-semibold text-gold">{point.title}</h3>
+              <p className="mt-3 font-body text-sm text-text-primary">{point.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function WebsiteProblem() {
   const prefersReducedMotion = useReducedMotion();
   const distance = prefersReducedMotion ? 0 : 20;
@@ -195,6 +249,8 @@ export default function WebsiteClient() {
             placement: "website_hero",
           }}
         />
+
+        <ReferralContext />
 
         <WebsiteProblem />
 
