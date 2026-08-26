@@ -123,7 +123,7 @@ export default function ReceptionistClient() {
           mobileCompact
           mobileMediaFirst
           hideSecondaryCtaOnMobile
-          videoSrc="/images/hero-video.mp4"
+          videoSrc="/images/receptionist_video.mp4"
           posterSrc="/images/hero-image3.png"
           primaryCta={{
             label: getVerticalAssessmentLabel("Front Desk System"),
