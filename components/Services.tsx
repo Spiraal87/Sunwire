@@ -91,7 +91,7 @@ const defaultCards: Card[] = [
     heading: "For businesses that need a stronger online first impression",
     body: "A custom site built to help people understand what you do, trust the business faster, and take the next step without hunting for it.",
     stats: [
-      { value: "76%", label: "of people who search for something nearby on their phone visit a business within a day" },
+      { value: "76%", label: "of people search online before calling a local business" },
     ],
     statsCaveat: "Source: Google local search research (Think with Google).",
     bullets: [
