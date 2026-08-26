@@ -155,6 +155,7 @@ export default function Hero({
           "absolute inset-0 bg-[linear-gradient(to_right,rgba(8,8,10,0.94)_0%,rgba(8,8,10,0.78)_28%,rgba(8,8,10,0.28)_52%,rgba(8,8,10,0.04)_75%,rgba(8,8,10,0.15)_100%)]"
         }
       />
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,transparent_60%,rgba(8,8,10,0.3)_85%,rgba(8,8,10,0.8)_100%)]" />
     </>
   );
 
@@ -228,6 +229,7 @@ export default function Hero({
               overlayClassName:
                 "absolute inset-0 bg-[linear-gradient(to_bottom,rgba(8,8,10,0.16)_0%,rgba(8,8,10,0.08)_36%,rgba(8,8,10,0.24)_62%,rgba(8,8,10,0.78)_100%)]",
             })}
+            <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,transparent_60%,rgba(8,8,10,0.3)_85%,rgba(8,8,10,0.8)_100%)]" />
           </div>
           <div className="bg-panel-2-textured">
             <div className="mx-auto w-full max-w-6xl px-6 pb-10 pt-8">{renderContent({ mobile: true })}</div>

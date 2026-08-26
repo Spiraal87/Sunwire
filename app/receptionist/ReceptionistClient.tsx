@@ -119,10 +119,9 @@ export default function ReceptionistClient() {
             </>
           }
           subhead="An AI receptionist that answers calls, books appointments, and captures caller details — handling missed calls, overflow, and after-hours inquiries while your team focuses on the work."
-          mobileSubhead="Answers calls and books appointments so you don't miss customers."
+          mobileSubhead="Never miss a call again."
           mobileCompact
           mobileMediaFirst
-          hideSecondaryCtaOnMobile
           videoSrc="/images/receptionist_video.mp4"
           posterSrc="/images/hero-image3.png"
           primaryCta={{
