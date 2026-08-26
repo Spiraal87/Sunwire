@@ -240,7 +240,7 @@ export default function Hero({
             className="absolute inset-x-0 -top-px bottom-[-2px] -z-10"
             style={{
               backgroundImage:
-                "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\"), linear-gradient(to bottom, rgba(8,8,10,0.7) 0%, rgba(8,8,10,0.12) 30%, rgba(8,8,10,0.14) 42%, rgba(8,8,10,0.22) 52%, rgba(8,8,10,0.35) 61%, rgba(8,8,10,0.52) 69%, rgba(8,8,10,0.68) 76%, rgba(8,8,10,0.82) 82%, rgba(8,8,10,0.92) 87%, rgba(8,8,10,0.98) 92%, rgba(8,8,10,1) 97%)",
+                "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\"), linear-gradient(to bottom, rgba(8,8,10,0.4) 0%, rgba(8,8,10,0.08) 25%, rgba(8,8,10,0.12) 40%, rgba(8,8,10,0.28) 55%, rgba(8,8,10,0.48) 65%, rgba(8,8,10,0.68) 74%, rgba(8,8,10,0.84) 82%, rgba(8,8,10,0.94) 90%, rgba(8,8,10,1) 100%)",
             }}
           />
           <div className="absolute inset-0 -z-10 bg-bg/55 lg:hidden" />
@@ -295,7 +295,7 @@ export default function Hero({
         className="absolute inset-x-0 -top-px bottom-[-2px] -z-10"
         style={{
           backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\"), linear-gradient(to bottom, rgba(8,8,10,0.7) 0%, rgba(8,8,10,0.12) 30%, rgba(8,8,10,0.14) 42%, rgba(8,8,10,0.22) 52%, rgba(8,8,10,0.35) 61%, rgba(8,8,10,0.52) 69%, rgba(8,8,10,0.68) 76%, rgba(8,8,10,0.82) 82%, rgba(8,8,10,0.92) 87%, rgba(8,8,10,0.98) 92%, rgba(8,8,10,1) 97%)",
+            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\"), linear-gradient(to bottom, rgba(8,8,10,0.4) 0%, rgba(8,8,10,0.08) 25%, rgba(8,8,10,0.12) 40%, rgba(8,8,10,0.28) 55%, rgba(8,8,10,0.48) 65%, rgba(8,8,10,0.68) 74%, rgba(8,8,10,0.84) 82%, rgba(8,8,10,0.94) 90%, rgba(8,8,10,1) 100%)",
         }}
       />
       <div className="absolute inset-0 -z-10 bg-bg/55 lg:hidden" />
