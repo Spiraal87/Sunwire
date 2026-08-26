@@ -77,7 +77,7 @@ export default function AiReceptionistVsAnsweringServicePage() {
             label: CTA_LABELS.assessment,
           },
           secondary: {
-            href: "/#demo",
+            href: "/receptionist#demo",
             cta: "ai_receptionist_demo",
             label: CTA_LABELS.aiDemo,
           },

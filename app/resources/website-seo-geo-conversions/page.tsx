@@ -79,7 +79,7 @@ export default function WebsiteSeoGeoConversionsPage() {
             label: CTA_LABELS.assessment,
           },
           secondary: {
-            href: "/#card-websites",
+            href: "/website",
             cta: "website_services",
             label: CTA_LABELS.websiteSystem,
           },
