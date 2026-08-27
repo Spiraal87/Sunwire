@@ -5,6 +5,7 @@ const CLIENTS = {
   demo: {
     businessName: "Sunforge Digital Demo",
     notifyEmail: "cdjohnsonzero@gmail.com",
+    notifyPhone: "719-451-1199",
   },
 } as const;
 
