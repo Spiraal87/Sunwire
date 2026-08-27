@@ -256,7 +256,7 @@ export default function WebsiteClient() {
 
         <SectionDivider
           id="services"
-          litCount={1}
+          litCount={6}
           tintSide="bottom"
           ringScale={1.6}
           onIgnite={() => setServicesLit(true)}

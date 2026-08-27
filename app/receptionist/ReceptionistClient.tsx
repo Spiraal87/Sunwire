@@ -138,18 +138,11 @@ export default function ReceptionistClient() {
           }}
         />
 
-        <SectionDivider
-          litCount={1}
-          tintSide="bottom"
-          ringScale={1.6}
-          onIgnite={() => setFunnelLit(true)}
-        />
-
         <Funnel backlit={funnelLit} />
 
         <SectionDivider
           id="services"
-          litCount={2}
+          litCount={6}
           tintSide="top"
           ringScale={1.6}
           onIgnite={() => setServicesLit(true)}
@@ -164,7 +157,7 @@ export default function ReceptionistClient() {
 
         <SectionDivider
           id="demo"
-          litCount={3}
+          litCount={6}
           tintSide="top"
           ringScale={1.6}
           onIgnite={() => setEmberLit(true)}
