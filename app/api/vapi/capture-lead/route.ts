@@ -91,11 +91,11 @@ export async function POST(request: Request) {
 
     // Extract lead information
     const leadData: LeadData = {
-      name: (toolCallData.name || toolCallData.customer_name || "Not provided") as string,
-      business_name: (toolCallData.business_name || toolCallData.company || "Not provided") as string,
-      phone: (toolCallData.phone || toolCallData.phone_number || "Not provided") as string,
+      name: (toolCallData.name || toolCallData.customer_name || toolCallData.caller_name || "Not provided") as string,
+      business_name: (toolCallData.business_name || toolCallData.company || toolCallData.business_type || "Not provided") as string,
+      phone: (toolCallData.phone || toolCallData.phone_number || toolCallData.caller_phone || "Not provided") as string,
       email: (toolCallData.email || toolCallData.customer_email || "Not provided") as string,
-      notes: (toolCallData.notes || toolCallData.message || "No additional notes") as string,
+      notes: (toolCallData.notes || toolCallData.message || toolCallData.interest_notes || toolCallData.reason_for_calling || "No additional notes") as string,
     };
 
     console.log("Parsed lead data:", leadData);
