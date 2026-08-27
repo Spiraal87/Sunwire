@@ -1,7 +1,5 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 // Map client IDs to their information
 const CLIENTS = {
   demo: {
@@ -92,17 +90,17 @@ export async function POST(request: Request) {
 
     // Extract lead information
     const leadData: LeadData = {
-      name: toolCallData.name || toolCallData.customer_name || "Not provided",
-      business_name:
-        toolCallData.business_name || toolCallData.company || "Not provided",
-      phone: toolCallData.phone || toolCallData.phone_number || "Not provided",
-      email: toolCallData.email || toolCallData.customer_email || "Not provided",
-      notes: toolCallData.notes || toolCallData.message || "No additional notes",
+      name: (toolCallData.name || toolCallData.customer_name || "Not provided") as string,
+      business_name: (toolCallData.business_name || toolCallData.company || "Not provided") as string,
+      phone: (toolCallData.phone || toolCallData.phone_number || "Not provided") as string,
+      email: (toolCallData.email || toolCallData.customer_email || "Not provided") as string,
+      notes: (toolCallData.notes || toolCallData.message || "No additional notes") as string,
     };
 
     console.log("Parsed lead data:", leadData);
 
     // Send email
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const emailResult = await resend.emails.send({
       from: "Sunforge Digital <noreply@sunforgedigital.com>",
       to: client.notifyEmail,
