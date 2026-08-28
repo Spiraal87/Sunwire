@@ -8,8 +8,8 @@ import { Phone, Zap } from "lucide-react";
 import { captureEvent } from "@/lib/analytics";
 import GlowBorder from "./GlowBorder";
 
-const DEMO_PHONE_DISPLAY = "623-303-9061";
-const DEMO_PHONE_TEL = "tel:+16233039061";
+const DEMO_PHONE_DISPLAY = "719-451-1199";
+const DEMO_PHONE_TEL = "tel:+17194511199";
 
 // Same offsets/timing as the ember particles in SignalGraphic, for a
 // consistent "sparks rising" motif across the site.
