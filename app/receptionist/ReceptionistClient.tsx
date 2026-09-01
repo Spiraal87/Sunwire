@@ -9,6 +9,7 @@ import SectionDivider from "@/components/SectionDivider";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Funnel from "@/components/Funnel";
+import BeyondTheCall from "@/components/BeyondTheCall";
 import type { FaqEntry } from "@/components/FAQ";
 import { getVerticalAssessmentLabel } from "@/lib/cta";
 import EmberCallWidget from "@/components/EmberCallWidget";
@@ -85,6 +86,16 @@ const receptionistFaqs: FaqEntry[] = [
       "Yes — it's built to slot in alongside what you already use, not replace it. No new software for your team to learn, no rip-and-replace. Every setup is a little different, so tell me what you're on and I'll confirm exactly how it connects before we build anything.",
   },
   {
+    question: "Can it text customers, or does it only handle calls?",
+    answer:
+      "Both. It can text a missed caller back immediately, send appointment reminders, and follow up on leads that have gone quiet — all without you doing anything.",
+  },
+  {
+    question: "What happens after the call ends?",
+    answer:
+      "The call isn't the end of the process. Depending on what you need, it can log the details wherever you keep track of customers, send a reminder before the next appointment, or check back in if something was left unresolved.",
+  },
+  {
     question: "Will it sound robotic?",
     answer:
       "You don't have to take our word for it — call the interactive demo line yourself and hear how it handles a real conversation before deciding anything. The voice itself is customizable too: you can choose from hundreds of different receptionist voices, in multiple languages, to match how you want your business to sound.",
@@ -103,7 +114,6 @@ const receptionistFaqs: FaqEntry[] = [
 
 export default function ReceptionistClient() {
   const [servicesLit, setServicesLit] = useState(false);
-  const [funnelLit, setFunnelLit] = useState(false);
   const [emberLit, setEmberLit] = useState(false);
 
   return (
@@ -118,7 +128,7 @@ export default function ReceptionistClient() {
               <span className="gradient-text">Missed Calls</span>
             </>
           }
-          subhead="An AI receptionist that answers calls, books appointments, and captures caller details — handling missed calls, overflow, and after-hours inquiries while your team focuses on the work."
+          subhead="An AI receptionist that answers calls, books appointments, and follows up automatically — texting missed callers back, reminding people about appointments, and re-engaging leads that went quiet. Handling the whole thing that happens around a call, not just the call itself."
           mobileSubhead="Never miss a call again."
           mobileCompact
           mobileMediaFirst
@@ -138,7 +148,9 @@ export default function ReceptionistClient() {
           }}
         />
 
-        <Funnel backlit={funnelLit} />
+        <BeyondTheCall />
+
+        <Funnel />
 
         <SectionDivider
           id="services"

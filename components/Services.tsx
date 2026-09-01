@@ -154,6 +154,8 @@ export default function Services({
               .filter(Boolean)
               .join(" ");
 
+            const cardGlowClass = backlit ? "shadow-[inset_0_0_28px_rgba(230,168,75,0.35)] hover:shadow-[inset_0_0_28px_rgba(230,168,75,0.35),0_0_0_1px_rgba(230,168,75,0.18),0_12px_28px_-16px_rgba(211,138,52,0.35)]" : "hover:shadow-forge";
+
             return (
               <motion.div
                 key={card.label}
@@ -163,7 +165,7 @@ export default function Services({
                 viewport={{ once: true, margin: "-80px" }}
                 whileHover={prefersReducedMotion ? undefined : { y: -4 }}
                 transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut" }}
-                className={`group relative scroll-mt-24 bg-gradient-panel p-8 transition-shadow duration-300 hover:shadow-forge sm:p-10 ${borderClasses}`}
+                className={`group relative scroll-mt-24 bg-gradient-surface p-8 transition-shadow duration-300 sm:p-10 ${borderClasses} ${cardGlowClass}`}
               >
                 <img
                   src={card.icon}

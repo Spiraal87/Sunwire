@@ -222,7 +222,7 @@ function HvacDemoCta() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut" }}
-        className="mx-auto max-w-4xl rounded-panel border border-gold/35 bg-[linear-gradient(160deg,#1b1511,#120e0b)] p-6 shadow-surface sm:p-8"
+        className="mx-auto max-w-4xl rounded-panel border border-gold/35 bg-gradient-surface p-6 shadow-surface sm:p-8"
       >
         <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
           <div className="max-w-2xl">

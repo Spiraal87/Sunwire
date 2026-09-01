@@ -1,7 +1,8 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useInView } from "framer-motion";
 
 function FlowLine({
   label,
@@ -45,10 +46,14 @@ function FlowLine({
 export default function Funnel({ backlit = false }: { backlit?: boolean }) {
   const prefersReducedMotion = useReducedMotion();
   const distance = prefersReducedMotion ? 0 : 20;
-  const imageFrameClassName = backlit ? "forge-lit-panel" : "border-gold/30 shadow-surface";
+  const sectionRef = useRef<HTMLElement>(null);
+  const inView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const isLit = inView || backlit;
+  const imageFrameClassName = isLit ? "forge-lit-panel" : "border-gold/30 shadow-surface";
+  const textCardClassName = isLit ? "border forge-lit-panel" : "border border-gold/20 shadow-surface";
 
   return (
-    <section className="bg-panel-2-textured px-6 py-16 sm:py-24">
+    <section ref={sectionRef} className="bg-panel-2-textured px-6 py-16 sm:py-24">
       <div className="mx-auto max-w-6xl">
         <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-stretch lg:gap-14">
           <motion.div
@@ -75,7 +80,7 @@ export default function Funnel({ backlit = false }: { backlit?: boolean }) {
             transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut", delay: 0.1 }}
             className="min-w-0 h-full"
           >
-            <div className="flex h-full flex-col rounded-panel border border-gold/20 bg-[linear-gradient(165deg,rgba(27,21,17,0.96),rgba(14,11,9,0.98))] p-6 shadow-surface sm:p-8">
+            <div className={`flex h-full flex-col rounded-panel bg-gradient-surface p-6 transition-colors transition-shadow duration-1000 ease-out sm:p-8 ${textCardClassName}`}>
               <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
                 <h2 className="font-display text-2xl font-semibold sm:text-3xl">
                   Where Businesses Lose Customers

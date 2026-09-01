@@ -14,7 +14,7 @@ export default function About() {
         </span>
       </div>
 
-      <div className="rounded-panel border border-line bg-gradient-panel p-8 shadow-surface sm:p-10 md:p-12">
+      <div className="rounded-panel border border-line bg-gradient-surface p-8 shadow-surface sm:p-10 md:p-12">
         <img
           src="/images/sunforge_icon_only.svg"
           alt="Sunforge ring icon"

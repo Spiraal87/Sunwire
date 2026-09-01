@@ -151,7 +151,7 @@ export default function ResourceArticleLayout({
           </aside>
         </div>
 
-        <div className="mt-12 rounded-panel border border-line bg-gradient-panel p-6 shadow-surface sm:p-8">
+        <div className="mt-12 rounded-panel border border-line bg-gradient-surface p-6 shadow-surface sm:p-8">
           <p className="font-display text-lg font-semibold text-text-primary">{footerCta.title}</p>
           <p className="mt-2 max-w-2xl font-body text-sm leading-6 text-text-muted">
             {footerCta.description}

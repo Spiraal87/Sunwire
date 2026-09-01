@@ -34,3 +34,7 @@ next-env.d.ts
 
 .vercel
 sunforge-video-ad/
+
+# OAuth credentials and token scripts (never commit)
+oauth-credentials.json
+get-refresh-token.js

@@ -130,7 +130,7 @@ export default function EmberCallWidget({ backlit = false }: { backlit?: boolean
         initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
         animate={inView ? { opacity: 1, y: 0 } : undefined}
         transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut" }}
-        className={`rounded-panel border bg-gradient-panel p-6 transition-colors transition-shadow duration-1000 ease-out sm:p-10 lg:p-14 ${
+        className={`rounded-panel border bg-gradient-surface p-6 transition-colors transition-shadow duration-1000 ease-out sm:p-10 lg:p-14 ${
           backlit ? "forge-lit-panel-strong" : "border-line shadow-surface"
         }`}
       >
@@ -164,7 +164,7 @@ export default function EmberCallWidget({ backlit = false }: { backlit?: boolean
                 delay: prefersReducedMotion ? 0 : CARD_BORDER_DELAY + CARD_BORDER_DURATION,
                 ease: "easeOut",
               }}
-              className="relative rounded-3xl border border-transparent bg-gradient-panel p-8"
+              className="relative rounded-3xl border border-transparent bg-gradient-surface p-8"
             >
               <GlowBorder
                 inView={inView}

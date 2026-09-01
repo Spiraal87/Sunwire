@@ -143,7 +143,7 @@ function ReferralContext() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut", delay: i * 0.1 }}
-              className="rounded-panel border border-gold/20 bg-[linear-gradient(165deg,rgba(27,21,17,0.96),rgba(14,11,9,0.98))] p-6 shadow-surface sm:p-8"
+              className="rounded-panel border border-gold/20 bg-gradient-surface p-6 shadow-surface sm:p-8"
             >
               <h3 className="font-display text-lg font-semibold text-gold">{point.title}</h3>
               <p className="mt-3 font-body text-sm text-text-primary">{point.description}</p>
@@ -199,15 +199,16 @@ function WebsiteProblem() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut", delay: 0.1 }}
-            className="relative aspect-[4/3] overflow-hidden rounded-panel border border-gold/30 bg-panel-2-textured shadow-surface"
+            className="relative aspect-[4/3] overflow-hidden rounded-panel border border-gold/30 bg-gradient-surface shadow-surface"
           >
             <Image
               src="/images/website-lost%20customer.png"
               alt="A visitor holding a phone, waiting on a slow-loading, generic-looking website"
               fill
               sizes="(min-width: 1024px) 40vw, 100vw"
-              className="object-cover"
+              className="object-cover opacity-40"
             />
+            <div className="absolute inset-0 bg-gradient-surface" />
           </motion.div>
         </div>
       </div>

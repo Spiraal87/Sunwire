@@ -72,21 +72,21 @@ const categories: Category[] = [
   },
   {
     name: "Fitness & Wellness Studios",
-    description: "Class bookings and membership questions, answered instantly, any hour.",
+    description: "Class bookings and membership questions, answered instantly, any hour. Plus a follow-up text to anyone who asked about a class but didn't book.",
     image: "/images/gym.png",
     alt: "Fitness & Wellness Studios in Phoenix",
   },
   {
     name: "Retail & Specialty Shops",
     description:
-      "Product questions, availability, custom orders — covered while you're on the floor with a customer.",
+      "Product questions, availability, custom orders — covered while you're on the floor with a customer. Plus a re-engagement text if a custom order request goes quiet.",
     image: "/images/retail-specialty.png",
     alt: "Retail & Specialty Shops in Phoenix",
   },
   {
     name: "Dental & Medical Practices",
     description:
-      "New patient calls and scheduling, handled the moment the phone rings, not after the third ring goes to voicemail.",
+      "New patient calls and scheduling, handled the moment the phone rings, not after the third ring goes to voicemail. Plus automatic appointment reminders, so fewer patients no-show.",
     image: "/images/dental.png",
     alt: "Dental & Medical Practices in Phoenix",
   },
@@ -135,9 +135,9 @@ function CategoryCard({
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ rotateX, rotateY, transformPerspective: 800 }}
-      className="overflow-hidden rounded-panel border border-gold/30 bg-gradient-panel shadow-surface transition-[border-color,box-shadow] duration-300 hover:border-gold/60 hover:shadow-forge"
+      className="overflow-hidden rounded-panel border border-t-0 border-x-gold/30 border-b-gold/30 bg-gradient-surface shadow-surface transition-[border-color,box-shadow] duration-300 hover:border-gold/60 hover:shadow-forge"
     >
-      <div className="relative aspect-[4/3] overflow-hidden bg-panel-2-textured">
+      <div className="relative aspect-[4/3] overflow-hidden rounded-t-panel bg-panel-2-textured">
         <Image
           src={category.image}
           alt={category.alt}
@@ -145,7 +145,6 @@ function CategoryCard({
           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           className="object-cover"
         />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg/40 via-transparent to-transparent" />
       </div>
       <div className="p-6">
         <h3 className="font-display text-lg font-bold text-text-primary sm:text-xl">
@@ -229,9 +228,9 @@ function FlippableCategoryCard({
           aria-label={`${category.name} — tap to see the trades we cover`}
           tabIndex={isFlipped ? -1 : 0}
           style={{ backfaceVisibility: "hidden" }}
-          className="col-start-1 row-start-1 block w-full cursor-pointer appearance-none overflow-hidden rounded-panel border border-gold/30 bg-gradient-panel p-0 text-left shadow-surface transition-colors duration-300 hover:border-gold/60 hover:shadow-forge focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-gold"
+          className="col-start-1 row-start-1 flex flex-col cursor-pointer appearance-none overflow-hidden rounded-panel border border-t-0 border-x-gold/30 border-b-gold/30 bg-gradient-surface p-0 m-0 text-left shadow-surface transition-colors duration-300 hover:border-gold/60 hover:shadow-forge focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-gold"
         >
-          <div className="relative aspect-[4/3] overflow-hidden bg-panel-2-textured">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-t-panel bg-panel-2-textured text-[0]">
             <Image
               src={category.image}
               alt={category.alt}
@@ -239,8 +238,7 @@ function FlippableCategoryCard({
               sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
               className="object-cover"
             />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg/40 via-transparent to-transparent" />
-            <span
+                <span
               aria-hidden="true"
               className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full border border-gold/50 bg-bg/70 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-gold backdrop-blur-sm"
             >
@@ -257,7 +255,7 @@ function FlippableCategoryCard({
 
         <div
           style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
-          className="col-start-1 row-start-1 flex h-full flex-col justify-center overflow-hidden rounded-panel border border-line bg-gradient-panel p-6 shadow-surface"
+          className="col-start-1 row-start-1 flex h-full flex-col justify-center overflow-hidden rounded-panel border border-line bg-gradient-surface p-6 shadow-surface"
         >
           <button
             type="button"

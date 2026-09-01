@@ -189,7 +189,7 @@ export default function HowItWorks({ backlit = false }: { backlit?: boolean }) {
       </div>
 
       <div
-        className={`rounded-panel border bg-gradient-panel p-8 transition-colors transition-shadow duration-1000 ease-out sm:p-10 ${panelClassName}`}
+        className={`rounded-panel border bg-gradient-surface p-8 transition-colors transition-shadow duration-1000 ease-out sm:p-10 ${panelClassName}`}
       >
         <div className="mb-8 flex gap-3 md:hidden">
           {tracks.map((track, index) => {

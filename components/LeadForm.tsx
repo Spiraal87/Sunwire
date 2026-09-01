@@ -135,7 +135,7 @@ export default function LeadForm({
           initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: prefersReducedMotion ? 0.2 : 0.5, ease: "easeOut" }}
-          className="rounded-card border-2 border-gold/50 bg-gradient-panel p-6"
+          className="rounded-card border-2 border-gold/50 bg-gradient-surface p-6"
         >
           <h3 className="font-display text-xl font-semibold text-text-primary">
             Request received.
@@ -166,7 +166,7 @@ export default function LeadForm({
       <form
         onSubmit={handleSubmit}
         noValidate
-        className="relative rounded-card border-2 border-gold/50 bg-gradient-panel p-5 sm:p-6"
+        className="relative rounded-card border-2 border-gold/50 bg-gradient-surface p-5 sm:p-6"
       >
         <p className="mb-5 font-display text-sm font-semibold uppercase tracking-wide text-gold">
           Tell us about your business

@@ -13,6 +13,8 @@
   --bg: #08080a;
   --panel: #161616;
   --panel-2: #0c0c0c;
+  --surface: #2b2e34;
+  --surface-2: #1e2024;
   --line: rgba(247, 246, 243, 0.07);
   --gold: #e6a84b;
   --coral: #d38a34;
@@ -28,6 +30,8 @@ html[data-theme="light"] {
   --bg: #fefcf9;
   --panel: #f5f3f0;
   --panel-2: #fafaf8;
+  --surface: #eef0f2;
+  --surface-2: #f7f8f9;
   --line: rgba(26, 26, 26, 0.08);
   --gold: #d38a34;
   --coral: #c97a24;
@@ -106,14 +110,14 @@ html[data-theme="light"] .bg-panel-2-textured {
   border-color: rgba(230, 168, 75, 0.42);
   box-shadow:
     0 0 0 1px rgba(246, 196, 103, 0.14),
-    inset 0 0 24px rgba(230, 168, 75, 0.17);
+    inset 0 0 24px rgba(230, 168, 75, 0.28);
 }
 
 .forge-lit-panel-strong {
   border-color: rgba(230, 168, 75, 0.46);
   box-shadow:
     0 0 0 1px rgba(246, 196, 103, 0.16),
-    inset 0 0 28px rgba(230, 168, 75, 0.21);
+    inset 0 0 28px rgba(230, 168, 75, 0.35);
 }
 
 html[data-theme="light"] .forge-lit-panel {
@@ -130,6 +134,16 @@ html[data-theme="light"] .forge-lit-panel-strong {
 html[data-theme="light"] [class*="shadow-forge"],
 html[data-theme="light"] [class*="shadow-glow"] {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+.rounded-t-panel {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+button {
+  line-height: 1;
+  vertical-align: top;
 }
 
 @keyframes ember-ring-pulse {

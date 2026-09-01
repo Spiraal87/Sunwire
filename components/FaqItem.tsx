@@ -19,7 +19,7 @@ export default function FaqItem({
   return (
     <details
       onToggle={handleToggle}
-      className="group rounded-panel border border-line bg-gradient-panel px-6 py-5 shadow-surface"
+      className="group rounded-panel border border-line bg-gradient-surface px-6 py-5 shadow-surface"
     >
       <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-base font-semibold text-text-primary sm:text-lg">
         {question}

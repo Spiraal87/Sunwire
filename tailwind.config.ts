@@ -11,6 +11,8 @@ const config: Config = {
         bg: "#08080a",
         panel: "#161616",
         "panel-2": "#0c0c0c",
+        surface: "#2b2e34",
+        "surface-2": "#1e2024",
         line: "rgba(247,246,243,0.07)",
         gold: "#E6A84B",
         coral: "#D38A34",
@@ -28,6 +30,7 @@ const config: Config = {
       backgroundImage: {
         "gradient-accent": "linear-gradient(135deg, #F2C870 0%, #E6A84B 45%, #D38A34 100%)",
         "gradient-panel": "linear-gradient(160deg, #161616, #0c0c0c)",
+        "gradient-surface": "linear-gradient(160deg, #2b2e34, #1e2024)",
       },
       boxShadow: {
         surface: "0 24px 48px -32px rgba(0,0,0,0.55)",

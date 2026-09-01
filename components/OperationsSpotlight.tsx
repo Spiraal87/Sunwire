@@ -46,7 +46,7 @@ export default function OperationsSpotlight() {
             </div>
           </div>
 
-          <div className="flex flex-col justify-center rounded-panel border border-gold/20 bg-[linear-gradient(165deg,rgba(27,21,17,0.96),rgba(14,11,9,0.98))] p-6 shadow-surface sm:p-8">
+          <div className="flex flex-col justify-center rounded-panel border border-gold/20 bg-gradient-surface p-6 shadow-surface sm:p-8">
             <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[color:var(--steel-blue)]">
               Why it matters
             </p>

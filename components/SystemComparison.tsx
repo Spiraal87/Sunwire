@@ -30,6 +30,11 @@ const rows = [
     bestFit: "Both, phased in",
     why: "Start with the biggest leak first, then layer in the second system once the foundation is in place.",
   },
+  {
+    need: "Leads go quiet after the first contact",
+    bestFit: "Front Desk System",
+    why: "Automatic follow-up texts and reminders instead of leads going cold",
+  },
 ];
 
 export default function SystemComparison({ backlit = false }: { backlit?: boolean }) {
@@ -82,7 +87,7 @@ export default function SystemComparison({ backlit = false }: { backlit?: boolea
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut", delay: 0.08 }}
-          className={`overflow-hidden rounded-panel border bg-gradient-panel transition-colors transition-shadow duration-1000 ease-out ${panelClassName}`}
+          className={`overflow-hidden rounded-panel border bg-gradient-surface transition-colors transition-shadow duration-1000 ease-out ${panelClassName}`}
         >
           <div className="hidden grid-cols-[1.35fr_0.8fr_1fr] border-b border-line/80 bg-[linear-gradient(90deg,rgba(111,147,166,0.06),rgba(255,255,255,0.02))] px-6 py-4 md:grid">
             <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.15em] text-[color:var(--steel-blue)]">

@@ -27,7 +27,7 @@ export default function CalculatorTeaser({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut" }}
-      className="rounded-panel border border-line bg-[linear-gradient(160deg,#1f1814,#18120f)] p-6 shadow-surface sm:p-8"
+      className="rounded-panel border border-line bg-gradient-surface p-6 shadow-surface sm:p-8"
     >
       <div className="mb-5 flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-text-secondary">
         <span aria-hidden="true" className="h-2 w-2 rounded-full border border-gold" />

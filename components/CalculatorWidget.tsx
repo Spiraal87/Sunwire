@@ -199,7 +199,7 @@ export default function CalculatorWidget({
           ))}
         </div>
 
-        <div className="card mt-3 overflow-hidden rounded-panel border border-line bg-[linear-gradient(160deg,#1d1713,#17120f)] shadow-surface">
+        <div className="card mt-3 overflow-hidden rounded-panel border border-line bg-gradient-surface shadow-surface">
           <section ref={(el) => { sectionRefs.current.calls = el; }}>
             <h2>
             <button
@@ -486,7 +486,7 @@ export default function CalculatorWidget({
 
         <div
           ref={leakCardRef}
-          className="leak-visual relative z-10 mt-6 rounded-panel border border-line bg-[linear-gradient(160deg,#1f1814,#18120f)] p-6 shadow-surface sm:p-8"
+          className="leak-visual relative z-10 mt-6 rounded-panel border border-line bg-gradient-surface p-6 shadow-surface sm:p-8"
         >
           <div className="mb-5 flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-highlight">
             <span aria-hidden="true" className="h-2 w-2 rounded-full bg-highlight" />
@@ -567,7 +567,7 @@ export default function CalculatorWidget({
           </div>
         </div>
 
-        <div className="demo-cta relative z-0 mt-6 rounded-panel border border-gold/60 bg-[linear-gradient(160deg,#211914,#19130f)] p-8 shadow-glow print:hidden">
+        <div className="demo-cta relative z-0 mt-6 rounded-panel border border-gold/60 bg-gradient-surface p-8 shadow-glow print:hidden">
           <div className="font-mono text-xs font-semibold uppercase tracking-[0.15em] text-gold">
             This is exactly what an AI receptionist closes
           </div>
@@ -743,7 +743,7 @@ export default function CalculatorWidget({
                 </p>
               </div>
               <div className="mt-4 grid gap-4 lg:grid-cols-3">
-                <div className="flex h-full flex-col rounded-panel border border-[#345064] bg-[linear-gradient(160deg,#121920,#0d1217)] p-6 shadow-[0_18px_40px_rgba(4,8,12,0.28)] sm:p-8">
+                <div className="flex h-full flex-col rounded-panel border border-[#345064] bg-gradient-surface p-6 shadow-[0_18px_40px_rgba(4,8,12,0.28)] sm:p-8">
                   <p className="font-display text-xl font-semibold text-text-primary sm:text-2xl">
                     How much do missed calls actually cost a local business?
                   </p>
@@ -762,7 +762,7 @@ export default function CalculatorWidget({
                   </TrackedLink>
                 </div>
 
-                <div className="flex h-full flex-col rounded-panel border border-[#345064] bg-[linear-gradient(160deg,#121920,#0d1217)] p-6 shadow-[0_18px_40px_rgba(4,8,12,0.28)] sm:p-8">
+                <div className="flex h-full flex-col rounded-panel border border-[#345064] bg-gradient-surface p-6 shadow-[0_18px_40px_rgba(4,8,12,0.28)] sm:p-8">
                   <p className="font-display text-xl font-semibold text-text-primary sm:text-2xl">
                     Why your website still matters: SEO, GEO, and conversions
                   </p>
@@ -781,7 +781,7 @@ export default function CalculatorWidget({
                   </TrackedLink>
                 </div>
 
-                <div className="flex h-full flex-col rounded-panel border border-[#345064] bg-[linear-gradient(160deg,#121920,#0d1217)] p-6 shadow-[0_18px_40px_rgba(4,8,12,0.28)] sm:p-8">
+                <div className="flex h-full flex-col rounded-panel border border-[#345064] bg-gradient-surface p-6 shadow-[0_18px_40px_rgba(4,8,12,0.28)] sm:p-8">
                   <p className="font-display text-xl font-semibold text-text-primary sm:text-2xl">
                     AI receptionist vs. answering service: what&apos;s the difference?
                   </p>
@@ -865,7 +865,7 @@ export default function CalculatorWidget({
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 12, scale: 0.98 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
-                className="relative w-full max-w-sm rounded-panel border border-line bg-[linear-gradient(160deg,#1f1814,#18120f)] p-6 shadow-surface"
+                className="relative w-full max-w-sm rounded-panel border border-line bg-gradient-surface p-6 shadow-surface"
               >
                 <button
                   type="button"

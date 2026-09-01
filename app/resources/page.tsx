@@ -54,7 +54,7 @@ export default function ResourcesPage() {
           <Link
             key={article.href}
             href={article.href}
-            className="group block rounded-panel border border-line bg-gradient-panel p-6 shadow-surface transition-colors hover:border-gold/60 sm:p-8"
+            className="group block rounded-panel border border-line bg-gradient-surface p-6 shadow-surface transition-colors hover:border-gold/60 sm:p-8"
           >
             <p className="font-display text-lg font-semibold text-text-primary group-hover:text-gold sm:text-xl">
               {article.title}

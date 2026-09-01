@@ -33,7 +33,7 @@ const examples = [
 export default function ROI({ backlit = false }: { backlit?: boolean }) {
   const prefersReducedMotion = useReducedMotion();
   const distance = prefersReducedMotion ? 0 : 20;
-  const panelClassName = `rounded-panel border bg-gradient-panel transition-colors transition-shadow duration-1000 ease-out ${
+  const panelClassName = `rounded-panel border bg-gradient-surface transition-colors transition-shadow duration-1000 ease-out ${
     backlit ? "forge-lit-panel" : "border-line shadow-surface"
   }`;
 
