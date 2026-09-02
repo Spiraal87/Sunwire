@@ -578,7 +578,7 @@ export default function CalculatorWidget({
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
-              href="/#demo"
+              href="/receptionist#demo"
               onClick={() =>
                 captureEvent("demo_call_started", { placement: "calculator_results" })
               }
