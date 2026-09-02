@@ -5,8 +5,8 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ChevronDown, Phone } from "lucide-react";
 import { captureEvent } from "@/lib/analytics";
 
-const DEMO_PHONE_DISPLAY = "623-303-9061";
-const DEMO_PHONE_TEL = "tel:+16233039061";
+const DEMO_PHONE_DISPLAY = "719-451-1199";
+const DEMO_PHONE_TEL = "tel:+17194511199";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
