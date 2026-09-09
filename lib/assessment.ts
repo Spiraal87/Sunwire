@@ -14,8 +14,8 @@ export const industries = [
 export type IndustryId = typeof industries[number]["id"] | "other";
 export type Pain = "calls" | "website" | "both";
 export type WebsiteState = "working" | "weak" | "none";
-export type Assessment = { industry: IndustryId | ""; pain: Pain | ""; websiteState: WebsiteState | ""; calls: number; missPct: number; value: number; capacityPct: number; visitors: number; conversionPct: number; step: number };
-export const emptyAssessment: Assessment = { industry: "", pain: "", websiteState: "", calls: 200, missPct: 30, value: 120, capacityPct: 50, visitors: 500, conversionPct: 1, step: 0 };
+export type Assessment = { industry: IndustryId | ""; pain: Pain | ""; websiteState: WebsiteState | ""; value: number; extraCustomers: number; step: number };
+export const emptyAssessment: Assessment = { industry: "", pain: "", websiteState: "", value: 120, extraCustomers: 3, step: 0 };
 const KEY = "sunforge-assessment-v1";
 const EVENT = "sunforge-assessment-changed";
 let cache: Assessment = emptyAssessment;
@@ -29,7 +29,7 @@ function sanitize(value: unknown): Assessment {
     industry: [...industries.map(i => i.id), "other"].includes(raw.industry as IndustryId) ? raw.industry as IndustryId : "",
     pain: ["calls", "website", "both"].includes(raw.pain as string) ? raw.pain as Pain : "",
     websiteState: ["working", "weak", "none"].includes(raw.websiteState as string) ? raw.websiteState as WebsiteState : "",
-    calls: number("calls", 0, 100000), missPct: number("missPct", 0, 100), value: number("value", 0, 1000000), capacityPct: number("capacityPct", 0, 100), visitors: number("visitors", 0, 1000000), conversionPct: number("conversionPct", 0, 100), step: Math.floor(number("step", 0, 2)),
+    value: number("value", 0, 1000000), extraCustomers: number("extraCustomers", 1, 100), step: Math.floor(number("step", 0, 2)),
   };
 }
 function read() {
