@@ -57,9 +57,9 @@ export default function Nav({ forge = false }: { forge?: boolean }) {
       <nav className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-4 sm:px-6 sm:py-5">
         <Link href="/" className="flex items-center" onClick={closeMenu}>
           <img
-            src="/images/sunforge_logo_full.svg"
+            src="/images/logo-new.png"
             alt="Sunforge Digital"
-            className="h-10 w-auto sm:h-11 lg:h-12"
+            className="h-12 w-auto sm:h-14 lg:h-16"
           />
         </Link>
 
