@@ -37,7 +37,7 @@ const articles = [
 
 export default function ResourcesPage() {
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16 sm:py-24">
+    <div className="sf-resource-index">
       <p className="font-mono text-xs uppercase tracking-[0.2em] text-text-secondary">
         Resources
       </p>
@@ -49,12 +49,12 @@ export default function ResourcesPage() {
         visibility for local businesses - no guesswork, no inflated claims.
       </p>
 
-      <div className="mt-10 space-y-4">
+      <div className="sf-resource-list">
         {articles.map((article) => (
           <Link
             key={article.href}
             href={article.href}
-            className="group block rounded-panel border border-line bg-gradient-surface p-6 shadow-surface transition-colors hover:border-gold/60 sm:p-8"
+            className="group"
           >
             <p className="font-display text-lg font-semibold text-text-primary group-hover:text-gold sm:text-xl">
               {article.title}

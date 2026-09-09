@@ -3,8 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useMotionPreference as useReducedMotion } from "@/lib/useMotionPreference";
 import { captureEvent } from "@/lib/analytics";
+import ServiceStory from "./ServiceStory";
 
 type Stat = {
   value: string;
@@ -33,9 +35,7 @@ function AnimatedStatValue({ value }: { value: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
   const match = value.match(/^(.*?)(\d+)(\D*)$/);
-  const [display, setDisplay] = useState(
-    match && !prefersReducedMotion ? `${match[1]}0${match[3]}` : value
-  );
+  const [display, setDisplay] = useState(value);
 
   useEffect(() => {
     if (!match || prefersReducedMotion || !isInView) return;
@@ -109,11 +109,13 @@ export default function Services({
   heading = "Start with the system you need most",
   eyebrow = "Current packaged offers",
   cards = defaultCards,
+  story,
 }: {
   backlit?: boolean;
   heading?: string;
   eyebrow?: string;
   cards?: Card[];
+  story?: "home" | "receptionist" | "website";
 }) {
   const prefersReducedMotion = useReducedMotion();
   const distance = prefersReducedMotion ? 0 : 20;
@@ -125,7 +127,7 @@ export default function Services({
   }
 
   return (
-    <section className="bg-panel-2-textured px-6 pb-16 pt-6 sm:pb-24 sm:pt-10">
+    <section className={`${story ? "sf-story-services" : ""} bg-panel-2-textured px-6 pb-16 pt-6 sm:pb-24 sm:pt-10`}>
       <div className="mx-auto max-w-6xl">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <h2 className="font-display text-2xl font-semibold sm:text-3xl">{heading}</h2>
@@ -134,10 +136,33 @@ export default function Services({
           </span>
         </div>
 
+        {story && <ServiceStory mode={story} />}
+        {(story === "website" || story === "receptionist") && <h3 className="sf-included-heading">What&apos;s included</h3>}
         <div
-          className={`grid grid-cols-1 overflow-hidden rounded-panel border transition-colors transition-shadow duration-1000 ease-out md:grid-cols-2 ${panelClassName}`}
+          className={`sf-service-card-grid grid grid-cols-1 overflow-hidden rounded-panel border transition-colors transition-shadow duration-1000 ease-out md:grid-cols-2 ${panelClassName}`}
         >
           {cards.map((card, i) => {
+            if (story === "website" || story === "receptionist") {
+              const summaries = story === "website" ? [
+                "A custom, mobile-friendly site with clear services and an easy next step.",
+                "Help visitors ask questions and share what they need through on-site chat.",
+                "Local search foundations, structured data, and attention to page performance.",
+                "Hosting, updates, and a person to contact as your business changes.",
+              ] : [
+                "Configured around your hours, services, and the questions your customers ask.",
+                "Coverage for missed, overflow, and after-hours calls.",
+                "Clear call summaries and customer details to help your team follow up.",
+                "Connects with your existing tools, with support when things change.",
+              ];
+              return <details className="sf-included-item" id={card.id} key={card.id}>
+                <summary>
+                  <span className="sf-included-number">0{i + 1}</span>
+                  <span><h4>{card.label.replace(/^\d+\s*\/\s*/, "")}</h4><p>{summaries[i] || card.body}</p></span>
+                  <ChevronDown size={18} aria-hidden="true" />
+                </summary>
+                <ul>{card.bullets.map(bullet => <li key={bullet}>{bullet}</li>)}</ul>
+              </details>;
+            }
             const isExpanded = expandedCards[card.id] ?? false;
             const mobileBullets = isExpanded ? card.bullets : card.bullets.slice(0, 2);
             const hasExtraBullets = card.bullets.length > 2;
@@ -178,11 +203,11 @@ export default function Services({
                   {card.label}
                 </p>
                 <h3 className="mt-4 font-display text-xl font-semibold sm:text-2xl">
-                  {card.heading}
+                  {story === "home" ? (i === 0 ? "Never miss the next opportunity." : "Turn visits into conversations.") : card.heading}
                 </h3>
                 <p className="mt-4 font-body text-text-muted">{card.body}</p>
 
-                {card.stats && card.stats.length > 0 && (
+                {!story && card.stats && card.stats.length > 0 && (
                   <div className="mt-6 flex flex-wrap gap-x-8 gap-y-4 border-y border-line/60 py-6">
                     {card.stats.map((stat) => (
                       <div key={stat.label}>

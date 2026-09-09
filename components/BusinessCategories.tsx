@@ -1,370 +1,46 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import IndustryWalkthrough from "./IndustryWalkthrough";
 import Link from "next/link";
-import { motion, useReducedMotion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import type { MouseEvent } from "react";
-import { RefreshCw, ArrowLeft } from "lucide-react";
+import { ArrowUpRight, ArrowRight, X, Check, Phone } from "lucide-react";
+import { industries, chooseIndustry } from "@/lib/assessment";
 import { captureEvent } from "@/lib/analytics";
 
-// Pointer-follow tilt only makes sense with a real mouse: a fine pointer
-// paired with continuous hover tracking and a reliable "leave" event. On
-// touch devices, tapping a card fires a synthetic mousemove at the tap
-// point with no matching mouseleave to reset it, leaving the card stuck
-// tilted toward wherever it was last tapped - so skip the effect entirely
-// there rather than let it get stuck.
-function useCanHover() {
-  const [canHover, setCanHover] = useState(true);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
-    setCanHover(mq.matches);
-    const handler = () => setCanHover(mq.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
-
-  return canHover;
-}
-
-type Subcategory = { name: string; href?: string; comingSoon?: boolean };
-
-type Category = {
-  name: string;
-  description: string;
-  image: string;
-  alt: string;
-  subcategories?: Subcategory[];
-};
-
-function hasSubcategories(category: Category): category is Category & { subcategories: Subcategory[] } {
-  return Array.isArray(category.subcategories) && category.subcategories.length > 0;
-}
-
-const categories: Category[] = [
-  {
-    name: "Home Services",
-    description:
-      "HVAC, plumbing, electrical, garage doors, auto services — never miss an emergency call again, day or night.",
-    image: "/images/home-service.png",
-    alt: "Home Services in Phoenix",
-    subcategories: [
-      { name: "HVAC", href: "/hvac" },
-      { name: "Plumbing", comingSoon: true },
-      { name: "Electrical", comingSoon: true },
-      { name: "Garage Doors", comingSoon: true },
-      { name: "Auto Services / Auto Repair", comingSoon: true },
-    ],
-  },
-  {
-    name: "Restaurants & Bars",
-    description:
-      "Reservations, to-go orders, private events — answered every time, even during the dinner rush.",
-    image: "/images/restaurant-bars.png",
-    alt: "Restaurants & Bars in Phoenix",
-  },
-  {
-    name: "Salons & Spas",
-    description: "Appointment booking that doesn't stop just because your hands are full.",
-    image: "/images/spa.png",
-    alt: "Salons & Spas in Phoenix",
-  },
-  {
-    name: "Fitness & Wellness Studios",
-    description: "Class bookings and membership questions, answered instantly, any hour. Plus a follow-up text to anyone who asked about a class but didn't book.",
-    image: "/images/gym.png",
-    alt: "Fitness & Wellness Studios in Phoenix",
-  },
-  {
-    name: "Retail & Specialty Shops",
-    description:
-      "Product questions, availability, custom orders — covered while you're on the floor with a customer. Plus a re-engagement text if a custom order request goes quiet.",
-    image: "/images/retail-specialty.png",
-    alt: "Retail & Specialty Shops in Phoenix",
-  },
-  {
-    name: "Dental & Medical Practices",
-    description:
-      "New patient calls and scheduling, handled the moment the phone rings, not after the third ring goes to voicemail. Plus automatic appointment reminders, so fewer patients no-show.",
-    image: "/images/dental.png",
-    alt: "Dental & Medical Practices in Phoenix",
-  },
-];
-
-function CategoryCard({
-  category,
-  index,
-  distance,
-  prefersReducedMotion,
-}: {
-  category: Category;
-  index: number;
-  distance: number;
-  prefersReducedMotion: boolean | null;
-}) {
-  const canHover = useCanHover();
-  const pointerX = useMotionValue(0);
-  const pointerY = useMotionValue(0);
-  const springConfig = { stiffness: 300, damping: 22 };
-  const rotateX = useSpring(useTransform(pointerY, [-0.5, 0.5], [4, -4]), springConfig);
-  const rotateY = useSpring(useTransform(pointerX, [-0.5, 0.5], [-4, 4]), springConfig);
-
-  function handleMouseMove(e: MouseEvent<HTMLDivElement>) {
-    if (prefersReducedMotion || !canHover) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    pointerX.set((e.clientX - rect.left) / rect.width - 0.5);
-    pointerY.set((e.clientY - rect.top) / rect.height - 0.5);
-  }
-
-  function handleMouseLeave() {
-    pointerX.set(0);
-    pointerY.set(0);
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: distance }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{
-        duration: prefersReducedMotion ? 0.2 : 0.6,
-        ease: "easeOut",
-        delay: index * 0.1,
-      }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ rotateX, rotateY, transformPerspective: 800 }}
-      className="overflow-hidden rounded-panel border border-t-0 border-x-gold/30 border-b-gold/30 bg-gradient-surface shadow-surface transition-[border-color,box-shadow] duration-300 hover:border-gold/60 hover:shadow-forge"
-    >
-      <div className="relative aspect-[4/3] overflow-hidden rounded-t-panel bg-panel-2-textured">
-        <Image
-          src={category.image}
-          alt={category.alt}
-          fill
-          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-          className="object-cover"
-        />
-      </div>
-      <div className="p-6">
-        <h3 className="font-display text-lg font-bold text-text-primary sm:text-xl">
-          {category.name}
-        </h3>
-        <p className="mt-2 font-body text-sm text-text-muted">{category.description}</p>
-      </div>
-    </motion.div>
-  );
-}
-
-// Home Services spans several trades but only HVAC has its own landing page
-// today, so linking the whole tile straight to /hvac would mislead a
-// plumber or electrician who clicks it. Click/tap flips the card to show
-// which trade is which — same interaction on desktop and touch, since hover
-// doesn't exist on mobile. Kept separate from CategoryCard so pointer tilt
-// can live on an outer wrapper while the inner card handles the 180deg flip.
-function FlippableCategoryCard({
-  category,
-  index,
-  distance,
-  prefersReducedMotion,
-}: {
-  category: Category & { subcategories: Subcategory[] };
-  index: number;
-  distance: number;
-  prefersReducedMotion: boolean | null;
-}) {
-  const [isFlipped, setIsFlipped] = useState(false);
-  const canHover = useCanHover();
-  const pointerX = useMotionValue(0);
-  const pointerY = useMotionValue(0);
-  const springConfig = { stiffness: 300, damping: 22 };
-  const rotateX = useSpring(useTransform(pointerY, [-0.5, 0.5], [4, -4]), springConfig);
-  const rotateY = useSpring(useTransform(pointerX, [-0.5, 0.5], [-4, 4]), springConfig);
-
-  function handleMouseMove(e: MouseEvent<HTMLDivElement>) {
-    if (prefersReducedMotion || !canHover) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    pointerX.set((e.clientX - rect.left) / rect.width - 0.5);
-    pointerY.set((e.clientY - rect.top) / rect.height - 0.5);
-  }
-
-  function handleMouseLeave() {
-    pointerX.set(0);
-    pointerY.set(0);
-  }
-
-  function handleFlip() {
-    const opening = !isFlipped;
-    setIsFlipped(opening);
-    if (opening) {
-      captureEvent("home_services_card_flipped", { placement: "business_categories" });
-    }
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: distance }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{
-        duration: prefersReducedMotion ? 0.2 : 0.6,
-        ease: "easeOut",
-        delay: index * 0.1,
-      }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ rotateX, rotateY, transformPerspective: 800 }}
-    >
-      <motion.div
-        className="grid"
-        style={{ transformStyle: "preserve-3d" }}
-        animate={{ rotateY: isFlipped ? 180 : 0 }}
-        transition={{ duration: prefersReducedMotion ? 0 : 0.5, ease: "easeInOut" }}
-      >
-        <button
-          type="button"
-          onClick={handleFlip}
-          aria-expanded={isFlipped}
-          aria-label={`${category.name} — tap to see the trades we cover`}
-          tabIndex={isFlipped ? -1 : 0}
-          style={{ backfaceVisibility: "hidden" }}
-          className="col-start-1 row-start-1 flex flex-col cursor-pointer appearance-none overflow-hidden rounded-panel border border-t-0 border-x-gold/30 border-b-gold/30 bg-gradient-surface p-0 m-0 text-left shadow-surface transition-colors duration-300 hover:border-gold/60 hover:shadow-forge focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-gold"
-        >
-          <div className="relative aspect-[4/3] overflow-hidden rounded-t-panel bg-panel-2-textured text-[0]">
-            <Image
-              src={category.image}
-              alt={category.alt}
-              fill
-              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-              className="object-cover"
-            />
-                <span
-              aria-hidden="true"
-              className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full border border-gold/50 bg-bg/70 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-gold backdrop-blur-sm"
-            >
-              <RefreshCw size={11} /> Tap to see trades
-            </span>
-          </div>
-          <div className="p-6">
-            <h3 className="font-display text-lg font-bold text-text-primary sm:text-xl">
-              {category.name}
-            </h3>
-            <p className="mt-2 font-body text-sm text-text-muted">{category.description}</p>
-          </div>
-        </button>
-
-        <div
-          style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
-          className="col-start-1 row-start-1 flex h-full flex-col justify-center overflow-hidden rounded-panel border border-line bg-gradient-surface p-6 shadow-surface"
-        >
-          <button
-            type="button"
-            onClick={handleFlip}
-            aria-expanded={isFlipped}
-            aria-label={`Back to ${category.name} overview`}
-            tabIndex={isFlipped ? 0 : -1}
-            className="mb-4 inline-flex w-fit items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-[0.1em] text-text-muted transition-colors hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
-          >
-            <ArrowLeft size={13} /> Back
-          </button>
-          <h3 className="font-display text-lg font-bold text-text-primary sm:text-xl">
-            {category.name}
-          </h3>
-          <p className="mt-1 font-body text-xs text-text-muted">Which trade are you in?</p>
-          <ul className="mt-4 space-y-2.5">
-            {category.subcategories.map((sub) =>
-              sub.href ? (
-                <li key={sub.name}>
-                  <Link
-                    href={sub.href}
-                    tabIndex={isFlipped ? 0 : -1}
-                    onClick={() =>
-                      captureEvent("cta_clicked", {
-                        cta: "hvac_category_tile",
-                        placement: "business_categories",
-                      })
-                    }
-                    className="flex items-center justify-between gap-2 rounded-btn border border-gold/40 bg-gold/5 px-3 py-2 font-body text-sm font-semibold text-text-primary transition-colors hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
-                  >
-                    {sub.name} <span aria-hidden="true">→</span>
-                  </Link>
-                </li>
-              ) : (
-                <li
-                  key={sub.name}
-                  className="flex items-center justify-between gap-3 rounded-btn px-3 py-2 font-body text-sm text-text-muted-dark"
-                >
-                  <span>{sub.name}</span>
-                  {sub.comingSoon && (
-                    <span className="rounded-full border border-line bg-panel px-2 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-text-muted">
-                      Coming soon
-                    </span>
-                  )}
-                </li>
-              )
-            )}
-          </ul>
-          <p className="mt-5 border-t border-line/80 pt-4 font-body text-xs leading-relaxed text-text-muted">
-            Plus more home service trades. If yours is not listed yet, we can still talk through
-            it.
-          </p>
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-}
-
 export default function BusinessCategories() {
-  const prefersReducedMotion = useReducedMotion();
-  const distance = prefersReducedMotion ? 0 : 20;
-
+  const dialog = useRef<HTMLDialogElement>(null);
+  const trigger = useRef<HTMLButtonElement | null>(null);
+  const [selected, setSelected] = useState<typeof industries[number] | null>(null);
+  useEffect(() => {
+    if (!selected) return;
+    dialog.current?.showModal();
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = previous; };
+  }, [selected]);
+  const close = () => { dialog.current?.close(); setSelected(null); trigger.current?.focus(); };
   return (
-    <section className="px-6 py-16 sm:py-24">
+    <section id="industries" className="sf-industry-section scroll-mt-24 px-6 py-16 sm:py-24" aria-labelledby="industries-title">
       <div className="mx-auto max-w-6xl">
-        <motion.div
-          initial={{ opacity: 0, y: distance }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: prefersReducedMotion ? 0.2 : 0.6, ease: "easeOut" }}
-          className="mx-auto max-w-2xl text-center"
-        >
-          <p className="font-mono text-xs uppercase tracking-[0.15em] text-text-muted">
-            Who we work with
-          </p>
-          <h2 className="mt-3 font-display text-2xl font-semibold sm:text-3xl">
-            Built for Local Business
-          </h2>
-          <p className="mt-3 font-body text-text-muted">
-            Whatever you run, if the phone rings and the site matters, this is for you.
-          </p>
-        </motion.div>
-
-        <div className="mt-10 grid grid-cols-1 gap-6 [perspective:1200px] sm:grid-cols-2 lg:grid-cols-3">
-          {categories.map((category, i) =>
-            hasSubcategories(category) ? (
-              <FlippableCategoryCard
-                key={category.name}
-                category={category}
-                index={i}
-                distance={distance}
-                prefersReducedMotion={prefersReducedMotion}
-              />
-            ) : (
-              <CategoryCard
-                key={category.name}
-                category={category}
-                index={i}
-                distance={distance}
-                prefersReducedMotion={prefersReducedMotion}
-              />
-            )
-          )}
+        <div className="flex flex-wrap items-end justify-between gap-5"><div><p className="font-mono text-xs uppercase tracking-[0.2em] text-gold">Built for your day-to-day</p><h2 id="industries-title" className="mt-3 font-display text-3xl font-semibold sm:text-4xl">Your business. Your kind of busy.</h2></div><p className="max-w-sm text-sm leading-relaxed text-text-muted">Choose an industry to see a sample conversation and a practical next step.</p></div>
+        <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {industries.map(industry => <button key={industry.id} type="button" aria-haspopup="dialog" onClick={event => { trigger.current = event.currentTarget; setSelected(industry); chooseIndustry(industry.id); captureEvent("industry_category_clicked", { industry: industry.id }); }} className="group overflow-hidden rounded-panel border border-gold/25 bg-gradient-surface text-left shadow-surface transition-colors hover:border-gold/70">
+            <div className="relative aspect-[16/10] overflow-hidden"><Image src={`/images/${industry.image}`} alt="" fill sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover" /><span className="absolute right-4 top-4 rounded-full border border-white/30 bg-black/60 p-2 text-white"><ArrowUpRight size={17} /></span></div>
+            <div className="p-5"><h3 className="font-display text-lg font-semibold leading-snug">{industry.name}</h3><p className="mt-2 min-h-12 text-sm leading-relaxed text-text-muted">{industry.problem}</p><span className="mt-5 inline-flex items-center gap-2 font-mono text-xs text-gold">Explore your demo <ArrowRight size={14} /></span></div>
+          </button>)}
         </div>
-
-        <p className="mt-10 text-center font-body text-sm text-text-muted-dark">
-          And more. If your business runs on phone calls and customer follow-up, we should talk.
-        </p>
       </div>
+      <dialog ref={dialog} onCancel={event => { event.preventDefault(); close(); }} onClose={() => { setSelected(null); trigger.current?.focus(); }} onClick={event => { if (event.target === event.currentTarget) { const bounds = event.currentTarget.getBoundingClientRect(); if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) close(); } }} aria-labelledby="industry-dialog-title" className="industry-dialog w-[calc(100%-2rem)] max-w-2xl rounded-panel border border-gold/40 bg-panel p-0 text-text-primary shadow-forge">
+        {selected && <div className="p-6 sm:p-8"><div className="flex items-start justify-between gap-4"><div><p className="font-mono text-xs uppercase tracking-widest text-gold">Industry walkthrough</p><h3 id="industry-dialog-title" className="mt-2 font-display text-2xl font-semibold">{selected.name}</h3></div><button type="button" onClick={close} autoFocus aria-label="Close industry demo" className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line"><X size={20} /></button></div><p className="mt-4 text-text-muted">{selected.problem}</p>
+          <IndustryWalkthrough key={selected.id} industry={selected} />
+          <p className="mt-3 text-xs leading-relaxed text-text-muted">Illustrative text demo; no live call or appointment is created. Workflows and confirmations depend on your business setup.</p>
+          {selected.id === "home" && <p className="mt-4 text-sm text-text-secondary">Serving HVAC, plumbing, electrical, garage doors, and auto services. <Link href="/hvac" onClick={close} className="text-gold underline">Explore the HVAC page</Link>. Other trades can request an assessment below.</p>}
+          <p className="sf-industry-saved">Your assessment will start with {selected.name}. You can change it there.</p>
+          <div className="mt-6 flex flex-wrap gap-3"><a href="#contact" onClick={() => { chooseIndustry(selected.id); close(); captureEvent("assessment_request", { placement: "industry_demo", industry: selected.id }); }} className="inline-flex items-center gap-2 rounded-btn bg-gradient-accent px-5 py-3 text-sm font-semibold text-bg"><Check size={16} />Personalize my assessment</a><Link href="/receptionist#demo" className="inline-flex items-center gap-2 px-2 py-3 text-sm text-text-secondary underline underline-offset-4" onClick={close}><Phone size={16} />Try the live AI demo</Link></div>
+        </div>}
+      </dialog>
     </section>
   );
 }
+

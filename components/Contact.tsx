@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useMotionPreference as useReducedMotion } from "@/lib/useMotionPreference";
 import { captureEvent } from "@/lib/analytics";
 import { CTA_LABELS } from "@/lib/cta";
-import LeadForm from "./LeadForm";
+import AssessmentFlow from "./AssessmentFlow";
 
 export default function Contact({
   heading = CTA_LABELS.assessment,
@@ -53,7 +54,7 @@ export default function Contact({
 
           <div className="relative mt-10 flex flex-col gap-10 md:flex-row md:items-start">
             <div className="md:w-3/5">
-              <LeadForm defaultBusinessType={defaultBusinessType} />
+              <AssessmentFlow defaultBusinessType={defaultBusinessType} />
             </div>
 
             <div className="flex flex-col gap-5 md:w-2/5 md:border-l md:border-line md:pl-10">
@@ -88,3 +89,4 @@ export default function Contact({
     </section>
   );
 }
+

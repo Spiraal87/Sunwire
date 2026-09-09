@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence, useInView, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import { useMotionPreference as useReducedMotion } from '@/lib/useMotionPreference';
 import { Phone, Zap } from "lucide-react";
 import { captureEvent } from "@/lib/analytics";
 import GlowBorder from "./GlowBorder";

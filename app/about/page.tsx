@@ -19,8 +19,8 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <>
-      <Nav />
-      <main>
+      <Nav forge />
+      <main className="sf-page sf-about-page">
         <About />
       </main>
       <Footer />

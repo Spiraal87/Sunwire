@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useMotionPreference as useReducedMotion } from "@/lib/useMotionPreference";
 import TrackedLink from "@/components/TrackedLink";
 import { defaults, verticalLabels, fmt, fmtRange, computeDefaultLeak, type VerticalKey } from "@/lib/calculator";
 

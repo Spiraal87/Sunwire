@@ -3,6 +3,9 @@ import { Space_Grotesk, Manrope, IBM_Plex_Mono } from "next/font/google";
 import Analytics from "@/components/Analytics";
 import { ThemeProvider } from "@/lib/theme-provider";
 import "./globals.css";
+import "./stage1.css";
+import "./phase2.css";
+import "./service-story.css";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],

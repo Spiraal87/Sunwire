@@ -2,7 +2,8 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion, useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useMotionPreference as useReducedMotion } from "@/lib/useMotionPreference";
 
 function FlowLine({
   label,

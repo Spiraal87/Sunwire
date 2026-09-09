@@ -1,11 +1,14 @@
 "use client";
 
-import { useState } from "react";
+
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import Hero from "@/components/Hero";
+import Hero from "@/components/ServiceHero";
+import DimensionalService from "@/components/DimensionalService";
+
+import QuietDivider from "@/components/QuietDivider";
 import Services from "@/components/Services";
-import SectionDivider from "@/components/SectionDivider";
+
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Funnel from "@/components/Funnel";
@@ -113,13 +116,13 @@ const receptionistFaqs: FaqEntry[] = [
 ];
 
 export default function ReceptionistClient() {
-  const [servicesLit, setServicesLit] = useState(false);
-  const [emberLit, setEmberLit] = useState(false);
+
+
 
   return (
     <>
-      <Nav />
-      <main>
+      <Nav forge />
+      <main className="sf-page sf-service-page">
         <Hero
           eyebrow="Built for Local Business Phone Calls"
           heading={
@@ -148,34 +151,23 @@ export default function ReceptionistClient() {
           }}
         />
 
+        <DimensionalService servicePage />
         <BeyondTheCall />
 
         <Funnel />
 
-        <SectionDivider
-          id="services"
-          litCount={6}
-          tintSide="top"
-          ringScale={1.6}
-          onIgnite={() => setServicesLit(true)}
-        />
+        <QuietDivider id="services" />
 
         <Services
-          backlit={servicesLit}
           heading="How It Works"
+          story="receptionist"
           eyebrow="Four parts, one system"
           cards={receptionistServiceCards}
         />
 
-        <SectionDivider
-          id="demo"
-          litCount={6}
-          tintSide="top"
-          ringScale={1.6}
-          onIgnite={() => setEmberLit(true)}
-        />
+        <QuietDivider id="demo" />
 
-        <EmberCallWidget backlit={emberLit} />
+        <EmberCallWidget />
 
         <Contact
           heading={getVerticalAssessmentLabel("Front Desk System")}

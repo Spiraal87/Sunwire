@@ -1,13 +1,18 @@
 "use client";
+import WebsiteDemo from "@/components/WebsiteDemo";
 
-import { useState } from "react";
+
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useMotionPreference as useReducedMotion } from "@/lib/useMotionPreference";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import Hero from "@/components/Hero";
+import Hero from "@/components/ServiceHero";
+
+import WebsiteShowcase from "@/components/WebsiteShowcase";
+import QuietDivider from "@/components/QuietDivider";
 import Services from "@/components/Services";
-import SectionDivider from "@/components/SectionDivider";
+
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import type { FaqEntry } from "@/components/FAQ";
@@ -217,12 +222,12 @@ function WebsiteProblem() {
 }
 
 export default function WebsiteClient() {
-  const [servicesLit, setServicesLit] = useState(false);
+
 
   return (
     <>
-      <Nav />
-      <main>
+      <Nav forge />
+      <main className="sf-page sf-service-page">
         <Hero
           eyebrow="Built for Local Business Websites"
           heading={
@@ -244,29 +249,25 @@ export default function WebsiteClient() {
             placement: "website_hero",
           }}
           secondaryCta={{
-            label: "See what's included",
-            href: "#services",
-            cta: "website_services_scroll",
+            label: "Explore the website demo",
+            href: "#website-demo",
+            cta: "api_website_design_demo",
             placement: "website_hero",
           }}
         />
 
+        <WebsiteShowcase />
         <ReferralContext />
 
         <WebsiteProblem />
+        <WebsiteDemo />
 
-        <SectionDivider
-          id="services"
-          litCount={6}
-          tintSide="bottom"
-          ringScale={1.6}
-          onIgnite={() => setServicesLit(true)}
-        />
+        <QuietDivider id="services" />
 
         <Services
-          backlit={servicesLit}
           heading="What's Included"
-          eyebrow="Three parts, one system"
+          story="website"
+          eyebrow="Four parts, one system"
           cards={websiteServiceCards}
         />
 

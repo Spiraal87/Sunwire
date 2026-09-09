@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import { motion } from "framer-motion";
+import { useMotionPreference as useReducedMotion } from "@/lib/useMotionPreference";
 import { ChevronDown, Phone } from "lucide-react";
 import { captureEvent } from "@/lib/analytics";
 
@@ -64,8 +65,12 @@ const inputClasses =
 
 export default function LeadForm({
   defaultBusinessType = "",
+  assessmentSummary,
+  onSuccess,
 }: {
   defaultBusinessType?: string;
+  assessmentSummary?: string;
+  onSuccess?: () => void;
 }) {
   const prefersReducedMotion = useReducedMotion();
   const [form, setForm] = useState<FormState>({
@@ -74,6 +79,12 @@ export default function LeadForm({
   });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const previousDefault = useRef(defaultBusinessType);
+  useEffect(() => {
+    const previous = previousDefault.current;
+    setForm(current => current.businessType === previous || !current.businessType ? { ...current, businessType: defaultBusinessType } : current);
+    previousDefault.current = defaultBusinessType;
+  }, [defaultBusinessType]);
 
   const handleChange =
     (field: keyof FormState) =>
@@ -104,12 +115,15 @@ export default function LeadForm({
       const res = await fetch("/api/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        // Keep the existing endpoint and payload contract. The assessment is
+        // appended to the existing plain-text field, never to the honeypot.
+        body: JSON.stringify({ ...form, callType: [form.callType, assessmentSummary].filter(Boolean).join("\n\n") }),
       });
 
       if (!res.ok) throw new Error("Request failed");
 
       setStatus("success");
+      onSuccess?.();
       captureEvent("lead_form_submitted", { businessType: form.businessType });
     } catch {
       setStatus("error");
@@ -136,6 +150,7 @@ export default function LeadForm({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: prefersReducedMotion ? 0.2 : 0.5, ease: "easeOut" }}
           className="rounded-card border-2 border-gold/50 bg-gradient-surface p-6"
+          role="status"
         >
           <h3 className="font-display text-xl font-semibold text-text-primary">
             Request received.
@@ -314,7 +329,7 @@ export default function LeadForm({
           </button>
 
           {status === "error" && (
-            <p className="text-xs text-red-400">
+            <p role="alert" className="text-xs text-red-400">
               Something went wrong - call or text me directly at{" "}
               <a
                 href="tel:+17194245680"
@@ -331,3 +346,4 @@ export default function LeadForm({
     </div>
   );
 }
+

@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* The sample site intentionally keeps its own palette in either host theme. */
+.website-demo-preview { color-scheme: light; }
+.website-demo-preview button:focus-visible,
+.website-demo-preview select:focus-visible { outline: 2px solid #20352e; outline-offset: 3px; }
+.industry-dialog { max-height: calc(100dvh - 2rem); }
+.industry-dialog::backdrop { background: rgba(0, 0, 0, .76); backdrop-filter: blur(6px); }
+.assessment-flow [hidden] { display: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; }
+  .forge-experience *, .website-demo-preview * { transition: none !important; }
+}
+
 /*
   Design System: Molten
   Charcoal steel backgrounds, warm bronze highlights, subtle sunrise
@@ -161,3 +173,4 @@ button {
   animation: ember-ring-pulse 2s ease-out infinite;
   will-change: transform, opacity;
 }
+

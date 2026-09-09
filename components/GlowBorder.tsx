@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useMotionPreference as useReducedMotion } from "@/lib/useMotionPreference";
 
 // Dim baseline ring - always fully present, doesn't move. Gives the border a
 // constant presence even before/without the comet passing over any given spot.

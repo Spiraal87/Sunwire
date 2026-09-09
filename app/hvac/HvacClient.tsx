@@ -1,14 +1,18 @@
 "use client";
 
-import { useState } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useMotionPreference as useReducedMotion } from "@/lib/useMotionPreference";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import Hero from "@/components/Hero";
+import Hero from "@/components/ServiceHero";
+import DimensionalService from "@/components/DimensionalService";
+
+import QuietDivider from "@/components/QuietDivider";
 import Services from "@/components/Services";
-import SectionDivider from "@/components/SectionDivider";
+
 import CalculatorTeaser from "@/components/CalculatorTeaser";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
@@ -238,7 +242,7 @@ function HvacDemoCta() {
             </p>
           </div>
           <Link
-            href="/#demo"
+            href="/receptionist#demo"
             onClick={() => captureEvent("demo_call_started", { placement: "hvac_post_hero" })}
             className="inline-flex shrink-0 items-center justify-center self-start whitespace-nowrap rounded-btn bg-gradient-accent px-6 py-3.5 font-display text-sm font-semibold text-bg shadow-forge transition-transform duration-200 hover:scale-[1.02] hover:brightness-110 md:self-auto"
           >
@@ -251,12 +255,12 @@ function HvacDemoCta() {
 }
 
 export default function HvacClient() {
-  const [servicesLit, setServicesLit] = useState(false);
+
 
   return (
     <>
-      <Nav />
-      <main>
+      <Nav forge />
+      <main className="sf-page sf-service-page">
         <Hero
           eyebrow="Built for HVAC Companies"
           heading={
@@ -273,24 +277,18 @@ export default function HvacClient() {
           }}
           secondaryCta={{
             label: CTA_LABELS.aiDemo,
-            href: "/#demo",
+            href: "/receptionist#demo",
             cta: "ai_receptionist_demo",
             placement: "hvac_hero",
           }}
         />
 
+        <DimensionalService servicePage hvac />
         <HvacProblem />
 
-        <SectionDivider
-          id="services"
-          litCount={5}
-          tintSide="bottom"
-          ringScale={1.6}
-          onIgnite={() => setServicesLit(true)}
-        />
+        <QuietDivider id="services" />
 
         <Services
-          backlit={servicesLit}
           heading="How We Help"
           eyebrow="Two ways we drive growth"
           cards={hvacServiceCards}
