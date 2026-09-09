@@ -211,9 +211,8 @@ function WebsiteProblem() {
               alt="A visitor holding a phone, waiting on a slow-loading, generic-looking website"
               fill
               sizes="(min-width: 1024px) 40vw, 100vw"
-              className="object-cover opacity-40"
+              className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-surface" />
           </motion.div>
         </div>
       </div>
