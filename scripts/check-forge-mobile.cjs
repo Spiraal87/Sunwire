@@ -8,6 +8,22 @@ const assert = require('node:assert/strict');
   });
   try {
     const context = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true });
+    await context.addInitScript(() => {
+      const names = new WeakMap();
+      const proto = WebGL2RenderingContext.prototype;
+      const getLocation = proto.getUniformLocation;
+      const uniform1f = proto.uniform1f;
+      window.__forgeEnergy = 0;
+      proto.getUniformLocation = function(program, name) {
+        const location = getLocation.call(this, program, name);
+        if (location) names.set(location, name);
+        return location;
+      };
+      proto.uniform1f = function(location, value) {
+        if (location && names.get(location) === 'energy') window.__forgeEnergy = value;
+        return uniform1f.call(this, location, value);
+      };
+    });
     const page = await context.newPage();
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
@@ -22,15 +38,16 @@ const assert = require('node:assert/strict');
     const x = box.x + box.width / 2, y = box.y + box.height / 2;
     const cdp = await context.newCDPSession(page);
     const touch = (type, px, py) => cdp.send('Input.dispatchTouchEvent', { type, touchPoints: type === 'touchEnd' ? [] : [{ x: px, y: py }] });
+    assert.equal(await page.getByText('Swipe to spin · Tap to ignite', { exact: true }).count(), 0);
+    assert.equal(await page.getByRole('button', { name: 'Ignite core', exact: true }).count(), 0);
     await touch('touchStart', x, y);
     for (let i = 1; i <= 6; i++) { await touch('touchMove', x + i * 15, y); await page.waitForTimeout(35); }
+    await page.waitForFunction(() => window.__forgeEnergy > .5);
     await touch('touchEnd');
     await page.waitForTimeout(250);
     assert.equal(await host.evaluate(el => el.matches(':active')), false, 'Drag releases');
     await page.touchscreen.tap(x, y);
-    await page.getByRole('button', { name: 'Ignite core', exact: true }).click();
     await page.getByRole('button', { name: 'Pause motion', exact: true }).click();
-    assert(await page.getByRole('button', { name: 'Ignite core', exact: true }).isDisabled());
     await page.waitForTimeout(150);
     const a = await host.screenshot();
     await page.waitForTimeout(250);
@@ -46,6 +63,6 @@ const assert = require('node:assert/strict');
     await page.waitForSelector('[data-render-mode="poster"]');
     assert.equal(await host.locator('canvas').count(), 0, 'Reduced motion releases canvas');
     assert.deepEqual(errors, []);
-    console.log('PASS: Retina resolution, touch drag/release, tap, ignite, pause, vertical scrolling, reduced motion; no page errors.');
+    console.log('PASS: Retina resolution, touch drag ignition/release, tap, no interaction hints, pause, vertical scrolling, reduced motion; no page errors.');
   } finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exit(1); });

@@ -45,7 +45,6 @@ export default function ForgeCore() {
       {mode !== 'webgl' && <div className="sf-core-fallback">
         {mode === 'video' ? <video ref={video} muted loop playsInline preload="none" poster="/images/hero-image3.png" aria-hidden="true"><source src="/images/hero-video.mp4" type="video/mp4" /></video> : <img src="/images/hero-image3.png" alt="" fetchPriority="high" />}
       </div>}
-      {mode === 'webgl' && <div className="sf-core-interaction"><span>Swipe to spin · Tap to ignite</span><button type="button" disabled={paused} onClick={() => scene.current?.pulse()}>Ignite core</button></div>}
       <div className="sf-core-caption"><span><i /> THE SUNFORGE CORE</span>{mode !== 'poster' && <button type="button" onClick={() => setPaused(value => !value)} aria-pressed={paused}>{paused ? 'Resume motion' : 'Pause motion'}</button>}</div>
     </div>
   );

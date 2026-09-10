@@ -108,7 +108,7 @@ export function createForgeScene(host: HTMLElement, onFailure: () => void) {
     frame = requestAnimationFrame(render);
     if (now - last < 1000 / 30) return;
     const dt = Math.min((now - last) / 1000, .05); last = now; elapsed += dt;
-    energy *= Math.exp(-dt * 3);
+    energy = Math.max(energy * Math.exp(-dt * 3), gesture ? 0 : Math.min(Math.abs(velocity) * .5, 1));
     coreMaterial.uniforms.energy.value = energy;
     amber.intensity = 18 + energy * 14;
     if (!gesture) { spin += velocity * dt; velocity *= Math.exp(-dt * 4); }
@@ -140,6 +140,7 @@ export function createForgeScene(host: HTMLElement, onFailure: () => void) {
       velocity = THREE.MathUtils.clamp(delta / Math.max((event.timeStamp - gesture.lastTime) / 1000, .016), -3, 3);
       gesture.lastX = event.clientX; gesture.lastTime = event.timeStamp;
       gesture.moved ||= Math.hypot(event.clientX - gesture.x, event.clientY - gesture.y) > 8;
+      if (Math.abs(event.clientX - gesture.x) > 8 && Math.abs(dx) > 0) pulse();
       targetY = -.52 + THREE.MathUtils.clamp((event.clientX - gesture.x) / rect.width, -.5, .5);
       targetX = .32 + THREE.MathUtils.clamp((event.clientY - gesture.y) / rect.height, -.2, .2);
     } else if (event.pointerType === 'mouse') {
@@ -150,8 +151,9 @@ export function createForgeScene(host: HTMLElement, onFailure: () => void) {
   const leave = () => { if (!gesture) { targetX = .32; targetY = -.52; } };
   const end = (event: PointerEvent) => {
     if (gesture?.id !== event.pointerId) return;
-    if (event.type === 'pointerup' && !gesture.moved) pulse();
+    const tapped = event.type === 'pointerup' && !gesture.moved;
     if (event.type !== 'pointerup' || event.timeStamp - gesture.lastTime > 100) velocity = 0;
+    if (tapped) { pulse(); velocity = 2.4; }
     gesture = undefined;
     if (host.hasPointerCapture(event.pointerId)) host.releasePointerCapture(event.pointerId);
     leave();
@@ -160,7 +162,6 @@ export function createForgeScene(host: HTMLElement, onFailure: () => void) {
   host.addEventListener('pointerdown', down); host.addEventListener('pointerup', end); host.addEventListener('pointercancel', end); host.addEventListener('lostpointercapture', end); host.addEventListener('pointermove', move); host.addEventListener('pointerleave', leave);
   renderer.domElement.addEventListener('webglcontextlost', lost);
   return {
-    pulse,
     setActive(value: boolean) { if (active === value || disposed) return; active = value; if (!active) { if (gesture && host.hasPointerCapture(gesture.id)) host.releasePointerCapture(gesture.id); gesture = undefined; velocity = 0; leave(); } cancelAnimationFrame(frame); if (active) { last = performance.now(); frame = requestAnimationFrame(render); } },
     dispose() {
       disposed = true; active = false; cancelAnimationFrame(frame); observer.disconnect();
