@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import CalculatorCallFlow from './CalculatorCallFlow';
+import CalculatorNumber from './CalculatorNumber';
 import TrackedLink from "@/components/TrackedLink";
 import { captureEvent } from "@/lib/analytics";
 import { CTA_LABELS } from "@/lib/cta";
@@ -57,15 +58,9 @@ export default function CalculatorWidget({
   const [capacity, setCapacity] = useState(defaults[defaultVertical].cap);
   const [routineCallHours, setRoutineCallHours] = useState(6);
   const [customerSource, setCustomerSource] = useState<CustomerSourceKey>("mix");
-  const [dismissedSourceModal, setDismissedSourceModal] = useState(false);
-  const [showStickyBar, setShowStickyBar] = useState(false);
+  const [showStickyBar, setShowStickyBar] = useState(true);
   const [openSection, setOpenSection] = useState<CalculatorSection | null>("calls");
   const leakCardRef = useRef<HTMLDivElement>(null);
-  const sectionRefs = useRef<Record<CalculatorSection, HTMLElement | null>>({
-    calls: null,
-    value: null,
-    time: null,
-  });
 
   const d = defaults[activeVertical];
 
@@ -95,29 +90,15 @@ export default function CalculatorWidget({
   });
   const monthlyRoutineCallHours = Math.round((routineCallHours * 52) / 12);
   const isBelowCallThreshold = calls < d.calls * 0.6;
-  const showSourceModal = isBelowCallThreshold && !dismissedSourceModal;
-
-  useEffect(() => {
-    if (!isBelowCallThreshold) {
-      setDismissedSourceModal(false);
-    }
-  }, [isBelowCallThreshold]);
-
   useEffect(() => {
     const el = leakCardRef.current;
     if (!el) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        const resultIsClearlyVisible = entry.isIntersecting && entry.intersectionRatio >= 0.6;
-
-        if (resultIsClearlyVisible) {
-          setShowStickyBar(false);
-        } else {
-          setShowStickyBar(entry.boundingClientRect.top > 0);
-        }
+        setShowStickyBar(!entry.isIntersecting && entry.boundingClientRect.top > 0);
       },
-      { threshold: [0, 0.6] }
+      { threshold: 0, rootMargin: "0px 0px -120px 0px" }
     );
 
     observer.observe(el);
@@ -125,22 +106,11 @@ export default function CalculatorWidget({
   }, []);
 
   function scrollToLeakCard() {
-    leakCardRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    leakCardRef.current?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: "start" });
   }
 
-  // Centers whichever section the user just opened, so the sliders they
-  // clicked to reveal aren't left cut off above/below the viewport. Triggered
-  // directly from the click (not a useEffect keyed on openSection) so it only
-  // ever fires from real user interaction, never on mount — a
-  // mount-tracking-ref version of this broke under React 18 Strict Mode's
-  // double effect invocation, firing an unwanted scroll on page load.
   function toggleSection(section: CalculatorSection) {
-    const opening = openSection !== section;
-    setOpenSection(opening ? section : null);
-    if (!opening) return;
-    requestAnimationFrame(() => {
-      sectionRefs.current[section]?.scrollIntoView({ behavior: "smooth", block: "center" });
-    });
+    setOpenSection(current => current === section ? null : section);
   }
 
   const Wrapper = showChrome ? "main" : "div";
@@ -155,7 +125,7 @@ export default function CalculatorWidget({
 
       <Wrapper
         className={
-          showChrome ? "mx-auto max-w-3xl px-6 py-16 sm:py-24" : "mx-auto max-w-3xl"
+          showChrome ? "calc-workspace mx-auto px-6 py-16 sm:py-24" : "calc-workspace calc-embedded mx-auto"
         }
       >
         {showChrome && (
@@ -199,8 +169,15 @@ export default function CalculatorWidget({
           ))}
         </div>
 
+        <div className="calc-live-layout">
+        <div className="calc-mobile-summary" data-hidden={!showStickyBar} aria-hidden={!showStickyBar} aria-label="Live calculator summary">
+          <div className="calc-mobile-estimate"><div><span>ESTIMATED MONTHLY LEAK</span><strong>{fmtRange(monthlyLow, monthly)}</strong></div><button type="button" onClick={scrollToLeakCard}>Breakdown <span aria-hidden="true">↓</span></button></div>
+          <div className="calc-mobile-split" aria-hidden="true"><span style={{ width: `${100-miss}%` }} /><span style={{ width: `${miss}%` }} /></div>
+          <div className="calc-mobile-counts"><span>{Math.round(calls*locations*(1-miss/100)).toLocaleString('en-US')} answered</span><span>{Math.round(calls*locations*miss/100).toLocaleString('en-US')} unanswered · {miss}%</span></div>
+        </div>
+        <div className="calc-controls">
         <div className="card mt-3 overflow-hidden rounded-panel border border-line bg-gradient-surface shadow-surface">
-          <section ref={(el) => { sectionRefs.current.calls = el; }}>
+          <section>
             <h2>
             <button
               type="button"
@@ -262,30 +239,35 @@ export default function CalculatorWidget({
 
               <div className="field mt-6">
                 <label className="flex items-baseline justify-between gap-3 font-body text-sm font-semibold text-text-primary">
-                  Calls you get in a typical month <span className="font-mono text-coral">{calls}</span>
+                  Calls you get in a typical month <CalculatorNumber value={calls} min={20} max={1500} label="Monthly calls" unit="" onChange={setCalls} />
                 </label>
                 <input
                   type="range"
                   min={20}
+                  aria-label="Calls you get in a typical month"
                   max={1500}
-                  step={10}
+                  step={1}
                   value={calls}
+                  style={{ background: `linear-gradient(90deg, var(--gold) 0%, var(--coral) ${(calls - 20) / (1500 - 20) * 100}%, #414447 ${(calls - 20) / (1500 - 20) * 100}%, #414447 100%)` }}
                   onChange={(e) => setCalls(Number(e.target.value))}
                   className="calc-slider mt-2"
                 />
                 <div className="hint mt-1.5 font-mono text-xs leading-relaxed text-text-secondary/85">{d.hintCalls}</div>
+                {isBelowCallThreshold && <aside className="calc-source-note"><strong>Worth a quick check</strong><p>{getSourceNote(customerSource, verticalLabels[activeVertical])}</p><small>This compares with the calculator's starting assumption, not a verified benchmark for your business.</small></aside>}
               </div>
 
               <div className="field mt-6">
                 <label className="flex items-baseline justify-between gap-3 font-body text-sm font-semibold text-text-primary">
-                  Roughly what % go unanswered <span className="font-mono text-coral">{miss}%</span>
+                  Roughly what % go unanswered <CalculatorNumber value={miss} min={5} max={70} label="Unanswered calls percentage" unit="%" onChange={setMiss} />
                 </label>
                 <input
                   type="range"
                   min={5}
+                  aria-label="Percentage of calls unanswered"
                   max={70}
                   step={1}
                   value={miss}
+                  style={{ background: `linear-gradient(90deg, var(--gold) 0%, var(--coral) ${(miss - 5) / (70 - 5) * 100}%, #414447 ${(miss - 5) / (70 - 5) * 100}%, #414447 100%)` }}
                   onChange={(e) => setMiss(Number(e.target.value))}
                   className="calc-slider mt-2"
                 />
@@ -302,6 +284,7 @@ export default function CalculatorWidget({
                   </label>
                   <input
                     type="number"
+                    aria-label="Locations with similar call volume"
                     min={1}
                     max={50}
                     value={locationsInput}
@@ -318,7 +301,6 @@ export default function CalculatorWidget({
           </section>
 
           <section
-            ref={(el) => { sectionRefs.current.value = el; }}
             className="border-t border-line"
           >
             <h2>
@@ -361,14 +343,16 @@ export default function CalculatorWidget({
               <div className="field">
                 <label className="flex items-baseline justify-between gap-3 font-body text-sm font-semibold text-text-primary">
                   What&apos;s a new customer/job typically worth to you
-                  <span className="font-mono text-coral">{fmt(value)}</span>
+                  <CalculatorNumber value={value} min={10} max={1000} label="Customer or job value" unit="$" onChange={setValue} />
                 </label>
                 <input
                   type="range"
                   min={10}
                   max={1000}
-                  step={5}
+                  aria-label="Typical customer or job value"
+                  step={1}
                   value={value}
+                  style={{ background: `linear-gradient(90deg, var(--gold) 0%, var(--coral) ${(value - 10) / (1000 - 10) * 100}%, #414447 ${(value - 10) / (1000 - 10) * 100}%, #414447 100%)` }}
                   onChange={(e) => setValue(Number(e.target.value))}
                   className="calc-slider mt-2"
                 />
@@ -377,14 +361,16 @@ export default function CalculatorWidget({
 
               <div className="field mt-6">
                 <label className="flex items-baseline justify-between gap-3 font-body text-sm font-semibold text-text-primary">
-                  Extra capacity you could take on <span className="font-mono text-coral">{capacity}%</span>
+                  Extra capacity you could take on <CalculatorNumber value={capacity} min={10} max={100} label="Available capacity percentage" unit="%" onChange={setCapacity} />
                 </label>
                 <input
                   type="range"
                   min={10}
                   max={100}
-                  step={5}
+                  aria-label="Extra capacity percentage"
+                  step={1}
                   value={capacity}
+                  style={{ background: `linear-gradient(90deg, var(--gold) 0%, var(--coral) ${(capacity - 10) / (100 - 10) * 100}%, #414447 ${(capacity - 10) / (100 - 10) * 100}%, #414447 100%)` }}
                   onChange={(e) => setCapacity(Number(e.target.value))}
                   className="calc-slider mt-2"
                 />
@@ -398,7 +384,6 @@ export default function CalculatorWidget({
           </section>
 
           <section
-            ref={(el) => { sectionRefs.current.time = el; }}
             className="border-t border-line"
           >
             <h2>
@@ -441,14 +426,16 @@ export default function CalculatorWidget({
               <div className="field">
                 <label className="flex items-baseline justify-between gap-3 font-body text-sm font-semibold text-text-primary">
                   Time spent on routine calls{" "}
-                  <span className="font-mono text-coral">{routineCallHours} hrs</span>
+                  <CalculatorNumber value={routineCallHours} min={0} max={40} label="Routine call hours per week" unit="hrs" onChange={setRoutineCallHours} />
                 </label>
                 <input
                   type="range"
                   min={0}
                   max={40}
                   step={1}
+                  aria-label="Time spent on routine calls"
                   value={routineCallHours}
+                  style={{ background: `linear-gradient(90deg, var(--gold) 0%, var(--coral) ${(routineCallHours - 0) / (40 - 0) * 100}%, #414447 ${(routineCallHours - 0) / (40 - 0) * 100}%, #414447 100%)` }}
                   onChange={(e) => setRoutineCallHours(Number(e.target.value))}
                   className="calc-slider mt-2"
                 />
@@ -484,6 +471,8 @@ export default function CalculatorWidget({
           </button>
         </div>
 
+        </div>
+        <div className="calc-results-column">
         <div
           ref={leakCardRef}
           className="leak-visual relative z-10 mt-6 rounded-panel border border-line bg-gradient-surface p-6 shadow-surface sm:p-8"
@@ -492,6 +481,7 @@ export default function CalculatorWidget({
             <span aria-hidden="true" className="h-2 w-2 rounded-full bg-highlight" />
             Live result · updates as you adjust
           </div>
+          <CalculatorCallFlow calls={calls} miss={miss} locations={locations} />
           <div className="flex items-center gap-5 sm:gap-6">
             <div className="phone-icon relative hidden h-14 w-14 shrink-0 sm:block">
               <svg viewBox="0 0 54 54" width="54" height="54">
@@ -555,7 +545,7 @@ export default function CalculatorWidget({
             </div>
             <div className="flex-1">
               <div className="font-mono text-xs font-semibold uppercase tracking-[0.1em] text-text-muted">
-                Phone time you&apos;d get back
+                Time spent on routine calls
               </div>
               <div className="mt-1 font-display text-4xl font-bold tabular-nums text-text-primary">
                 {routineCallHours} hrs/wk
@@ -567,14 +557,16 @@ export default function CalculatorWidget({
           </div>
         </div>
 
+        </div>
+        </div>
         <div className="demo-cta relative z-0 mt-6 rounded-panel border border-gold/60 bg-gradient-surface p-8 shadow-glow print:hidden">
           <div className="font-mono text-xs font-semibold uppercase tracking-[0.15em] text-gold">
-            This is exactly what an AI receptionist closes
+            See how an AI receptionist could help
           </div>
           <p className="mt-3 font-body text-text-primary">
-            An AI receptionist answers every call, 24/7, captures the caller&apos;s info, and can
-            schedule the appointment right then — so the missed-call side of this number stops
-            growing. Hear it work on a real line before you decide anything.
+            An AI receptionist can help answer calls, capture caller details, and handle routine
+            questions when your team is busy or unavailable. The revenue and time you could recover
+            depend on your business and how the system is set up. Try the demo to hear how it works.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
@@ -717,7 +709,7 @@ export default function CalculatorWidget({
                 start as a reasonable range instead of a hard number.
               </p>
               <p className="text-text-muted-dark">
-                A few more caveats: the automatic pop-up only compares you to this tool&apos;s own
+                A few more caveats: the inline note only compares you to this tool&apos;s own
                 assumption, not an industry standard. Some of this &quot;loss&quot; is really a
                 margin hit (a customer ordering through a delivery app instead), not a total loss,
                 and it&apos;s not a guarantee — just the size of today&apos;s gap in a typical
@@ -814,84 +806,6 @@ export default function CalculatorWidget({
           <Footer />
         </div>
       )}
-
-      <div className="print:hidden">
-        <AnimatePresence>
-          {showStickyBar && (
-            <motion.button
-              type="button"
-              onClick={scrollToLeakCard}
-              initial={{ y: 24, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 24, opacity: 0 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
-              style={{ paddingBottom: "calc(1rem + env(safe-area-inset-bottom))" }}
-              className="fixed inset-x-0 bottom-0 z-50 flex w-full items-center justify-between gap-4 bg-gradient-accent px-5 pt-4 text-left md:hidden"
-            >
-              <span>
-                <span className="flex items-center gap-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-bg/70">
-                  <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-bg" />
-                  Live result · updates as you adjust
-                </span>
-                <span className="mt-1 block font-display text-xs font-semibold text-bg">
-                  Estimated revenue leak
-                </span>
-              </span>
-              <span aria-live="polite" className="whitespace-nowrap font-display text-lg font-bold leading-none tabular-nums text-bg">
-                {fmtRange(monthlyLow, monthly)}
-                <span className="ml-1 font-mono text-xs font-semibold leading-none text-bg/70">/mo</span>
-              </span>
-            </motion.button>
-          )}
-        </AnimatePresence>
-      </div>
-
-      <div className="print:hidden">
-        <AnimatePresence>
-          {showSourceModal && (
-            <motion.div
-              className="fixed inset-0 z-[60] flex items-center justify-center p-6"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <div aria-hidden="true" className="absolute inset-0 bg-bg/80 backdrop-blur-sm" />
-              <motion.div
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="source-modal-heading"
-                initial={{ opacity: 0, y: 12, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 12, scale: 0.98 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-                className="relative w-full max-w-sm rounded-panel border border-line bg-gradient-surface p-6 shadow-surface"
-              >
-                <button
-                  type="button"
-                  onClick={() => setDismissedSourceModal(true)}
-                  aria-label="Close dialog"
-                  className="absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-full border border-line/80 font-mono text-base leading-none text-text-muted transition-colors hover:border-gold hover:text-gold"
-                >
-                  ✕
-                </button>
-                <h3
-                  id="source-modal-heading"
-                  className="font-display text-lg font-semibold text-text-primary"
-                >
-                  Worth a quick check
-                </h3>
-                <p className="mt-3 font-body text-sm text-text-muted">
-                  {getSourceNote(
-                    customerSource,
-                    tabs.find((t) => t.key === activeVertical)?.label ?? ""
-                  )}
-                </p>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
 
       <style jsx>{`
         .calc-slider {

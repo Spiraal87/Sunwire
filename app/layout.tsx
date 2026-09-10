@@ -6,6 +6,7 @@ import "./globals.css";
 import "./stage1.css";
 import "./phase2.css";
 import "./service-story.css";
+import "./calculator.css";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
