@@ -4,7 +4,6 @@ import { useState } from "react";
 import Nav from "@/components/Nav";
 import ForgeHero from "@/components/ForgeHero";
 import DimensionalService from "@/components/DimensionalService";
-import Link from "next/link";
 import BusinessCategories from "@/components/BusinessCategories";
 import Services from "@/components/Services";
 import StartingPoints from "@/components/StartingPoints";
@@ -44,7 +43,6 @@ export default function Home() {
         </div>
       </main>
       <Footer />
-      <aside className="sf-review-bar" aria-label="Design comparison"><span>PHASE 2 / DESIGN PREVIEW</span><Link href="/review">Review the changes ↗</Link></aside>
     </>
   );
 }
