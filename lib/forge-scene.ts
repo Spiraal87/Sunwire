@@ -4,7 +4,6 @@ import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment
 /** One scene, no postprocessing, bounded pixel ratio and 30fps. Owned by ForgeCore. */
 export function createForgeScene(host: HTMLElement, onFailure: () => void) {
   const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'low-power' });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, innerWidth < 700 ? 1 : 1.5));
   renderer.setClearColor(0x000000, 0);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
@@ -31,7 +30,7 @@ export function createForgeScene(host: HTMLElement, onFailure: () => void) {
   const steel = new THREE.MeshStandardMaterial({ color: 0x44484d, metalness: .85, roughness: .38 });
   steel.onBeforeCompile = shader => {
     shader.vertexShader = 'varying vec3 sfPosition;\n' + shader.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n sfPosition = position;');
-    shader.fragmentShader = 'varying vec3 sfPosition;\n' + shader.fragmentShader.replace('#include <color_fragment>', '#include <color_fragment>\n float machining = sin(length(sfPosition.xy) * 680.); diffuseColor.rgb *= .82 + .12 * machining;');
+    shader.fragmentShader = 'varying vec3 sfPosition;\n' + shader.fragmentShader.replace('#include <color_fragment>', '#include <color_fragment>\n float phase = length(sfPosition.xy) * 680.; float machining = sin(phase) * (1. - smoothstep(.5, 3., fwidth(phase))); diffuseColor.rgb *= .82 + .12 * machining;');
   };
   const edge = new THREE.MeshStandardMaterial({ color: 0x585951, metalness: .8, roughness: .37 });
   const gold = new THREE.MeshStandardMaterial({ color: 0x9b652c, metalness: .82, roughness: .3, emissive: 0x6b2700, emissiveIntensity: .2 });
@@ -78,17 +77,17 @@ export function createForgeScene(host: HTMLElement, onFailure: () => void) {
   });
   // Procedural cellular crust. Coordinates live on the sphere, so the texture has no UV seam.
   const coreMaterial = new THREE.ShaderMaterial({
-    uniforms: { time: { value: 0 } },
+    uniforms: { time: { value: 0 }, energy: { value: 0 } },
     vertexShader: `varying vec3 vP; varying vec3 vN; varying vec3 vView;
       void main(){ vP=position; vN=normalize(normalMatrix*normal); vec4 p=modelViewMatrix*vec4(position,1.); vView=normalize(-p.xyz); gl_Position=projectionMatrix*p; }`,
-    fragmentShader: `precision highp float; varying vec3 vP; varying vec3 vN; varying vec3 vView; uniform float time;
+    fragmentShader: `precision highp float; varying vec3 vP; varying vec3 vN; varying vec3 vView; uniform float time; uniform float energy;
       vec3 hash(vec3 p){return fract(sin(vec3(dot(p,vec3(127.1,311.7,74.7)),dot(p,vec3(269.5,183.3,246.1)),dot(p,vec3(113.5,271.9,124.6))))*43758.5453);}
       void main(){ vec3 p=vP*7.; p+=.16*sin(p.zxy*2.+time*.16); vec3 cell=floor(p); vec3 f=fract(p); float a=9.; float b=9.;
         for(int x=-1;x<=1;x++)for(int y=-1;y<=1;y++)for(int z=-1;z<=1;z++){vec3 o=vec3(float(x),float(y),float(z)); vec3 h=hash(cell+o); float d=length(o+h-f); if(d<a){b=a;a=d;}else if(d<b){b=d;}}
         float crack=1.-smoothstep(.012,.085,b-a); float hot=.5+.5*sin(vP.y*5.+vP.x*3.+time*.2); float fres=pow(1.-max(dot(vN,vView),0.),2.4);
         vec3 crust=mix(vec3(.10,.024,.004),vec3(.48,.115,.008),hot);
         vec3 color=mix(crust,vec3(1.,.59,.12),crack); color+=fres*vec3(1.,.42,.045)*1.5;
-        gl_FragColor=vec4(color,1.); }`,
+        color += energy * vec3(.5,.2,.025); gl_FragColor=vec4(color,1.); }`,
   });
   const core = new THREE.Mesh(new THREE.SphereGeometry(.84, 48, 32), coreMaterial);
   core.position.z = .4; forge.add(core);
@@ -101,37 +100,71 @@ export function createForgeScene(host: HTMLElement, onFailure: () => void) {
     line.rotation.z = angle; forge.add(line);
   }
   let frame = 0, active = false, disposed = false, elapsed = 0, last = 0;
-  let targetX = .32, targetY = -.52;
+  let targetX = .32, targetY = -.52, spin = 0, velocity = 0, energy = 0;
+  let gesture: { id: number; x: number; y: number; lastX: number; lastTime: number; moved: boolean } | undefined;
+  const pulse = () => { if (active) energy = 1; };
   function render(now: number) {
     if (!active || disposed) return;
     frame = requestAnimationFrame(render);
     if (now - last < 1000 / 30) return;
     const dt = Math.min((now - last) / 1000, .05); last = now; elapsed += dt;
+    energy *= Math.exp(-dt * 3);
+    coreMaterial.uniforms.energy.value = energy;
+    amber.intensity = 18 + energy * 14;
+    if (!gesture) { spin += velocity * dt; velocity *= Math.exp(-dt * 4); }
     coreMaterial.uniforms.time.value = elapsed;
     core.rotation.y = elapsed * .035;
-    rings.forEach((ring, i) => { ring.rotation.z = elapsed * (i % 2 ? -.018 : .022) + i * .09; });
-    forge.rotation.x += (targetX - forge.rotation.x) * .045;
-    forge.rotation.y += (targetY - forge.rotation.y) * .045;
+    rings.forEach((ring, i) => { ring.rotation.z = elapsed * (i % 2 ? -.018 : .022) + i * .09 + spin * (i % 2 ? -.7 : 1); });
+    forge.rotation.x += (targetX - forge.rotation.x) * (1 - Math.exp(-dt * 8));
+    forge.rotation.y += (targetY - forge.rotation.y) * (1 - Math.exp(-dt * 8));
     forge.position.y = Math.sin(elapsed * .35) * .035;
     renderer.render(scene, camera);
   }
-  const resize = () => { const { width, height } = host.getBoundingClientRect(); if (!width || !height) return; renderer.setSize(width, height); camera.aspect = width / height; camera.updateProjectionMatrix(); if (!active) renderer.render(scene, camera); };
+  const resize = () => { const { width, height } = host.getBoundingClientRect(); if (!width || !height) return; // Retina detail, capped at two samples per CSS pixel and 3M total pixels.
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(3_000_000 / (width * height))));
+    renderer.setSize(width, height); camera.aspect = width / height; camera.updateProjectionMatrix(); if (!active) renderer.render(scene, camera); };
   const observer = new ResizeObserver(resize); observer.observe(host); resize();
-  const move = (event: PointerEvent) => {
-    if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-    const rect = host.getBoundingClientRect();
-    targetY = -.52 + ((event.clientX - rect.left) / rect.width - .5) * .28;
-    targetX = .32 + ((event.clientY - rect.top) / rect.height - .5) * .18;
+  const down = (event: PointerEvent) => {
+    if (!active || !event.isPrimary || event.button !== 0) return;
+    gesture = { id: event.pointerId, x: event.clientX, y: event.clientY, lastX: event.clientX, lastTime: event.timeStamp, moved: false };
+    velocity = 0;
+    host.setPointerCapture(event.pointerId);
   };
-  const leave = () => { targetX = .32; targetY = -.52; };
+  const move = (event: PointerEvent) => {
+    if (!active) return;
+    const rect = host.getBoundingClientRect();
+    if (gesture?.id === event.pointerId) {
+      const dx = event.clientX - gesture.lastX;
+      const delta = dx / rect.width * 3;
+      spin += delta;
+      velocity = THREE.MathUtils.clamp(delta / Math.max((event.timeStamp - gesture.lastTime) / 1000, .016), -3, 3);
+      gesture.lastX = event.clientX; gesture.lastTime = event.timeStamp;
+      gesture.moved ||= Math.hypot(event.clientX - gesture.x, event.clientY - gesture.y) > 8;
+      targetY = -.52 + THREE.MathUtils.clamp((event.clientX - gesture.x) / rect.width, -.5, .5);
+      targetX = .32 + THREE.MathUtils.clamp((event.clientY - gesture.y) / rect.height, -.2, .2);
+    } else if (event.pointerType === 'mouse') {
+      targetY = -.52 + ((event.clientX - rect.left) / rect.width - .5) * .28;
+      targetX = .32 + ((event.clientY - rect.top) / rect.height - .5) * .18;
+    }
+  };
+  const leave = () => { if (!gesture) { targetX = .32; targetY = -.52; } };
+  const end = (event: PointerEvent) => {
+    if (gesture?.id !== event.pointerId) return;
+    if (event.type === 'pointerup' && !gesture.moved) pulse();
+    if (event.type !== 'pointerup' || event.timeStamp - gesture.lastTime > 100) velocity = 0;
+    gesture = undefined;
+    if (host.hasPointerCapture(event.pointerId)) host.releasePointerCapture(event.pointerId);
+    leave();
+  };
   const lost = (event: Event) => { event.preventDefault(); onFailure(); };
-  host.addEventListener('pointermove', move); host.addEventListener('pointerleave', leave);
+  host.addEventListener('pointerdown', down); host.addEventListener('pointerup', end); host.addEventListener('pointercancel', end); host.addEventListener('lostpointercapture', end); host.addEventListener('pointermove', move); host.addEventListener('pointerleave', leave);
   renderer.domElement.addEventListener('webglcontextlost', lost);
   return {
-    setActive(value: boolean) { if (active === value || disposed) return; active = value; cancelAnimationFrame(frame); if (active) { last = performance.now(); frame = requestAnimationFrame(render); } },
+    pulse,
+    setActive(value: boolean) { if (active === value || disposed) return; active = value; if (!active) { if (gesture && host.hasPointerCapture(gesture.id)) host.releasePointerCapture(gesture.id); gesture = undefined; velocity = 0; leave(); } cancelAnimationFrame(frame); if (active) { last = performance.now(); frame = requestAnimationFrame(render); } },
     dispose() {
       disposed = true; active = false; cancelAnimationFrame(frame); observer.disconnect();
-      host.removeEventListener('pointermove', move); host.removeEventListener('pointerleave', leave); renderer.domElement.removeEventListener('webglcontextlost', lost);
+      host.removeEventListener('pointerdown', down); host.removeEventListener('pointerup', end); host.removeEventListener('pointercancel', end); host.removeEventListener('lostpointercapture', end); host.removeEventListener('pointermove', move); host.removeEventListener('pointerleave', leave); renderer.domElement.removeEventListener('webglcontextlost', lost);
       const geometries = new Set<THREE.BufferGeometry>(); const materials = new Set<THREE.Material>();
       scene.traverse(object => { const mesh = object as THREE.Mesh; if (mesh.geometry) geometries.add(mesh.geometry); if (mesh.material) (Array.isArray(mesh.material) ? mesh.material : [mesh.material]).forEach(m => materials.add(m)); });
       geometries.forEach(g => g.dispose()); materials.forEach(m => m.dispose()); environment.dispose(); renderer.dispose(); renderer.forceContextLoss(); renderer.domElement.remove();

@@ -108,3 +108,12 @@
 }
 @media (prefers-reduced-motion: reduce) { .sf-home *, .sf-home *::before, .sf-home *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }.sf-enter { transform: none; }.sf-phone { transform: rotateZ(-3deg); }.sf-notification { transform: none; } }
 
+
+.sf-core-wrap[data-render-mode="webgl"] .sf-core-canvas { touch-action: pan-y pinch-zoom; cursor: grab; }
+.sf-core-wrap[data-render-mode="webgl"] .sf-core-canvas:active { cursor: grabbing; }
+.sf-core-interaction { position: absolute; z-index: 3; left: 13%; right: 13%; bottom: 52px; display: flex; align-items: center; justify-content: space-between; gap: 12px; color: #b3a58c; font: 10px var(--font-ibm-plex-mono), monospace; }
+.sf-core-interaction button { min-height: 44px; padding: 8px 12px; border: 1px solid #756647; border-radius: 4px; color: #eab362; background: #15130fcc; }
+.sf-core-interaction button:disabled { opacity: .45; }
+.sf-core-interaction button:focus-visible { outline: 2px solid #eab362; outline-offset: 3px; }
+.sf-core-caption button { min-height: 44px; }
+@media (min-width: 1001px) { .sf-core-interaction { left: 22%; right: 10%; bottom: 82px; } }
