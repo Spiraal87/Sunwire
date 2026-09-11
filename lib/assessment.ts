@@ -14,8 +14,9 @@ export const industries = [
 export type IndustryId = typeof industries[number]["id"] | "other";
 export type Pain = "calls" | "website" | "both";
 export type WebsiteState = "working" | "weak" | "none";
-export type Assessment = { industry: IndustryId | ""; pain: Pain | ""; websiteState: WebsiteState | ""; value: number; extraCustomers: number; step: number };
-export const emptyAssessment: Assessment = { industry: "", pain: "", websiteState: "", value: 120, extraCustomers: 3, step: 0 };
+export type CallCoverage = "busy" | "after-hours" | "both";
+export type Assessment = { callCoverage: CallCoverage | ""; industry: IndustryId | ""; pain: Pain | ""; websiteState: WebsiteState | ""; value: number; extraCustomers: number; step: number };
+export const emptyAssessment: Assessment = { callCoverage: "", industry: "", pain: "", websiteState: "", value: 120, extraCustomers: 3, step: 0 };
 const KEY = "sunforge-assessment-v1";
 const EVENT = "sunforge-assessment-changed";
 let cache: Assessment = emptyAssessment;
@@ -26,6 +27,7 @@ function sanitize(value: unknown): Assessment {
   const raw = value && typeof value === "object" ? value as Record<string, unknown> : {};
   const number = (key: keyof Assessment, min: number, max: number) => typeof raw[key] === "number" && Number.isFinite(raw[key]) ? Math.min(max, Math.max(min, raw[key] as number)) : emptyAssessment[key] as number;
   return {
+    callCoverage: ["busy", "after-hours", "both"].includes(raw.callCoverage as string) ? raw.callCoverage as CallCoverage : "",
     industry: [...industries.map(i => i.id), "other"].includes(raw.industry as IndustryId) ? raw.industry as IndustryId : "",
     pain: ["calls", "website", "both"].includes(raw.pain as string) ? raw.pain as Pain : "",
     websiteState: ["working", "weak", "none"].includes(raw.websiteState as string) ? raw.websiteState as WebsiteState : "",
@@ -63,8 +65,32 @@ export function chooseIndustry(industry: IndustryId) {
   updateAssessment({ industry, value: industries.find(i => i.id === industry)?.value ?? 120 });
 }
 export function recommendation(profile: Assessment) {
+  return { ...serviceRecommendation(profile), plan: profile.pain === "calls" ? (profile.callCoverage ? callPlans[profile.callCoverage] : null) : profile.pain && profile.websiteState ? startingPlans[profile.pain][profile.websiteState] : null };
+}
+
+type StartingPlan = { title: string; why: string; actions: [string, string, string] };
+export const coverageLabels = { busy: "During business hours", "after-hours": "After hours", both: "Business hours and after hours" };
+const callPlans: Record<CallCoverage, StartingPlan> = {
+  busy: { title: "Cover calls while your team is busy.", why: "Keep your team focused while an AI receptionist handles calls they cannot pick up.", actions: ["Identify when to send unanswered or overflow calls to the receptionist.", "Define answers to common questions and the caller details to collect.", "Route requests to your team and test the follow-up process."] },
+  "after-hours": { title: "Give after-hours callers a clear next step.", why: "Capture inquiries when your business is closed so your team can follow up when they return.", actions: ["Set your closed hours and after-hours call routing.", "Define the information to collect and what callers should expect next.", "Deliver requests to your team for follow-up on the next business day."] },
+  both: { title: "Cover missed calls throughout the day and night.", why: "Use an AI receptionist for busy periods and after-hours inquiries, with a handoff that fits your team.", actions: ["Set overflow and after-hours routing for your business number.", "Define caller questions, request details, and handoff rules.", "Test both coverage windows and how your team receives requests."] },
+};
+const startingPlans: Record<Exclude<Pain, "calls">, Record<WebsiteState, StartingPlan>> = {
+  website: {
+    working: { title: "Improve the weak spots in a site that already gets inquiries.", why: "You are getting some results but still losing people. Start with a focused review to find friction before deciding on a redesign.", actions: ["Walk through the mobile journey from landing page to inquiry.", "Check service clarity, calls to action, and form completion.", "Prioritize targeted changes and measure completed inquiries."] },
+    weak: { title: "Rework the path from visitor to inquiry.", why: "An existing site gives you a foundation. The priority is finding and fixing what makes visitors hesitate or leave.", actions: ["Review your key pages for confusing content and mobile usability issues.", "Simplify the service message and make the next action easy to find.", "Improve the inquiry or booking flow and track completed requests."] },
+    none: { title: "Build your first clear path from discovery to contact.", why: "Without a website, referrals and social visitors lack one place to understand your services and take the next step.", actions: ["Define the services, service area, and customer questions your site must cover.", "Build a mobile-friendly site with trust signals and one clear inquiry path.", "Connect your contact form and phone links, then test the full customer journey."] },
+  },
+  both: {
+    working: { title: "Keep what converts. Fix the handoff and missed calls.", why: "Your website generates interest, but the journey still breaks down. Focus on the contact experience and phone coverage together.", actions: ["Review how website visitors become calls, bookings, or form submissions.", "Add AI coverage for calls your team cannot answer.", "Tighten the website contact flow and route every request for follow-up."] },
+    weak: { title: "Repair the website and call response as one customer journey.", why: "Both entry points need attention. Improving them together gives visitors a clear next step and callers a way to leave a complete request.", actions: ["Map where visitors drop off and when calls are missed.", "Rework the website inquiry path alongside AI call coverage.", "Connect both channels to a shared handoff and test end to end."] },
+    none: { title: "Build the website and phone coverage together.", why: "You need an online starting point and a reliable way to handle the calls it generates.", actions: ["Define your services and the details needed for a useful customer request.", "Build a first website and configure AI coverage for unanswered calls.", "Route form submissions and caller details to your team for follow-up."] },
+  },
+};
+
+function serviceRecommendation(profile: Assessment) {
   const calls = profile.pain === "calls" || profile.pain === "both";
-  const website = profile.pain === "website" || profile.pain === "both" || profile.websiteState === "weak" || profile.websiteState === "none";
+  const website = profile.pain === "website" || profile.pain === "both";
   if (calls && website) return { id: "both", label: "Website + AI System", href: "/website", reason: "Capture interest online and answer the call that comes next." };
   if (website) return { id: "website", label: "Website Design", href: "/website", reason: "Start with a clearer, easier path from visitor to inquiry." };
   return { id: "receptionist", label: "AI Receptionist", href: "/receptionist", reason: "Start by answering the opportunities already reaching your phone." };

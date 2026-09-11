@@ -6,6 +6,7 @@ import IndustryWalkthrough from "./IndustryWalkthrough";
 import Link from "next/link";
 import { ArrowUpRight, ArrowRight, X, Check, Phone } from "lucide-react";
 import { industries, chooseIndustry } from "@/lib/assessment";
+import { revealContent } from "@/lib/reveal-content";
 import { captureEvent } from "@/lib/analytics";
 
 export default function BusinessCategories() {
@@ -37,7 +38,7 @@ export default function BusinessCategories() {
           <p className="mt-3 text-xs leading-relaxed text-text-muted">Illustrative text demo; no live call or appointment is created. Workflows and confirmations depend on your business setup.</p>
           {selected.id === "home" && <p className="mt-4 text-sm text-text-secondary">Serving HVAC, plumbing, electrical, garage doors, and auto services. <Link href="/hvac" onClick={close} className="text-gold underline">Explore the HVAC page</Link>. Other trades can request an assessment below.</p>}
           <p className="sf-industry-saved">Your assessment will start with {selected.name}. You can change it there.</p>
-          <div className="mt-6 flex flex-wrap gap-3"><a href="#contact" onClick={() => { chooseIndustry(selected.id); close(); captureEvent("assessment_request", { placement: "industry_demo", industry: selected.id }); }} className="inline-flex items-center gap-2 rounded-btn bg-gradient-accent px-5 py-3 text-sm font-semibold text-bg"><Check size={16} />Personalize my assessment</a><Link href="/receptionist#demo" className="inline-flex items-center gap-2 px-2 py-3 text-sm text-text-secondary underline underline-offset-4" onClick={close}><Phone size={16} />Try the live AI demo</Link></div>
+          <div className="mt-6 flex flex-wrap gap-3"><a href="#assessment-form" onClick={event => { event.preventDefault(); chooseIndustry(selected.id); close(); revealContent("assessment-form", false); captureEvent("assessment_request", { placement: "industry_demo", industry: selected.id }); }} className="inline-flex items-center gap-2 rounded-btn bg-gradient-accent px-5 py-3 text-sm font-semibold text-bg"><Check size={16} />Personalize my assessment</a><Link href="/receptionist#demo" className="inline-flex items-center gap-2 px-2 py-3 text-sm text-text-secondary underline underline-offset-4" onClick={close}><Phone size={16} />Try the live AI demo</Link></div>
         </div>}
       </dialog>
     </section>

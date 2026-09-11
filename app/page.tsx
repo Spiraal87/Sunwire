@@ -6,14 +6,13 @@ import ForgeHero from "@/components/ForgeHero";
 import DimensionalService from "@/components/DimensionalService";
 import BusinessCategories from "@/components/BusinessCategories";
 import Services from "@/components/Services";
-import StartingPoints from "@/components/StartingPoints";
+import WorkingDay from "@/components/WorkingDay";
 import QuietDivider from "@/components/QuietDivider";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import SectionDivider from "@/components/SectionDivider";
 import ProblemSelector from "@/components/ProblemSelector";
-import WebsiteDemo from "@/components/WebsiteDemo";
 
 export default function Home() {
   const [servicesLit, setServicesLit] = useState(false);
@@ -36,8 +35,7 @@ export default function Home() {
           />
           <Services backlit={servicesLit} story="home" />
           <QuietDivider />
-          <StartingPoints />
-          <WebsiteDemo />
+          <WorkingDay />
           <SectionDivider variant="contact" />
           <Contact />
           <FAQ />

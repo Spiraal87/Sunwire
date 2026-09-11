@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useMotionPreference as useReducedMotion } from "@/lib/useMotionPreference";
 import { ChevronDown, Phone } from "lucide-react";
 import { captureEvent } from "@/lib/analytics";
+import { useAssessment, industries, coverageLabels, recommendation } from "@/lib/assessment";
 
 const DEMO_PHONE_DISPLAY = "719-451-1199";
 const DEMO_PHONE_TEL = "tel:+17194511199";
@@ -72,23 +73,38 @@ export default function LeadForm({
   assessmentSummary?: string;
   onSuccess?: () => void;
 }) {
+  const { profile } = useAssessment();
+  const selectedBusinessType = industries.find(item => item.id === profile.industry)?.businessType ?? (profile.industry === "other" ? "Other" : defaultBusinessType);
+  const selectedService = recommendation(profile);
+  const defaultCallType = profile.pain ? [
+    `Interested in: ${selectedService.label}.`,
+    `Main challenge: ${{ calls: "Calls go unanswered", website: "My website loses people", both: "Calls and website both need attention" }[profile.pain]}.`,
+    profile.pain === "calls" && profile.callCoverage ? `Call coverage: ${coverageLabels[profile.callCoverage]}.` : "",
+    profile.pain !== "calls" && profile.websiteState ? `Website today: ${{ working: "It brings in inquiries", weak: "It could work harder", none: "I do not have one" }[profile.websiteState]}.` : "",
+  ].filter(Boolean).join("\n") : "";
   const prefersReducedMotion = useReducedMotion();
   const [form, setForm] = useState<FormState>({
     ...INITIAL_STATE,
-    businessType: defaultBusinessType,
+    businessType: selectedBusinessType,
+    callType: defaultCallType,
   });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
-  const previousDefault = useRef(defaultBusinessType);
+  const previousDefault = useRef(selectedBusinessType);
   useEffect(() => {
     const previous = previousDefault.current;
-    setForm(current => current.businessType === previous || !current.businessType ? { ...current, businessType: defaultBusinessType } : current);
-    previousDefault.current = defaultBusinessType;
-  }, [defaultBusinessType]);
+    setForm(current => current.businessType === previous || !current.businessType ? { ...current, businessType: selectedBusinessType } : current);
+    previousDefault.current = selectedBusinessType;
+  }, [selectedBusinessType]);
+  const messageEdited = useRef(false);
+  useEffect(() => {
+    if (!messageEdited.current) setForm(current => ({ ...current, callType: defaultCallType }));
+  }, [defaultCallType]);
 
   const handleChange =
     (field: keyof FormState) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+      if (field === "callType") messageEdited.current = true;
       setForm((prev) => ({ ...prev, [field]: e.target.value }));
     };
 
@@ -294,6 +310,7 @@ export default function LeadForm({
             >
               What kind of calls or leads are causing the most friction right now?
             </label>
+            {defaultCallType && <p className="mb-2 text-xs leading-relaxed text-text-muted">Filled from your selections. You can edit this or add details.</p>}
             <textarea
               id="lead-call-type"
               name="callType"
