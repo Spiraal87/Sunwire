@@ -1,11 +1,12 @@
 "use client";
 import { useEffect, useRef, useState, type ComponentProps } from 'react';
 import Link from 'next/link';
+import ForgeJunction from './ForgeJunction';
 import { ArrowUpRight, ArrowDown } from 'lucide-react';
 import type Hero from './Hero';
 import { captureEvent } from '@/lib/analytics';
 
-export default function ServiceHero({ eyebrow, heading, subhead, videoSrc = '/images/hero-video.mp4', posterSrc = '/images/hero-image3.png', primaryCta, secondaryCta }: ComponentProps<typeof Hero>) {
+export default function ServiceHero({ eyebrow, heading, subhead, videoSrc = '/images/hero-video.mp4', posterSrc = '/images/hero-image3.png', primaryCta, secondaryCta, showForge = true }: ComponentProps<typeof Hero> & { showForge?: boolean }) {
   const staticPoster = videoSrc === '/images/receptionist_video.mp4' ? '/images/receptionist-poster.jpg' : videoSrc === '/images/website-hero.mp4' ? '/images/website-poster.jpg' : posterSrc;
   const media = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
@@ -29,6 +30,7 @@ export default function ServiceHero({ eyebrow, heading, subhead, videoSrc = '/im
     else video.current.pause();
   }, [enabled, visible, paused]);
   return <section className="sf-video-hero" aria-labelledby="service-title">
+    {showForge && <ForgeJunction variant="hero" />}
     <div ref={media} className="sf-video-media" aria-hidden="true">
       <img src={staticPoster} alt="" fetchPriority="high" />
       {enabled && <video ref={video} muted playsInline loop preload="metadata" poster={staticPoster} onError={() => setEnabled(false)}><source src={videoSrc} type="video/mp4" /></video>}

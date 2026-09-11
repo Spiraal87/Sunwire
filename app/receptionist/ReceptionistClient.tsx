@@ -7,6 +7,7 @@ import Hero from "@/components/ServiceHero";
 import DimensionalService from "@/components/DimensionalService";
 
 import QuietDivider from "@/components/QuietDivider";
+import SectionDivider from "@/components/SectionDivider";
 import Services from "@/components/Services";
 
 import FAQ from "@/components/FAQ";
@@ -135,6 +136,7 @@ export default function ReceptionistClient() {
           mobileSubhead="Never miss a call again."
           mobileCompact
           mobileMediaFirst
+          showForge={false}
           videoSrc="/images/receptionist_video.mp4"
           posterSrc="/images/hero-image3.png"
           primaryCta={{
@@ -156,7 +158,7 @@ export default function ReceptionistClient() {
 
         <Funnel />
 
-        <QuietDivider id="services" />
+        <SectionDivider id="services" />
 
         <Services
           heading="How It Works"
@@ -169,6 +171,7 @@ export default function ReceptionistClient() {
 
         <EmberCallWidget />
 
+        <SectionDivider variant="contact" />
         <Contact
           heading={getVerticalAssessmentLabel("Front Desk System")}
           body="No pressure. No hard sales pitch. Just a conversation about what a missed-call handler would look like for your business."

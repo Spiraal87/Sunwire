@@ -38,6 +38,7 @@ export default function Home() {
           <QuietDivider />
           <StartingPoints />
           <WebsiteDemo />
+          <SectionDivider variant="contact" />
           <Contact />
           <FAQ />
         </div>

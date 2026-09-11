@@ -11,6 +11,7 @@ import Hero from "@/components/ServiceHero";
 import DimensionalService from "@/components/DimensionalService";
 
 import QuietDivider from "@/components/QuietDivider";
+import SectionDivider from "@/components/SectionDivider";
 import Services from "@/components/Services";
 
 import CalculatorTeaser from "@/components/CalculatorTeaser";
@@ -286,7 +287,7 @@ export default function HvacClient() {
         <DimensionalService servicePage hvac />
         <HvacProblem />
 
-        <QuietDivider id="services" />
+        <SectionDivider id="services" />
 
         <Services
           heading="How We Help"
@@ -306,6 +307,7 @@ export default function HvacClient() {
           eyebrow="Straight answers"
         />
 
+        <SectionDivider variant="contact" />
         <Contact
           heading={getVerticalAssessmentLabel("HVAC")}
           body="No pressure. No hard sales pitch. Just a conversation about where your business may be losing customers and how technology can help."

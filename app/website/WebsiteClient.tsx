@@ -11,6 +11,7 @@ import Hero from "@/components/ServiceHero";
 
 import WebsiteShowcase from "@/components/WebsiteShowcase";
 import QuietDivider from "@/components/QuietDivider";
+import SectionDivider from "@/components/SectionDivider";
 import Services from "@/components/Services";
 
 import FAQ from "@/components/FAQ";
@@ -240,6 +241,7 @@ export default function WebsiteClient() {
           mobileCompact
           mobileMediaFirst
           hideSecondaryCtaOnMobile
+          showForge={false}
           videoSrc="/images/website-hero.mp4"
           primaryCta={{
             label: getVerticalAssessmentLabel("Website"),
@@ -261,7 +263,7 @@ export default function WebsiteClient() {
         <WebsiteProblem />
         <WebsiteDemo />
 
-        <QuietDivider id="services" />
+        <SectionDivider id="services" />
 
         <Services
           heading="What's Included"
@@ -270,6 +272,7 @@ export default function WebsiteClient() {
           cards={websiteServiceCards}
         />
 
+        <SectionDivider variant="contact" />
         <Contact
           heading={getVerticalAssessmentLabel("Website")}
           body="No pressure. No hard sales pitch. Just a conversation about where your website may be losing visitors and what a rebuild would actually look like."
