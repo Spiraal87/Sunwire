@@ -9,7 +9,7 @@ export default function ForgeHero() {
     <div className="sf-hero-grid">
       <div className="sf-hero-copy">
         <p className="sf-eyebrow sf-enter"><span /> BUILT FOR LOCAL BUSINESS</p>
-        <h1 id="forge-title" className="sf-enter">Capture customers through <em>calls and online.</em></h1>
+        <h1 id="forge-title" className="sf-enter">You do<br />the good work.<br /><em>Make it easier to choose you.</em></h1>
         <p className="sf-hero-description sf-enter">You take care of the work. We build the websites and AI phone systems that turn interest into your next customer.</p>
         <div className="sf-hero-actions sf-enter">
           <a className="sf-button" href="#contact" onClick={() => captureEvent('cta_clicked', { cta: 'assessment_request', placement: 'homepage_hero' })}>Request an assessment <ArrowUpRight size={18} /></a>
